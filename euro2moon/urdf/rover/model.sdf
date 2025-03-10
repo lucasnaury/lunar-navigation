@@ -1,0 +1,834 @@
+<sdf version='1.9'>
+  <model name='Rover'>
+    <pose>0 0 .5 0 0 0</pose>
+    <self_collide>false</self_collide>
+    <static>false</static>
+    <link name="base_link">
+      <inertial>
+        <mass>18.71</mass>
+        <inertia>
+          <ixx>0.3986</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1.092</iyy>
+          <iyz>0</iyz>
+          <izz>1.337</izz>
+        </inertia>
+      </inertial>
+      <gravity>true</gravity>
+      <velocity_decay/>
+      <collision name="Base_Collision">
+        <pose>0 0 .0875 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.8 0.389 0.171</size>
+          </box>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <min_depth>0.001</min_depth>
+              <max_vel>0</max_vel>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+      <!-- <visual name="Base_Collision_Visual">
+        <pose>0 0 .0875 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.8 0.389 0.171</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0 1 0 1</diffuse>
+          <ambient>0 1 0 1</ambient>
+        </material>
+      </visual> -->
+      <visual name="BaseMetal">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://rover/BaseMetal.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name="BaseRubber">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://rover/BaseRubber.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name="BaseYellowPlasticTop">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://rover/BasePlastic.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name="BaseClearPlasticGuard">
+        <pose>0 0 0 0 0 0</pose>
+        <cast_shadow>0</cast_shadow>
+        <transparency>.5</transparency>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://rover/BaseClear.dae</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.6 0.6 0.7 1.0</diffuse>
+          <ambient>0.6 0.6 0.7 1.0</ambient>
+        </material>
+      </visual>
+    </link>
+    <link name="FrontLeftArm">
+      <pose relative_to="FrontLeftArmJoint">0 0 0 0 0 0</pose>
+      <inertial>
+        <mass>1.16</mass>
+        <inertia>
+          <ixx>0.006274</ixx>
+          <ixy>0.002744</ixy>
+          <ixz>0</ixz>
+          <iyy>0.007678</iyy>
+          <iyz>0</iyz>
+          <izz>0.009408</izz>
+        </inertia>
+      </inertial>
+      <gravity>true</gravity>
+      <velocity_decay/>
+      <visual name="FrontLeftArmMetal_Visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://rover/ArmLeftMetal.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name="FrontLeftArmPlastic_Visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://rover/ArmLeftPlastic.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <!-- <visual name="FrontLeftArm_Collision_Visual">
+        <pose>0.055 0 -.0305 0 .505 0</pose>
+        <geometry>
+          <box>
+            <size>.21 .075 .038</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0 0 1 1</diffuse>
+          <ambient>0 0 1 1</ambient>
+        </material>
+      </visual> -->
+      <collision name="FrontLeftArm_Collision">
+        <pose>0.055 0 -.0305 0 .505 0</pose>
+        <geometry>
+          <box>
+            <size>.21 .075 .038</size>
+          </box>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <min_depth>0.001</min_depth>
+              <max_vel>0</max_vel>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+    </link>
+    <link name="FrontLeftHubMotorWheel">
+      <pose relative_to="FrontLeftHubMotorWheelJoint">0 0 0 0 0 0</pose>
+      <inertial>
+        <mass>3.854</mass>
+        <inertia>
+          <ixx>0.009002</ixx>
+          <ixy>0.0006021</ixy>
+          <ixz>0</ixz>
+          <iyy>0.01313</iyy>
+          <iyz>0</iyz>
+          <izz>0.009003</izz>
+        </inertia>
+      </inertial>
+      <gravity>true</gravity>
+      <velocity_decay/>
+      <visual name="FrontLeftHubMotorWheelMetal_Visual">
+        <pose>0 0 0 0 0 3.14159265359</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://rover/HubMotor.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name="FrontLeftHubMotorWheelRubber_Visual">
+        <pose>0 0 0 0 0 3.14159265359</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://rover/RubberWheel.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <!-- <visual name="FrontLeftHubMotorWheel_Collision_Visual">
+        <pose>0 0 0 1.57079632679 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>.108</radius>
+            <length>.06</length>
+          </cylinder>
+        </geometry>
+        <material>
+          <diffuse>1 0 0 1</diffuse>
+          <ambient>1 0 0 1</ambient>
+        </material>
+      </visual> -->
+      <collision name="FrontLeftHubMotorWheel_Collision">
+        <pose>0 0 0 1.57079632679 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>.108</radius>
+            <length>.06</length>
+          </cylinder>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <min_depth>0.001</min_depth>
+              <max_vel>0</max_vel>
+            </ode>
+          </contact>
+          <friction>
+            <ode>
+              <mu>1.0</mu>
+              <mu2>0.8</mu2>
+              <fdir1>1 0 0</fdir1>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+    </link>
+    <joint name="FrontLeftArmJoint" type="revolute">
+      <parent>base_link</parent>
+      <child>FrontLeftArm</child>
+      <pose relative_to="base_link">.263 .238 .029 0 0 0</pose>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-0.5</lower>
+          <upper>0.5</upper>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>300</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    <joint name="FrontLeftHubMotorWheelJoint" type="revolute">
+      <parent>FrontLeftArm</parent>
+      <child>FrontLeftHubMotorWheel</child>
+      <pose relative_to="FrontLeftArm">.11861 .095 -.07453 0 0 0</pose>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+        <link name="BackLeftArm">
+      <pose relative_to="BackLeftArmJoint">0 0 0 0 0 0</pose>
+      <inertial>
+        <mass>1.16</mass>
+        <inertia>
+          <ixx>0.006274</ixx>
+          <ixy>0.002744</ixy>
+          <ixz>0</ixz>
+          <iyy>0.007678</iyy>
+          <iyz>0</iyz>
+          <izz>0.009408</izz>
+        </inertia>
+      </inertial>
+      <gravity>true</gravity>
+      <velocity_decay/>
+      <visual name="BackLeftArmMetal_Visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://rover/ArmLeftMetal.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name="BackLeftArmPlastic_Visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://rover/ArmLeftPlastic.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <!-- <visual name="BackLeftArm_Collision_Visual">
+        <pose>0.055 0 -.0305 0 .505 0</pose>
+        <geometry>
+          <box>
+            <size>.21 .075 .038</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0 0 1 1</diffuse>
+          <ambient>0 0 1 1</ambient>
+        </material>
+      </visual> -->
+      <collision name="BackLeftArm_Collision">
+        <pose>0.055 0 -.0305 0 .505 0</pose>
+        <geometry>
+          <box>
+            <size>.21 .075 .038</size>
+          </box>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <min_depth>0.001</min_depth>
+              <max_vel>0</max_vel>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+    </link>
+    <link name="BackLeftHubMotorWheel">
+      <pose relative_to="BackLeftHubMotorWheelJoint">0 0 0 0 0 0</pose>
+      <inertial>
+        <mass>3.854</mass>
+        <inertia>
+          <ixx>0.009002</ixx>
+          <ixy>0.0006021</ixy>
+          <ixz>0</ixz>
+          <iyy>0.01313</iyy>
+          <iyz>0</iyz>
+          <izz>0.009003</izz>
+        </inertia>
+      </inertial>
+      <gravity>true</gravity>
+      <velocity_decay/>
+      <visual name="BackLeftHubMotorWheelMetal_Visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://rover/HubMotor.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name="BackLeftHubMotorWheelRubber_Visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://rover/RubberWheel.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <!-- <visual name="BackLeftHubMotorWheel_Collision_Visual">
+        <pose>0 0 0 1.57079632679 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>.108</radius>
+            <length>.06</length>
+          </cylinder>
+        </geometry>
+        <material>
+          <diffuse>1 0 0 1</diffuse>
+          <ambient>1 0 0 1</ambient>
+        </material>
+      </visual> -->
+      <collision name="BackLeftHubMotorWheel_Collision">
+        <pose>0 0 0 1.57079632679 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>.108</radius>
+            <length>.06</length>
+          </cylinder>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <min_depth>0.001</min_depth>
+              <max_vel>0</max_vel>
+            </ode>
+          </contact>
+          <friction>
+            <ode>
+              <mu>1.0</mu>
+              <mu2>0.8</mu2>
+              <fdir1>1 0 0</fdir1>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+    </link>
+    <joint name="BackLeftArmJoint" type="revolute">
+      <parent>base_link</parent>
+      <child>BackLeftArm</child>
+      <pose relative_to="base_link">-.263 -.238 .029 0 0 3.14159265359</pose>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-0.5</lower>
+          <upper>0.5</upper>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>300</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    <joint name="BackLeftHubMotorWheelJoint" type="revolute">
+      <parent>BackLeftArm</parent>
+      <child>BackLeftHubMotorWheel</child>
+      <pose relative_to="BackLeftArm">.11861 .095 -.07453 0 0 3.14159265359</pose>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    <link name="FrontRightArm">
+      <pose relative_to="FrontRightArmJoint">0 0 0 0 0 0</pose>
+      <inertial>
+        <mass>1.16</mass>
+        <inertia>
+          <ixx>0.006274</ixx>
+          <ixy>0.002744</ixy>
+          <ixz>0</ixz>
+          <iyy>0.007678</iyy>
+          <iyz>0</iyz>
+          <izz>0.009408</izz>
+        </inertia>
+      </inertial>
+      <gravity>true</gravity>
+      <velocity_decay/>
+      <visual name="FrontRightArmMetal_Visual">
+        <pose>0 0 0 0 -.017 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://rover/ArmRightMetal.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name="FrontRightArmPlastic_Visual">
+        <pose>0 0 0 0 -.017 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://rover/ArmRightPlastic.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <!-- <visual name="FrontRightArm_Collision_Visual">
+        <pose>0.055 0 -.0305 0 .505 0</pose>
+        <geometry>
+          <box>
+            <size>.21 .075 .038</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0 0 1 1</diffuse>
+          <ambient>0 0 1 1</ambient>
+        </material>
+      </visual> -->
+      <collision name="FrontRightArm_Collision">
+        <pose>0.055 0 -.0305 0 .505 0</pose>
+        <geometry>
+          <box>
+            <size>.21 .075 .038</size>
+          </box>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <min_depth>0.001</min_depth>
+              <max_vel>0</max_vel>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+    </link>
+    <link name="FrontRightHubMotorWheel">
+      <pose relative_to="FrontRightHubMotorWheelJoint">0 0 0 0 0 0</pose>
+      <inertial>
+        <mass>3.854</mass>
+        <inertia>
+          <ixx>0.009002</ixx>
+          <ixy>0.0006021</ixy>
+          <ixz>0</ixz>
+          <iyy>0.01313</iyy>
+          <iyz>0</iyz>
+          <izz>0.009003</izz>
+        </inertia>
+      </inertial>
+      <gravity>true</gravity>
+      <velocity_decay/>
+      <visual name="FrontRightHubMotorWheelMetal_Visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://rover/HubMotor.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name="FrontRightHubMotorWheelRubber_Visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://rover/RubberWheel.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <!-- <visual name="FrontRightHubMotorWheel_Collision_Visual">
+        <pose>0 0 0 1.57079632679 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>.108</radius>
+            <length>.06</length>
+          </cylinder>
+        </geometry>
+        <material>
+          <diffuse>1 0 0 1</diffuse>
+          <ambient>1 0 0 1</ambient>
+        </material>
+      </visual> -->
+      <collision name="FrontRightHubMotorWheel_Collision">
+        <pose>0 0 0 1.57079632679 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>.108</radius>
+            <length>.06</length>
+          </cylinder>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <min_depth>0.001</min_depth>
+              <max_vel>0</max_vel>
+            </ode>
+          </contact>
+          <friction>
+            <ode>
+              <mu>1.0</mu>
+              <mu2>0.8</mu2>
+              <fdir1>1 0 0</fdir1>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+    </link>
+    <joint name="FrontRightArmJoint" type="revolute">
+      <parent>base_link</parent>
+      <child>FrontRightArm</child>
+      <pose relative_to="base_link">.263 -.238 .029 0 0 0</pose>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-0.5</lower>
+          <upper>0.5</upper>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>300</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    <joint name="FrontRightHubMotorWheelJoint" type="revolute">
+      <parent>FrontRightArm</parent>
+      <child>FrontRightHubMotorWheel</child>
+      <pose relative_to="FrontRightArm">.11861 -.095 -.07453 0 0 0</pose>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+        <link name="BackRightArm">
+      <pose relative_to="BackRightArmJoint">0 0 0 0 0 0</pose>
+      <inertial>
+        <mass>1.16</mass>
+        <inertia>
+          <ixx>0.006274</ixx>
+          <ixy>0.002744</ixy>
+          <ixz>0</ixz>
+          <iyy>0.007678</iyy>
+          <iyz>0</iyz>
+          <izz>0.009408</izz>
+        </inertia>
+      </inertial>
+      <gravity>true</gravity>
+      <velocity_decay/>
+      <visual name="BackRightArmMetal_Visual">
+        <pose>0 0 0 0 -.017 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://rover/ArmRightMetal.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name="BackRightArmPlastic_Visual">
+        <pose>0 0 0 0 -.017 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://rover/ArmRightPlastic.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <!-- <visual name="BackRightArm_Collision_Visual">
+        <pose>0.055 0 -.0305 0 .505 0</pose>
+        <geometry>
+          <box>
+            <size>.21 .075 .038</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0 0 1 1</diffuse>
+          <ambient>0 0 1 1</ambient>
+        </material>
+      </visual> -->
+      <collision name="BackRightArm_Collision">
+        <pose>0.055 0 -.0305 0 .505 0</pose>
+        <geometry>
+          <box>
+            <size>.21 .075 .038</size>
+          </box>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <min_depth>0.001</min_depth>
+              <max_vel>0</max_vel>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+    </link>
+    <link name="BackRightHubMotorWheel">
+      <pose relative_to="BackRightHubMotorWheelJoint">0 0 0 0 0 0</pose>
+      <inertial>
+        <mass>3.854</mass>
+        <inertia>
+          <ixx>0.009002</ixx>
+          <ixy>0.0006021</ixy>
+          <ixz>0</ixz>
+          <iyy>0.01313</iyy>
+          <iyz>0</iyz>
+          <izz>0.009003</izz>
+        </inertia>
+      </inertial>
+      <gravity>true</gravity>
+      <velocity_decay/>
+      <visual name="BackRightHubMotorWheelMetal_Visual">
+        <pose>0 0 0 0 0 3.14159265359</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://rover/HubMotor.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name="BackRightHubMotorWheelRubber_Visual">
+        <pose>0 0 0 0 0 3.14159265359</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://rover/RubberWheel.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <!-- <visual name="BackRightHubMotorWheel_Collision_Visual">
+        <pose>0 0 0 1.57079632679 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>.108</radius>
+            <length>.06</length>
+          </cylinder>
+        </geometry>
+        <material>
+          <diffuse>1 0 0 1</diffuse>
+          <ambient>1 0 0 1</ambient>
+        </material>
+      </visual> -->
+      <collision name="BackRightHubMotorWheel_Collision">
+        <pose>0 0 0 1.57079632679 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>.108</radius>
+            <length>.06</length>
+          </cylinder>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <min_depth>0.001</min_depth>
+              <max_vel>0</max_vel>
+            </ode>
+          </contact>
+          <friction>
+            <ode>
+              <mu>1.0</mu>
+              <mu2>0.8</mu2>
+              <fdir1>1 0 0</fdir1>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+    </link>
+    <joint name="BackRightArmJoint" type="revolute">
+      <parent>base_link</parent>
+      <child>BackRightArm</child>
+      <pose relative_to="base_link">-.263 .238 .029 0 0 3.14159265359</pose>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-0.5</lower>
+          <upper>0.5</upper>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>300</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    <joint name="BackRightHubMotorWheelJoint" type="revolute">
+      <parent>BackRightArm</parent>
+      <child>BackRightHubMotorWheel</child>
+      <pose relative_to="BackRightArm">.11861 -.095 -.07453 0 0 3.14159265359</pose>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+
+
+
+    <plugin
+      filename="ignition-gazebo-diff-drive-system"
+      name="gz::sim::systems::DiffDrive">
+      <right_joint>BackLeftHubMotorWheelJoint</right_joint>
+      <left_joint>FrontLeftHubMotorWheelJoint</left_joint>
+      <left_joint>BackRightHubMotorWheelJoint</left_joint>
+      <right_joint>FrontRightHubMotorWheelJoint</right_joint>
+      <wheel_separation>0.667</wheel_separation>
+      <wheel_radius>0.108</wheel_radius>
+      <max_linear_acceleration>1</max_linear_acceleration>
+      <min_linear_acceleration>-1</min_linear_acceleration>
+      <max_angular_acceleration>2</max_angular_acceleration>
+      <min_angular_acceleration>-2</min_angular_acceleration>
+      <max_linear_velocity>0.5</max_linear_velocity>
+      <min_linear_velocity>-0.5</min_linear_velocity>
+      <max_angular_velocity>1</max_angular_velocity>
+      <min_angular_velocity>-1</min_angular_velocity>
+
+
+      <!-- Input -->
+      <topic>cmd_vel</topic>
+
+      <!-- Output -->
+      <odom_topic>odom</odom_topic>
+      <odom_publish_frequency>10</odom_publish_frequency>
+
+    </plugin>
+
+    <!-- Joint publisher -->
+    <plugin filename="libignition-gazebo-joint-state-publisher-system.so" name="ignition::gazebo::systems::JointStatePublisher"/>
+
+    <!-- Camera -->
+    <link name="CameraLink">
+      <pose>0.4 0 0.2 0 0 0</pose>  <!-- Position the camera at an appropriate height and location -->
+      <visual name="CameraVisual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.05 0.05 0.05</size>  <!-- Small box for the camera -->
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0 0 0 1</diffuse>
+        </material>
+      </visual>
+      <sensor name="camera" type="camera">
+        <pose>0 0 0 0 0 0</pose> <!-- Position the camera relative to its link -->
+        <!-- <visualize>true</visualize> -->
+        <update_rate>30</update_rate>
+        <!-- <always_on>1</always_on> -->
+        <topic>camera</topic>
+        <camera>
+          <!-- Raspberry PI Camera module 3 (66°H, 41°V) -->
+          <!-- <horizontal_fov>1.15192</horizontal_fov>
+          <vertical_fov>0.715585</vertical_fov> -->
+          <!-- Raspberry PI Camera module 3 Wide angle (102°H, 67°V)-->
+          <horizontal_fov>1.78024</horizontal_fov>
+          <vertical_fov>1.16937</vertical_fov>
+
+          <image>
+            <!-- 16:9 aspect ratio -->
+            <width>800</width> <!-- Image width -->
+            <height>450</height> <!-- Image height -->
+          </image>
+          <clip>
+            <near>0.01</near>
+            <far>500</far>
+          </clip>
+					<noise>
+						<type>gaussian</type>
+						<mean>0</mean>
+						<stddev>0.01</stddev>
+					</noise>
+        </camera>
+      </sensor>
+    </link>
+
+    
+
+    <joint name="BaseCameraJoint" type="fixed">
+      <parent>base_link</parent>
+      <child>CameraLink</child>
+      <pose>0 0 0.2 0 0 0</pose>  <!-- Position the camera relative to Rover's base -->
+    </joint>
+
+
+
+  </model>
+</sdf>
