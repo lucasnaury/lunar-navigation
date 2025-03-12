@@ -19,7 +19,7 @@ def generate_launch_description():
         DeclareLaunchArgument('pitch', default_value='0', description='Pitch of the robot'),
         DeclareLaunchArgument('yaw', default_value='0', description='Yaw of the robot'),
         DeclareLaunchArgument('robot_name', default_value='rover', description='Robot name'),
-        DeclareLaunchArgument('world_file', default_value=LaunchConfiguration('world_file', default=os.path.join(FindPackageShare('euro2moon').find('euro2moon'), 'worlds', 'moon_surface.world')),
+        DeclareLaunchArgument('world_file', default_value=LaunchConfiguration('world_file', default=os.path.join(FindPackageShare('euro2moon').find('euro2moon'), 'worlds', 'moon.world')),
                                description='World file for the simulation'),
         DeclareLaunchArgument('robot_description', default_value=os.path.join(FindPackageShare('euro2moon').find('euro2moon'), 'urdf', 'rover.sdf')),
  

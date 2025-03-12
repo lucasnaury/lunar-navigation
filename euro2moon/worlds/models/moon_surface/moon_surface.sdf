@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<sdf version='1.6'>
+  <model name="moon">
+    
+    <static>true</static>
+    
+    <link name="moon_link">
+
+    <visual name="moon_surface_visual">
+        <geometry>
+          <mesh>
+            <uri>model://models/moon_surface/moon_cropped.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.2 0.2 0.2</diffuse>
+          <specular>0.2 0.2 0.2</specular>
+        </material>
+      </visual>
+      
+      <collision name="moon_surface_colission">
+        <geometry>
+          <mesh>
+            <uri>model://models/moon_surface/moon_cropped.stl</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <bounce/>
+          <friction>
+            <ode/>
+          </friction>
+          <contact>
+            <ode/>
+          </contact>
+        </surface>
+      </collision>
+      
+    </link>    
+
+  </model> 
+</sdf>

@@ -38,13 +38,13 @@ def generate_launch_description():
 
         # Launch camera visualisation
         # Launch rqt_image_view to show the output
-        Node(
-            package='rqt_image_view',
-            executable='rqt_image_view',
-            name='camera_view',
-            output='screen',
-            arguments=['/camera_raw']
-        )
+        # Node(
+        #     package='rqt_image_view',
+        #     executable='rqt_image_view',
+        #     name='camera_view',
+        #     output='screen',
+        #     arguments=['/camera_raw']
+        # )
     ])
      
 

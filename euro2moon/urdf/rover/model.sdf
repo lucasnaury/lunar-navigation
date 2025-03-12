@@ -775,50 +775,6 @@
     <plugin filename="libignition-gazebo-joint-state-publisher-system.so" name="ignition::gazebo::systems::JointStatePublisher"/>
 
     <!-- Camera -->
-    <link name="CameraLink">
-      <pose>0.4 0 0.2 0 0 0</pose>  <!-- Position the camera at an appropriate height and location -->
-      <visual name="CameraVisual">
-        <pose>0 0 0 0 0 0</pose>
-        <geometry>
-          <box>
-            <size>0.05 0.05 0.05</size>  <!-- Small box for the camera -->
-          </box>
-        </geometry>
-        <material>
-          <diffuse>0 0 0 1</diffuse>
-        </material>
-      </visual>
-      <sensor name="camera" type="camera">
-        <pose>0 0 0 0 0 0</pose> <!-- Position the camera relative to its link -->
-        <!-- <visualize>true</visualize> -->
-        <update_rate>30</update_rate>
-        <!-- <always_on>1</always_on> -->
-        <topic>camera</topic>
-        <camera>
-          <!-- Raspberry PI Camera module 3 (66°H, 41°V) -->
-          <!-- <horizontal_fov>1.15192</horizontal_fov>
-          <vertical_fov>0.715585</vertical_fov> -->
-          <!-- Raspberry PI Camera module 3 Wide angle (102°H, 67°V)-->
-          <horizontal_fov>1.78024</horizontal_fov>
-          <vertical_fov>1.16937</vertical_fov>
-
-          <image>
-            <!-- 16:9 aspect ratio -->
-            <width>800</width> <!-- Image width -->
-            <height>450</height> <!-- Image height -->
-          </image>
-          <clip>
-            <near>0.01</near>
-            <far>500</far>
-          </clip>
-					<noise>
-						<type>gaussian</type>
-						<mean>0</mean>
-						<stddev>0.01</stddev>
-					</noise>
-        </camera>
-      </sensor>
-    </link>
 
     
 
