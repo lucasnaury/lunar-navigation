@@ -14,7 +14,7 @@ def generate_launch_description():
         # Declare launch arguments
         DeclareLaunchArgument('x', default_value='0', description='X position of the robot'),
         DeclareLaunchArgument('y', default_value='0', description='Y position of the robot'),
-        DeclareLaunchArgument('z', default_value='1.57', description='Z position of the robot'),
+        DeclareLaunchArgument('z', default_value='5', description='Z position of the robot'),
         DeclareLaunchArgument('roll', default_value='0', description='Roll of the robot'),
         DeclareLaunchArgument('pitch', default_value='0', description='Pitch of the robot'),
         DeclareLaunchArgument('yaw', default_value='0', description='Yaw of the robot'),
