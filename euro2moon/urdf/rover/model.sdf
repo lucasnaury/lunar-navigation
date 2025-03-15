@@ -774,17 +774,6 @@
     <!-- Joint publisher -->
     <plugin filename="libignition-gazebo-joint-state-publisher-system.so" name="ignition::gazebo::systems::JointStatePublisher"/>
 
-    <!-- Camera -->
-
-    
-
-    <joint name="BaseCameraJoint" type="fixed">
-      <parent>base_link</parent>
-      <child>CameraLink</child>
-      <pose>0 0 0.2 0 0 0</pose>  <!-- Position the camera relative to Rover's base -->
-    </joint>
-
-
 
   </model>
 </sdf>

@@ -1,0 +1,161 @@
+<sdf version='1.9'>
+  <world name='plane'>
+    
+    <physics name="1ms" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+    <plugin
+      filename="ignition-gazebo-physics-system"
+      name="gz::sim::systems::Physics">
+    </plugin>
+    <plugin
+      filename="ignition-gazebo-user-commands-system"
+      name="gz::sim::systems::UserCommands">
+    </plugin>
+    <plugin
+      filename="ignition-gazebo-scene-broadcaster-system"
+      name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+    <plugin
+      filename="ignition-gazebo-contact-system"
+      name="gz::sim::systems::Contact">
+    </plugin>
+    <plugin
+      filename="ignition-gazebo-sensors-system"
+      name="gz::sim::systems::Sensors">
+      <render_engine>ogre</render_engine>
+    </plugin>
+    <plugin
+      filename="ignition-gazebo-imu-system"
+      name="gz::sim::systems::Imu">
+    </plugin>
+
+
+    <scene>
+      <ambient>0.05 0.05 0.05 1.0</ambient>
+      <background>0.0 0.0 0.0 1</background>
+      <origin_visual>0</origin_visual>
+      <grid>false</grid>
+      <shadows>true</shadows>
+    </scene>
+
+    
+
+    <gravity>0 0 -1.62</gravity>
+    <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
+    <atmosphere type='adiabatic'/>
+    <scene>
+      <ambient>0.4 0.4 0.4 0.7851</ambient>
+      <background>0.7 0.7 0.7 1</background>
+      <shadows>true</shadows>
+    </scene>
+
+    <!-- Load the light -->
+    <light type="point" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 100 0 0 0</pose>
+      <intensity>3</intensity>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.8 0.8 0.8 1</specular>
+      
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+      
+    <model name='ground_plane'>
+      <static>true</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>200 50</size>
+            </plane>
+          </geometry>
+          <surface>
+            <friction>
+              <ode/>
+            </friction>
+            <bounce/>
+            <contact/>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+            <specular>0.3 0.3 0.3 1</specular>
+          </material>
+        </visual>
+        <pose>0 0 0 0 0 0</pose>
+        <enable_wind>false</enable_wind>
+      </link>
+      <pose>25 0 0 0 0 0</pose>
+      <self_collide>false</self_collide>
+    </model>
+
+    <!-- Create a line with rocks -->
+    <include>
+      <uri>model://models/qr_rock1</uri>
+      <name>qr_rock1</name>
+      <pose>2 0 0.3244 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://models/qr_rock2</uri>
+      <name>qr_rock2</name>
+      <pose>10 1.5 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://models/qr_rock3</uri>
+      <name>qr_rock3</name>
+      <pose>17 -1 0 0 0 3.14/2</pose>
+    </include>
+
+    <include>
+      <uri>model://models/qr_rock4</uri>
+      <name>qr_rock4</name>
+      <pose>24 1 0.0065 -0.1654 0 0.8644</pose>
+    </include>
+
+        <include>
+      <uri>model://models/qr_rock1</uri>
+      <name>qr_rock5</name>
+      <pose>35 0 0.3244 0 0 1.57</pose>
+    </include>
+
+    <include>
+      <uri>model://models/qr_rock2</uri>
+      <name>qr_rock6</name>
+      <pose>45 1.5 0 0 0 1.57</pose>
+    </include>
+
+    <include>
+      <uri>model://models/qr_rock3</uri>
+      <name>qr_rock7</name>
+      <pose>59 -1 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://models/qr_rock4</uri>
+      <name>qr_rock8</name>
+      <pose>50 1 0.0065 -0.1654 0 0</pose>
+    </include>
+
+
+  </world>
+</sdf>

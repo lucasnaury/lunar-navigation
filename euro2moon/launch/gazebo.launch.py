@@ -14,7 +14,7 @@ def generate_launch_description():
         # Declare launch arguments
         DeclareLaunchArgument('x', default_value='0', description='X position of the robot'),
         DeclareLaunchArgument('y', default_value='0', description='Y position of the robot'),
-        DeclareLaunchArgument('z', default_value='0.15', description='Z position of the robot'),
+        DeclareLaunchArgument('z', default_value='1.57', description='Z position of the robot'),
         DeclareLaunchArgument('roll', default_value='0', description='Roll of the robot'),
         DeclareLaunchArgument('pitch', default_value='0', description='Pitch of the robot'),
         DeclareLaunchArgument('yaw', default_value='0', description='Yaw of the robot'),
@@ -54,16 +54,10 @@ def generate_launch_description():
         Node(package='ros_gz_sim', executable='create',
             arguments=['-name', 'rover',
                 # Default spawn point
-                # '-x', '1.8',
-                # '-y', '-3.4',
-                # '-z', '3.0',
-                # '-Y', '1.57'
-
-                # In front of a QR code
-                '-x', '-3.3466',
-                '-y', '-0.6789',
-                '-z', '3.0',
-                '-Y', '3.0591',
+                '-x', LaunchConfiguration('x'),
+                '-y', LaunchConfiguration('y'),
+                '-z', LaunchConfiguration('z'),
+                '-Y', LaunchConfiguration('yaw'),
                 '-file', urdfPath],
             output='screen'),
 
