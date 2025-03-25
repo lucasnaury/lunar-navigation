@@ -1,0 +1,4 @@
+**/__pycache__/
+**/*.gif
+
+scripts/illumination/*.pov.map*
