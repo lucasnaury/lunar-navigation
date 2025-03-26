@@ -26,7 +26,7 @@ def generate_launch_description():
 
         GroupAction([
             # Set gazebo env variable
-            SetEnvironmentVariable("IGN_GAZEBO_RESOURCE_PATH",value = PathJoinSubstitution([FindPackageShare('euro2moon'),"worlds"])),
+            SetEnvironmentVariable("GZ_SIM_RESOURCE_PATH",value = PathJoinSubstitution([FindPackageShare('euro2moon'),"worlds"])),
             
 
             # Launch gazebo with correct world       
@@ -51,15 +51,33 @@ def generate_launch_description():
         ),
 
         # Spawn sdf
-        Node(package='ros_gz_sim', executable='create',
-            arguments=['-name', 'rover',
-                # Default spawn point
-                '-x', LaunchConfiguration('x'),
-                '-y', LaunchConfiguration('y'),
-                '-z', LaunchConfiguration('z'),
-                '-Y', LaunchConfiguration('yaw'),
-                '-file', urdfPath],
-            output='screen'),
+        # ROS HUMBLE
+        # Node(package='ros_gz_sim', executable='create',
+        #     arguments=['-name', 'rover',
+        #         # Default spawn point
+        #         '-x', LaunchConfiguration('x'),
+        #         '-y', LaunchConfiguration('y'),
+        #         '-z', LaunchConfiguration('z'),
+        #         '-Y', LaunchConfiguration('yaw'),
+        #         '-file', urdfPath],
+        #     output='screen'),
+        # ROS JAZZZY
+        Node(
+            package='ros_gz_sim',
+            executable='create',
+            output='screen',
+            parameters=[{'file': urdfPath,
+                        'name': 'rover',
+                        '-x': LaunchConfiguration('x'),
+                        '-y': LaunchConfiguration('y'),
+                        '-z': LaunchConfiguration('z'),
+                        '-Y': LaunchConfiguration('yaw')
+                        }],
+        ),
+
+
+
+
 
         # robot state publisher node
         # Node(package='robot_state_publisher', executable='robot_state_publisher',
