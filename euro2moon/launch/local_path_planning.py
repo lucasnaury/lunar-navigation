@@ -34,8 +34,12 @@ def generate_launch_description():
         # ...
         def generate_launch_description():
     package_dir = get_package_share_directory('my_package')
+
+
+# Get robot
     robot_description_path = os.path.join(package_dir, 'resource', 'my_robot.urdf')
 
+# Get map
     webots = WebotsLauncher(
         world=os.path.join(package_dir, 'worlds', 'my_world.wbt')
     )
