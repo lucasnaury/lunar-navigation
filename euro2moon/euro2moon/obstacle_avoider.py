@@ -11,16 +11,27 @@ class ObstacleAvoider(Node):
     def __init__(self):
         super().__init__('obstacle_avoider')
 
+# This node will create a publisher for the command and subscribe to the sensors topics here:
+
         self.__publisher = self.create_publisher(Twist, 'cmd_vel', 1)
 
         self.create_subscription(Range, 'left_sensor', self.__left_sensor_callback, 1)
         self.create_subscription(Range, 'right_sensor', self.__right_sensor_callback, 1)
 
+        
+# When a measurement is received from the left sensor it will be copied to a member field:
+
     def __left_sensor_callback(self, message):
         self.__left_sensor_value = message.range
 
+# When a measurement is received from the right sensor it will be copied to a member field:
+
     def __right_sensor_callback(self, message):
         self.__right_sensor_value = message.range
+
+
+# The command_message will register at least a forward speed in linear.x
+
 
         command_message = Twist()
 
