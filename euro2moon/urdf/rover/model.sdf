@@ -741,7 +741,9 @@
       </axis>
     </joint>
 
-
+    <!-- Stereo camera -->
+    
+    <!-- 3D Lidar -->
 
     <plugin
       filename="ignition-gazebo-diff-drive-system"
