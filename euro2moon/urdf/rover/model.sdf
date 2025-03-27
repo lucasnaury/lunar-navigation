@@ -551,12 +551,80 @@
       <parent>base_link</parent>
       <child>FrontRightArm</child>
       <pose relative_to="base_link">.263 -.238 .029 0 0 0</pose>
-      <axis>
+      <axis>def generate_launch_description():
+    package_dir = get_package_share_directory('my_package')
+
+
+# Get robot
+    robot_description_path = os.path.join(package_dir, 'resource', 'my_robot.urdf')
+
+# Get map
+    webots = WebotsLauncher(
+        world=os.path.join(package_dir, 'worlds', 'my_world.wbt')
+    )
+
+    my_robot_driver = WebotsController(
+        robot_name='my_robot',
+        parameters=[
+            {'robot_description': robot_description_path},
+        ]
+    )
+
+    obstacle_avoider = Node(
+        package='my_package',
+        executable='obstacle_avoider',
+    )
+
+    return LaunchDescription([
+        webots,
+        my_robot_driver,
+        obstacle_avoider,
+        launch.actions.RegisterEventHandler(
+            event_handler=launch.event_handlers.OnProcessExit(
+                target_action=webots,
+                on_exit=[launch.actions.EmitEvent(event=launch.events.Shutdown())],
+            )
+        )
+    ])
         <xyz>0 1 0</xyz>
         <limit>
           <lower>-0.5</lower>
           <upper>0.5</upper>
-        </limit>
+        </limit>def generate_launch_description():
+    package_dir = get_package_share_directory('my_package')
+
+
+# Get robot
+    robot_description_path = os.path.join(package_dir, 'resource', 'my_robot.urdf')
+
+# Get map
+    webots = WebotsLauncher(
+        world=os.path.join(package_dir, 'worlds', 'my_world.wbt')
+    )
+
+    my_robot_driver = WebotsController(
+        robot_name='my_robot',
+        parameters=[
+            {'robot_description': robot_description_path},
+        ]
+    )
+
+    obstacle_avoider = Node(
+        package='my_package',
+        executable='obstacle_avoider',
+    )
+
+    return LaunchDescription([
+        webots,
+        my_robot_driver,
+        obstacle_avoider,
+        launch.actions.RegisterEventHandler(
+            event_handler=launch.event_handlers.OnProcessExit(
+                target_action=webots,
+                on_exit=[launch.actions.EmitEvent(event=launch.events.Shutdown())],
+            )
+        )
+    ])
         <dynamics>
           <spring_reference>0</spring_reference>
           <spring_stiffness>300</spring_stiffness>
@@ -742,7 +810,19 @@
     </joint>
 
     <!-- Stereo camera -->
-    
+
+<gazebo reference="camera_link">
+        <material>Gazebo/Red</material>
+        <sensor name="camera_sensor" type="camera">
+            <pose>0 0 0 0 0 0</pose>
+            <visualize>true</visualize>
+            <update_rate>10.0</update_rate>
+            <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+            <frame_name>camera_link_optical</frame_name>
+            </plugin>
+        </sensor>
+    </gazebo>
+
     <!-- 3D Lidar -->
 
     <plugin
@@ -759,7 +839,41 @@
       <max_angular_acceleration>3</max_angular_acceleration>
       <min_angular_acceleration>-3</min_angular_acceleration>
       <max_linear_velocity>5</max_linear_velocity>
-      <min_linear_velocity>-5</min_linear_velocity>
+      <min_linear_velocity>-5</min_linear_velocity>def generate_launch_description():
+    package_dir = get_package_share_directory('my_package')
+
+
+# Get robot
+    robot_description_path = os.path.join(package_dir, 'resource', 'my_robot.urdf')
+
+# Get map
+    webots = WebotsLauncher(
+        world=os.path.join(package_dir, 'worlds', 'my_world.wbt')
+    )
+
+    my_robot_driver = WebotsController(
+        robot_name='my_robot',
+        parameters=[
+            {'robot_description': robot_description_path},
+        ]
+    )
+
+    obstacle_avoider = Node(
+        package='my_package',
+        executable='obstacle_avoider',
+    )
+
+    return LaunchDescription([
+        webots,
+        my_robot_driver,
+        obstacle_avoider,
+        launch.actions.RegisterEventHandler(
+            event_handler=launch.event_handlers.OnProcessExit(
+                target_action=webots,
+                on_exit=[launch.actions.EmitEvent(event=launch.events.Shutdown())],
+            )
+        )
+    ])
       <max_angular_velocity>2</max_angular_velocity>
       <min_angular_velocity>-2</min_angular_velocity>
 
