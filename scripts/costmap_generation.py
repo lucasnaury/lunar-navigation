@@ -12,28 +12,36 @@ from include.helpers import showImage
 # ---------------------------------------------------------------- #
 def getSlopeMap(heightmap, method):
     
-    diag = 1/np.sqrt(2)
-    sum = 1*4 + diag*4
-    kernel = np.array([[-diag, -1, -diag],
-                       [-1,    sum,   -1],
-                       [-diag, -1, -diag]]) / sum
-    
-    # kernel = np.array([[0, -1, 0],
-    #                 [-1, 1, -1],
-    #                 [0, -1, 0]])
 
+    if method == 0: # My with diagonal weights
 
-    slopeMap = None
-    if method == 0: # My test
+        # Create kernel
+        diag = 1/np.sqrt(2)
+        sum = 1*4 + diag*4
+        kernel = np.array([[-diag, -1, -diag],
+                           [-1,    sum,   -1],
+                           [-diag, -1, -diag]]) / sum
+        
+        # Apply kernel
+        slopeMap = cv2.filter2D(heightmap, -1, kernel)
+        slopeMap = np.absolute(slopeMap)
+        
+    elif method == 1: # My test without diagonal weights
+        # Create kernel
+        kernel = np.array([[-1, -1, -1],
+                           [-1,  8, -1],
+                           [-1, -1, -1]]) / 8
+        
+        # Apply kernel
         slopeMap = cv2.filter2D(heightmap, -1, kernel)
         slopeMap = np.absolute(slopeMap)
 
-    elif method == 1: # NUMPY GRADIENT
+    elif method == 2: # NUMPY GRADIENT
         slopeMap = np.gradient(heightmap,edge_order=1)
         slopeMap = np.absolute(slopeMap)
         slopeMap = cv2.addWeighted(slopeMap[0], 0.5, slopeMap[1], 0.5, 0)
 
-    elif method == 2: # TEST cv2 SOBEL
+    elif method == 3: # TEST cv2 SOBEL
         gX = cv2.Sobel(heightmap, cv2.CV_64F, dx=1, dy=0, ksize=5)
         gY = cv2.Sobel(heightmap, cv2.CV_64F, dx=0, dy=1, ksize=5)
 
@@ -43,15 +51,14 @@ def getSlopeMap(heightmap, method):
         slopeMap = cv2.addWeighted(gX, 0.5, gY, 0.5, 0)
 
 
-    # slopeMap = cv2.GaussianBlur(slopeMap,(21,21),5)
+    # Blur slope map
     slopeMap = cv2.blur(slopeMap,(15,15))
 
+    # Normalise slope map
+    slopeMap = (slopeMap - np.min(slopeMap)) / (np.max(slopeMap) - np.min(slopeMap))
 
-    print(slopeMap)
-    print(slopeMap.shape)
-
-    
-
+    # Threshold
+    slopeMap = np.where(slopeMap < 0.4, 0, slopeMap)
     
     return slopeMap
 
@@ -105,16 +112,11 @@ def main(path, elevationLow, elevationHigh):
     
 
     # -> Slope map
-    slopeMapsNormalised = np.zeros((3,heightmap.shape[0],heightmap.shape[1]))
     for i in range(3):
         slopeMap = getSlopeMap(heightmap,i)
 
-        slopeMapsNormalised[i] = (slopeMap - np.min(slopeMap)) / (np.max(slopeMap) - np.min(slopeMap))
-
         # print("Slope map: ",slopeMap)
-        # showImage("Slope map", slopeMap)
-        # print("Normalised map: ",slopeNormalised)
-        showImage(f"Slope map {i} normalised", slopeMapsNormalised[i])
+        showImage(f"Slope map {i}", slopeMap)
 
     # # -> Illumination map
     # illuminationMap = getIlluminationMap()
