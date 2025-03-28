@@ -107,21 +107,16 @@ def main(path, elevationLow, elevationHigh):
     # heightmap = cv2.blur(heightmap,(3,3))
     # heightmap = heightmap.astype(np.float64) / 255.0
     
-    # Initialise costmap
-    costMap = np.zeros(heightmap.shape)
     
-
     # -> Slope map
-    for i in range(3):
-        slopeMap = getSlopeMap(heightmap,i)
+    slopeMap = cv2.imread("slopemap_screen.png")
 
-        # print("Slope map: ",slopeMap)
-        showImage(f"Slope map {i}", slopeMap)
+    hsv_slopemap = cv2.cvtColor(slopeMap,cv2.COLOR_BGR2HSV)
+    (H, _, _) = cv2.split(hsv_slopemap)
 
-    # # -> Illumination map
-    # illuminationMap = getIlluminationMap()
-    # showImage("Illumination map", illuminationMap)
-
+    slopeMap_v1 = 255 - H
+    slopeMap = (slopeMap_v1 - np.min(slopeMap_v1)) / (np.max(slopeMap_v1) - np.min(slopeMap_v1))
+    showImage("Slope map normalised", slopeMap, 300)
 
 
     cv2.waitKey(0)
