@@ -1,9 +1,6 @@
-import os
 import requests
 from PIL import Image
 from io import BytesIO
-import math
-
 
 def main(wmts_url, zoom_level, start_tile, end_tile):
 

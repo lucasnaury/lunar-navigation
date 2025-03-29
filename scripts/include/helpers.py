@@ -1,3 +1,5 @@
+import numpy as np
+
 def showImage(windowName, img, max_dim=650):
     """Show a scaled down version of an image"""
     import cv2
@@ -15,7 +17,5 @@ def showImage(windowName, img, max_dim=650):
 
     cv2.resizeWindow(windowName, (newWidth, newHeight))
 
-def normaliseImage(img):
-    import numpy as np
-
+def normaliseImage(img:np.matrix) -> np.matrix:
     return (img - 1.0*np.min(img)) / (np.max(img) - np.min(img))
