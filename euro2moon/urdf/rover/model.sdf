@@ -811,17 +811,29 @@
 
     <!-- Stereo camera -->
 
-<gazebo reference="camera_link">
-        <material>Gazebo/Red</material>
-        <sensor name="camera_sensor" type="camera">
-            <pose>0 0 0 0 0 0</pose>
-            <visualize>true</visualize>
-            <update_rate>10.0</update_rate>
-            <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
-            <frame_name>camera_link_optical</frame_name>
-            </plugin>
-        </sensor>
-    </gazebo>
+<map name="sensor" flag="gazebo">
+      <verbatim key="controller_${name}_camera">
+        <controller:ros_stereo_camera name="${name}_controller" plugin="libros_stereo_camera.so">
+          <alwaysOn>true</alwaysOn>
+          <updateRate>20.0</updateRate>
+          <leftCamera>${name}_l_sensor</leftCamera>
+          <rightCamera>${name}_r_sensor</rightCamera>
+          <topicName>${name}/raw_stereo</topicName>
+          <frameName>${name}_optical_frame</frameName>
+          <CxPrime>320</CxPrime>
+          <Cx>320</Cx>
+          <Cy>240</Cy>
+          <focal_length>320</focal_length> <!-- image_width / (2*tan(hfov_radian /2)) -->
+          <distortion_k1>0</distortion_k1>
+          <distortion_k2>0</distortion_k2>
+          <distortion_k3>0</distortion_k3>
+          <distortion_t1>0</distortion_t1>
+          <distortion_t2>0</distortion_t2>
+          <baseline>${stereo_dy}</baseline> <!-- home pos. of robot has +x forward, +y left -->
+          <interface:stereocamera name="${name}_iface" />
+        </controller:ros_stereo_camera>
+      </verbatim>
+    </map>
 
     <!-- 3D Lidar -->
 
