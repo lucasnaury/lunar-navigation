@@ -3,4 +3,4 @@
 
 scripts/illumination/*.pov.map*
 
-scripts/downloaded_maps/*.png
+scripts/maps/*.png

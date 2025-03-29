@@ -14,3 +14,8 @@ def showImage(windowName, img, max_dim=650):
         newWidth = int(newHeight / img.shape[0] * img.shape[1])
 
     cv2.resizeWindow(windowName, (newWidth, newHeight))
+
+def normaliseImage(img):
+    import numpy as np
+
+    return (img - 1.0*np.min(img)) / (np.max(img) - np.min(img))

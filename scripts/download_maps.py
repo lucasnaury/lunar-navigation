@@ -1,6 +1,10 @@
 from include.wmts import main as getMap
+from pathlib import Path
 
 def main():
+
+    # Get current path
+    path = Path(__file__).parent.absolute()
 
     maps = {
         # Heightmap
@@ -8,7 +12,7 @@ def main():
             "zoom": 9,
             "start": (238,238),
             "end": (273,273),
-            "outputPath": "downloaded_maps/heightmap.png"
+            "outputPath": str(path / "maps" / "heightmap.png")
         },
 
         # Slope map
@@ -16,7 +20,7 @@ def main():
             "zoom": 9,
             "start": (238,238),
             "end": (273,273),
-            "outputPath": "downloaded_maps/slopemap.png"
+            "outputPath": str(path / "maps" / "slopemap_color.png")
         },
 
         # Hillshade map
@@ -24,7 +28,7 @@ def main():
             "zoom": 9,
             "start": (238,238),
             "end": (273,273),
-            "outputPath": "downloaded_maps/illumination.png"
+            "outputPath": str(path / "maps" / "illumination.png")
         },
 
     }
