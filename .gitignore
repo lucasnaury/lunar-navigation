@@ -1,6 +1,7 @@
 **/__pycache__/
 **/*.gif
 
-scripts/illumination/*.pov.map*
-
 scripts/maps/*.png
+scripts/test_maps
+scripts/output/*.png
+scripts/output/*.txt
