@@ -837,6 +837,92 @@
 
     <!-- 3D Lidar -->
 
+<!-- GPU-accelerated 3D LiDAR sensor definition -->
+<sensor name="lidar" type="gpu_lidar">
+  <!-- Position and orientation of the lidar relative to its parent link
+       Format: x y z roll pitch yaw (in meters and radians) -->
+  <pose>0 0 0.5 0 0 0</pose>
+  
+  <!-- Topic name for raw lidar data in Gazebo -->
+  <topic>lidar</topic>
+  
+  <!-- Frequency of sensor data publication in Hz -->
+  <update_rate>10</update_rate>
+  
+  <lidar>
+    <scan>
+      <!-- Horizontal scan configuration -->
+      <horizontal>
+        <!-- Number of rays in the horizontal plane -->
+        <samples>360</samples>
+        <!-- Angular resolution between rays -->
+        <resolution>1</resolution>
+        <!-- Horizontal field of view (min angle in radians) -->
+        <min_angle>-3.14159</min_angle>
+        <!-- Horizontal field of view (max angle in radians) -->
+        <max_angle>3.14159</max_angle>
+      </horizontal>
+      
+      <!-- Vertical scan configuration (for 3D lidar) -->
+      <vertical>
+        <!-- Number of layers in the vertical direction -->
+        <samples>16</samples>
+        <!-- Angular resolution between vertical layers -->
+        <resolution>1</resolution>
+        <!-- Vertical field of view (min angle in radians) -->
+        <min_angle>-0.261799</min_angle>
+        <!-- Vertical field of view (max angle in radians) -->
+        <max_angle>0.261799</max_angle>
+      </vertical>
+    </scan>
+    
+    <!-- Range properties of the lidar -->
+    <range>
+      <!-- Minimum detection range in meters -->
+      <min>0.08</min>
+      <!-- Maximum detection range in meters -->
+      <max>30.0</max>
+      <!-- Resolution of range measurements in meters -->
+      <resolution>0.01</resolution>
+    </range>
+    
+    <!-- Noise model for more realistic simulation -->
+    <noise>
+      <!-- Gaussian (normal) distribution noise -->
+      <type>gaussian</type>
+      <!-- Mean value of the noise (bias) -->
+      <mean>0.0</mean>
+      <!-- Standard deviation of the noise -->
+      <stddev>0.01</stddev>
+    </noise>
+  </lidar>
+  
+  <!-- Enable visualization of the lidar rays in Gazebo -->
+  <visualize>true</visualize>
+  
+  <!-- Gazebo plugin for sensor functionality -->
+  <plugin
+    filename="libgz-sim-sensors-system.so"
+    name="gz::sim::systems::Sensors">
+    <!-- Rendering engine to be used -->
+    <render_engine>ogre2</render_engine>
+  </plugin>
+  
+  <!-- ROS 2 integration plugin for the GPU lidar -->
+  <plugin
+    filename="libgz-sim-ros-gpu-lidar-system.so"
+    name="gz::sim::systems::RosGpuLidar">
+    <!-- ROS 2 namespace for the published topics -->
+    <namespace>robot</namespace>
+    <!-- ROS 2 topic name for laser scan data -->
+    <topic>scan</topic>
+    <!-- TF frame name for this lidar sensor -->
+    <frame_name>lidar_link</frame_name>
+  </plugin>
+</sensor>
+
+
+
     <plugin
       filename="ignition-gazebo-diff-drive-system"
       name="gz::sim::systems::DiffDrive">
