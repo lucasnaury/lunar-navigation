@@ -9,7 +9,7 @@
     <visual name="moon_surface_visual">
         <geometry>
           <mesh>
-            <uri>model://models/moon_surface/moon_cropped.stl</uri>
+            <uri>package://euro2moon/worlds/models/moon_surface/moon_cropped.stl</uri>
           </mesh>
         </geometry>
         <material>
@@ -21,7 +21,7 @@
       <collision name="moon_surface_colission">
         <geometry>
           <mesh>
-            <uri>model://models/moon_surface/moon_cropped.stl</uri>
+            <uri>package://euro2moon/worlds/models/moon_surface/moon_cropped.stl</uri>
             <scale>1 1 1</scale>
           </mesh>
         </geometry>

@@ -9,7 +9,7 @@
     <visual name="link0_visual">
         <geometry>
           <mesh>
-            <uri>model://models/sandpit/meshes/sandpit.dae</uri>
+            <uri>package://euro2moon/worlds/models/sandpit/meshes/sandpit.dae</uri>
           </mesh>
         </geometry>
         <material>
@@ -17,10 +17,10 @@
           <specular>0.2 0.2 0.2</specular>
           <pbr>
             <metal>
-              <albedo_map>model://models/sandpit/meshes/textures/diffuse.png</albedo_map>
-              <!-- <normal_map>model://models/sandpit/meshes/textures/normal.png</normal_map> -->
-              <!-- <roughness_map>model://models/sandpit/meshes/textures/roughness.png</roughness_map> -->
-              <!-- <environment_map>model://models/sandpit/meshes/textures/rural_asphalt_road_1k.dds</environment_map> -->
+              <albedo_map>package://euro2moon/worlds/models/sandpit/meshes/textures/diffuse.png</albedo_map>
+              <!-- <normal_map>package://euro2moon/worlds/models/sandpit/meshes/textures/normal.png</normal_map> -->
+              <!-- <roughness_map>package://euro2moon/worlds/models/sandpit/meshes/textures/roughness.png</roughness_map> -->
+              <!-- <environment_map>package://euro2moon/worlds/models/sandpit/meshes/textures/rural_asphalt_road_1k.dds</environment_map> -->
             </metal>
           </pbr>
         </material>
@@ -29,7 +29,7 @@
       <collision name="sandpit_colission">
         <geometry>
           <mesh>
-            <uri>model://models/sandpit/meshes/sandpit.dae</uri>
+            <uri>package://euro2moon/worlds/models/sandpit/meshes/sandpit.dae</uri>
             <scale>1 1 1</scale>
           </mesh>
         </geometry>

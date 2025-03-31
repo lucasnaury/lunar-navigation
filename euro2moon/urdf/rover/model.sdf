@@ -1,22 +1,8 @@
 <sdf version='1.9'>
   <model name='Rover'>
-    <pose>0 0 .5 0 0 0</pose>
     <self_collide>false</self_collide>
-    <static>false</static>
+    <static>true</static>
     <link name="base_link">
-      <inertial>
-        <mass>18.71</mass>
-        <inertia>
-          <ixx>0.3986</ixx>
-          <ixy>0</ixy>
-          <ixz>0</ixz>
-          <iyy>1.092</iyy>
-          <iyz>0</iyz>
-          <izz>1.337</izz>
-        </inertia>
-      </inertial>
-      <gravity>true</gravity>
-      <velocity_decay/>
       <collision name="Base_Collision">
         <pose>0 0 .0875 0 0 0</pose>
         <geometry>
@@ -33,24 +19,12 @@
           </contact>
         </surface>
       </collision>
-      <!-- <visual name="Base_Collision_Visual">
-        <pose>0 0 .0875 0 0 0</pose>
-        <geometry>
-          <box>
-            <size>0.8 0.389 0.171</size>
-          </box>
-        </geometry>
-        <material>
-          <diffuse>0 1 0 1</diffuse>
-          <ambient>0 1 0 1</ambient>
-        </material>
-      </visual> -->
       <visual name="BaseMetal">
         <pose>0 0 0 0 0 0</pose>
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://rover/BaseMetal.dae</uri>
+            <uri>package://euro2moon/meshes/rover/BaseMetal.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -59,7 +33,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://rover/BaseRubber.dae</uri>
+            <uri>package://euro2moon/meshes/rover/BaseRubber.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -68,7 +42,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://rover/BasePlastic.dae</uri>
+            <uri>package://euro2moon/meshes/rover/BasePlastic.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -79,7 +53,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://rover/BaseClear.dae</uri>
+            <uri>package://euro2moon/meshes/rover/BaseClear.dae</uri>
           </mesh>
         </geometry>
         <material>
@@ -108,7 +82,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://rover/ArmLeftMetal.dae</uri>
+            <uri>package://euro2moon/meshes/rover/ArmLeftMetal.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -117,22 +91,10 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://rover/ArmLeftPlastic.dae</uri>
+            <uri>package://euro2moon/meshes/rover/ArmLeftPlastic.dae</uri>
           </mesh>
         </geometry>
       </visual>
-      <!-- <visual name="FrontLeftArm_Collision_Visual">
-        <pose>0.055 0 -.0305 0 .505 0</pose>
-        <geometry>
-          <box>
-            <size>.21 .075 .038</size>
-          </box>
-        </geometry>
-        <material>
-          <diffuse>0 0 1 1</diffuse>
-          <ambient>0 0 1 1</ambient>
-        </material>
-      </visual> -->
       <collision name="FrontLeftArm_Collision">
         <pose>0.055 0 -.0305 0 .505 0</pose>
         <geometry>
@@ -170,7 +132,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://rover/HubMotor.dae</uri>
+            <uri>package://euro2moon/meshes/rover/HubMotor.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -179,23 +141,10 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://rover/RubberWheel.dae</uri>
+            <uri>package://euro2moon/meshes/rover/RubberWheel.dae</uri>
           </mesh>
         </geometry>
       </visual>
-      <!-- <visual name="FrontLeftHubMotorWheel_Collision_Visual">
-        <pose>0 0 0 1.57079632679 0 0</pose>
-        <geometry>
-          <cylinder>
-            <radius>.108</radius>
-            <length>.06</length>
-          </cylinder>
-        </geometry>
-        <material>
-          <diffuse>1 0 0 1</diffuse>
-          <ambient>1 0 0 1</ambient>
-        </material>
-      </visual> -->
       <collision name="FrontLeftHubMotorWheel_Collision">
         <pose>0 0 0 1.57079632679 0 0</pose>
         <geometry>
@@ -271,7 +220,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://rover/ArmLeftMetal.dae</uri>
+            <uri>package://euro2moon/meshes/rover/ArmLeftMetal.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -280,22 +229,10 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://rover/ArmLeftPlastic.dae</uri>
+            <uri>package://euro2moon/meshes/rover/ArmLeftPlastic.dae</uri>
           </mesh>
         </geometry>
       </visual>
-      <!-- <visual name="BackLeftArm_Collision_Visual">
-        <pose>0.055 0 -.0305 0 .505 0</pose>
-        <geometry>
-          <box>
-            <size>.21 .075 .038</size>
-          </box>
-        </geometry>
-        <material>
-          <diffuse>0 0 1 1</diffuse>
-          <ambient>0 0 1 1</ambient>
-        </material>
-      </visual> -->
       <collision name="BackLeftArm_Collision">
         <pose>0.055 0 -.0305 0 .505 0</pose>
         <geometry>
@@ -333,7 +270,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://rover/HubMotor.dae</uri>
+            <uri>package://euro2moon/meshes/rover/HubMotor.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -342,23 +279,10 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://rover/RubberWheel.dae</uri>
+            <uri>package://euro2moon/meshes/rover/RubberWheel.dae</uri>
           </mesh>
         </geometry>
       </visual>
-      <!-- <visual name="BackLeftHubMotorWheel_Collision_Visual">
-        <pose>0 0 0 1.57079632679 0 0</pose>
-        <geometry>
-          <cylinder>
-            <radius>.108</radius>
-            <length>.06</length>
-          </cylinder>
-        </geometry>
-        <material>
-          <diffuse>1 0 0 1</diffuse>
-          <ambient>1 0 0 1</ambient>
-        </material>
-      </visual> -->
       <collision name="BackLeftHubMotorWheel_Collision">
         <pose>0 0 0 1.57079632679 0 0</pose>
         <geometry>
@@ -434,7 +358,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://rover/ArmRightMetal.dae</uri>
+            <uri>package://euro2moon/meshes/rover/ArmRightMetal.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -443,22 +367,10 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://rover/ArmRightPlastic.dae</uri>
+            <uri>package://euro2moon/meshes/rover/ArmRightPlastic.dae</uri>
           </mesh>
         </geometry>
       </visual>
-      <!-- <visual name="FrontRightArm_Collision_Visual">
-        <pose>0.055 0 -.0305 0 .505 0</pose>
-        <geometry>
-          <box>
-            <size>.21 .075 .038</size>
-          </box>
-        </geometry>
-        <material>
-          <diffuse>0 0 1 1</diffuse>
-          <ambient>0 0 1 1</ambient>
-        </material>
-      </visual> -->
       <collision name="FrontRightArm_Collision">
         <pose>0.055 0 -.0305 0 .505 0</pose>
         <geometry>
@@ -496,7 +408,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://rover/HubMotor.dae</uri>
+            <uri>package://euro2moon/meshes/rover/HubMotor.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -505,23 +417,10 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://rover/RubberWheel.dae</uri>
+            <uri>package://euro2moon/meshes/rover/RubberWheel.dae</uri>
           </mesh>
         </geometry>
       </visual>
-      <!-- <visual name="FrontRightHubMotorWheel_Collision_Visual">
-        <pose>0 0 0 1.57079632679 0 0</pose>
-        <geometry>
-          <cylinder>
-            <radius>.108</radius>
-            <length>.06</length>
-          </cylinder>
-        </geometry>
-        <material>
-          <diffuse>1 0 0 1</diffuse>
-          <ambient>1 0 0 1</ambient>
-        </material>
-      </visual> -->
       <collision name="FrontRightHubMotorWheel_Collision">
         <pose>0 0 0 1.57079632679 0 0</pose>
         <geometry>
@@ -597,7 +496,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://rover/ArmRightMetal.dae</uri>
+            <uri>package://euro2moon/meshes/rover/ArmRightMetal.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -606,22 +505,10 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://rover/ArmRightPlastic.dae</uri>
+            <uri>package://euro2moon/meshes/rover/ArmRightPlastic.dae</uri>
           </mesh>
         </geometry>
       </visual>
-      <!-- <visual name="BackRightArm_Collision_Visual">
-        <pose>0.055 0 -.0305 0 .505 0</pose>
-        <geometry>
-          <box>
-            <size>.21 .075 .038</size>
-          </box>
-        </geometry>
-        <material>
-          <diffuse>0 0 1 1</diffuse>
-          <ambient>0 0 1 1</ambient>
-        </material>
-      </visual> -->
       <collision name="BackRightArm_Collision">
         <pose>0.055 0 -.0305 0 .505 0</pose>
         <geometry>
@@ -659,7 +546,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://rover/HubMotor.dae</uri>
+            <uri>package://euro2moon/meshes/rover/HubMotor.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -668,23 +555,10 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://rover/RubberWheel.dae</uri>
+            <uri>package://euro2moon/meshes/rover/RubberWheel.dae</uri>
           </mesh>
         </geometry>
       </visual>
-      <!-- <visual name="BackRightHubMotorWheel_Collision_Visual">
-        <pose>0 0 0 1.57079632679 0 0</pose>
-        <geometry>
-          <cylinder>
-            <radius>.108</radius>
-            <length>.06</length>
-          </cylinder>
-        </geometry>
-        <material>
-          <diffuse>1 0 0 1</diffuse>
-          <ambient>1 0 0 1</ambient>
-        </material>
-      </visual> -->
       <collision name="BackRightHubMotorWheel_Collision">
         <pose>0 0 0 1.57079632679 0 0</pose>
         <geometry>
@@ -744,7 +618,7 @@
     <!-- RGBD camera -->
 
     <!-- Sensor definition -->
-    <link name="CameraLink">
+    <link name="camera_link">
       <pose>0.4 0 0.2 0 0 0</pose> <!-- Camera position-->
       <visual name="CameraVisual"> 
         <pose>0 0 0 0 0 0</pose>
@@ -813,7 +687,7 @@
 
     <joint name="BaseCameraJoint" type="fixed">
       <parent>base_link</parent>
-      <child>CameraLink</child>
+      <child>camera_link</child>
       <pose>0 0 0.2 0 0 0</pose>
     </joint>
 
@@ -841,14 +715,21 @@
       <!-- Input -->
       <topic>cmd_vel</topic>
 
-      <!-- Output -->
+      <!-- TF Output -->
+      <tf_topic>tf</tf_topic>
+      <!-- <frame_id>odom</frame_id>
+      <child_frame_id>base_link</child_frame_id> -->
+
+      <!-- Odometry Output -->
       <odom_topic>odom</odom_topic>
       <odom_publish_frequency>10</odom_publish_frequency>
 
     </plugin>
 
     <!-- Joint publisher -->
-    <plugin filename="libgz-sim-joint-state-publisher-system.so" name="gz::sim::systems::JointStatePublisher"/>
+    <plugin filename="libgz-sim-joint-state-publisher-system.so" name="gz::sim::systems::JointStatePublisher">
+      <topic>joint_states</topic>
+    </plugin>
 
 
   </model>

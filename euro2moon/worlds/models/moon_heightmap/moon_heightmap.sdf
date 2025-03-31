@@ -7,7 +7,7 @@
       <collision name="collision">
         <geometry>
           <heightmap>
-            <uri>model://models/moon_heightmap/heightmap.png</uri>
+            <uri>package://euro2moon/worlds/models/moon_heightmap/heightmap.png</uri>
             <size>1150 1150 121</size>
             <pos>0 0 0</pos>
           </heightmap>
@@ -19,16 +19,16 @@
         <geometry>
           <heightmap>
             <texture>
-              <diffuse>model://models/moon_heightmap/materials/texture.png</diffuse>
-              <!-- <diffuse>model://models/moon/materials/textures/ground_1.jpg</diffuse> -->
-              <!-- <normal>model://models/moon/materials/textures/ground_normal.jpg</normal> -->
+              <diffuse>package://euro2moon/worlds/models/moon_heightmap/materials/texture.png</diffuse>
+              <!-- <diffuse>package://euro2moon/worlds/models/moon/materials/textures/ground_1.jpg</diffuse> -->
+              <!-- <normal>package://euro2moon/worlds/models/moon/materials/textures/ground_normal.jpg</normal> -->
               <size>10</size>
             </texture>
             <blend>
               <min_height>2</min_height>
               <fade_dist>5</fade_dist>
             </blend>
-            <uri>model://models/moon_heightmap/heightmap.png</uri>
+            <uri>package://euro2moon/worlds/models/moon_heightmap/heightmap.png</uri>
             <size>1150 1150 121</size>
             <pos>0 0 0</pos>
           </heightmap>

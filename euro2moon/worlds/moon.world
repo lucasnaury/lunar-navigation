@@ -71,7 +71,7 @@
       
     <!-- Load the moon surface model -->
    <include>
-      <uri>model://models/moon_surface</uri>
+      <uri>package://euro2moon/worlds/models/moon_surface</uri>
       <name>moon_surface</name>
       <pose>0 0 -131 0 0 0</pose>
     </include>
@@ -128,28 +128,28 @@
 
     <!-- Load the Rock with QR1 image -->
     <!-- <include>
-      <uri>model://models/qr_rock1</uri>
+      <uri>package://euro2moon/worlds/models/qr_rock1</uri>
       <name>qr_rock1</name>
       <pose>-5.0548 -0.6328 0.3244 0 0 0</pose>
     </include> -->
 
     <!-- Load the Rock with QR2 image -->
     <!-- <include>
-      <uri>model://models/qr_rock2</uri>
+      <uri>package://euro2moon/worlds/models/qr_rock2</uri>
       <name>qr_rock2</name>
       <pose>5.9577 1.9415 0.2521 0 0 0</pose>
     </include> -->
 
     <!-- Load the Rock with QR3 image -->
     <!-- <include>
-      <uri>model://models/qr_rock3</uri>
+      <uri>package://euro2moon/worlds/models/qr_rock3</uri>
       <name>qr_rock3</name>
       <pose>-1.4255 4.2801 0.2592 0 0 3.14/2</pose>
     </include> -->
 
     <!-- Load the Rock with QR4 image -->
     <!-- <include>
-      <uri>model://models/qr_rock4</uri>
+      <uri>package://euro2moon/worlds/models/qr_rock4</uri>
       <name>qr_rock4</name>
       <pose>5.7556 -3.1071 0.0065 -0.1654 0 0.8644</pose>
     </include> -->

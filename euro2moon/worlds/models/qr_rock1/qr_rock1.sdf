@@ -9,7 +9,7 @@
     <visual name="link0_visual">
         <geometry>
           <mesh>
-            <uri>model://models/qr_rock1/meshes/qr_rock1.dae</uri>
+            <uri>package://euro2moon/worlds/models/qr_rock1/meshes/qr_rock1.dae</uri>
             <scale>0.5 0.5 0.5</scale>
           </mesh>
         </geometry>
@@ -18,10 +18,10 @@
           <specular>0.2 0.2 0.2</specular>
           <pbr>
             <metal>
-              <albedo_map>model://models/qr_rock1/meshes/textures/qr_rock1_diffuse.png</albedo_map>
-              <!-- <normal_map>model://models/qr_rock1/meshes/textures/qr_rock1_normal.png</normal_map> -->
-              <!-- <roughness_map>model://models/qr_rock1/meshes/textures/qr_rock1_roughness.png</roughness_map> -->
-              <!-- <environment_map>model://models/qr_rock1/meshes/textures/rural_asphalt_road_1k.dds</environment_map> -->
+              <albedo_map>package://euro2moon/worlds/models/qr_rock1/meshes/textures/qr_rock1_diffuse.png</albedo_map>
+              <!-- <normal_map>package://euro2moon/worlds/models/qr_rock1/meshes/textures/qr_rock1_normal.png</normal_map> -->
+              <!-- <roughness_map>package://euro2moon/worlds/models/qr_rock1/meshes/textures/qr_rock1_roughness.png</roughness_map> -->
+              <!-- <environment_map>package://euro2moon/worlds/models/qr_rock1/meshes/textures/rural_asphalt_road_1k.dds</environment_map> -->
             </metal>
           </pbr>
         </material>
@@ -30,7 +30,7 @@
       <collision name="qr_rock1_colission">
         <geometry>
           <mesh>
-            <uri>model://models/qr_rock1/meshes/qr_rock1.dae</uri>
+            <uri>package://euro2moon/worlds/models/qr_rock1/meshes/qr_rock1.dae</uri>
             <scale>0.5 0.5 0.5</scale>
           </mesh>
         </geometry>

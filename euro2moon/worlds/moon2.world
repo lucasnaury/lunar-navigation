@@ -35,7 +35,7 @@
     </physics>
     
     <include>
-      <uri>model://models/moon</uri>
+      <uri>package://euro2moon/worlds/models/moon</uri>
     </include>
 
   </world>

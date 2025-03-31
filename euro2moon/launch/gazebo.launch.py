@@ -5,6 +5,7 @@ from launch_ros.actions import Node
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.substitutions import FindPackageShare
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from ament_index_python import get_package_prefix
 
 
 def generate_launch_description():
@@ -26,7 +27,8 @@ def generate_launch_description():
 
         GroupAction([
             # Set gazebo env variable
-            SetEnvironmentVariable("GZ_SIM_RESOURCE_PATH",value = PathJoinSubstitution([FindPackageShare('euro2moon'),"worlds"])),
+            # SetEnvironmentVariable("GZ_SIM_RESOURCE_PATH",value = PathJoinSubstitution([FindPackageShare('euro2moon'),"worlds"])),
+            SetEnvironmentVariable("GZ_SIM_RESOURCE_PATH",value = os.path.join(get_package_prefix('euro2moon'), 'share')),
             
 
             # Launch gazebo with correct world       
@@ -61,7 +63,7 @@ def generate_launch_description():
         #         '-Y', LaunchConfiguration('yaw'),
         #         '-file', urdfPath],
         #     output='screen'),
-        # ROS JAZZZY
+        # ROS JAZZY
         Node(
             package='ros_gz_sim',
             executable='create',
@@ -80,15 +82,16 @@ def generate_launch_description():
 
 
         # robot state publisher node
-        # Node(package='robot_state_publisher', executable='robot_state_publisher',
-        #     output='screen',
-        #     parameters = [
-        #         {'ignore_timestamp': False},
-        #         {'use_sim_time': True},
-        #         {'use_tf_static': True},
-        #         {'robot_description': open(urdfPath).read()}],
-        #     arguments = [urdfPath]
-        # )	
+        Node(package='robot_state_publisher', executable='robot_state_publisher',
+            output='screen',
+            parameters = [
+                {'ignore_timestamp': True},
+                {'use_sim_time': True},
+                {'use_tf_static': True},
+                {'frame_prefix': 'rover/'},
+                {'robot_description': open(urdfPath).read()}],
+            # arguments = [urdfPath]
+        )	
 
 
     ])

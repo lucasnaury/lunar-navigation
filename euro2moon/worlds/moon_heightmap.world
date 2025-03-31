@@ -40,7 +40,7 @@
     </physics>
 
     <include>
-      <uri>model://models/moon_heightmap</uri>
+      <uri>package://euro2moon/worlds/models/moon_heightmap</uri>
     </include>
 
   </world>
