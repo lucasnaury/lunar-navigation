@@ -744,225 +744,83 @@
     <!-- RGBD camera -->
 
     <!-- Sensor definition -->
-    <sensor name="rgbd_camera" type="rgbd_camera">
-      <!-- Position and orientation of the camera relative to its parent link
-          Format: x y z roll pitch yaw (in meters and radians) -->
-      <pose>0 0 0.3 0 0 0</pose>
-      
-      <!-- Update frequency of the camera in Hz -->
-      <update_rate>30</update_rate>
-      
-      <!-- Topic name prefix for raw camera data in Gazebo -->
-      <topic>rgbd_camera</topic>
-      
-      <!-- Enable visualization of camera frustum in Gazebo -->
-      <visualize>true</visualize>
+    <link name="CameraLink">
+      <pose>0.4 0 0.2 0 0 0</pose> <!-- Camera position-->
+      <visual name="CameraVisual"> 
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.05 0.05 0.05</size> <!-- Camera small box-->
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0 0 0 1</diffuse>
+        </material>
+      </visual>
 
-      <!-- Camera configuration -->
-      <camera>
-        <!-- Horizontal field of view in radians -->
-        <horizontal_fov>1.047</horizontal_fov>
-        
-        <!-- Image properties -->
-        <image>
-          <!-- Image width in pixels -->
-          <width>640</width>
-          <!-- Image height in pixels -->
-          <height>480</height>
-          <!-- Image format -->
-          <format>R8G8B8</format>
-        </image>
-        
-        <!-- Clip distances -->
-        <clip>
-          <!-- Minimum clipping distance in meters -->
-          <near>0.1</near>
-          <!-- Maximum clipping distance in meters -->
-          <far>100</far>
-        </clip>
-        
-        <!-- Depth camera properties -->
-        <depth_camera>
-          <!-- Minimum clipping distance for depth camera in meters -->
-          <near>0.1</near>
-          <!-- Maximum clipping distance for depth camera in meters -->
-          <far>10.0</far>
-        </depth_camera>
-        
-        <!-- Noise model for more realistic camera simulation -->
-        <noise>
-          <!-- Gaussian (normal) distribution noise -->
-          <type>gaussian</type>
-          <!-- Mean value of the noise (bias) -->
-          <mean>0.0</mean>
-          <!-- Standard deviation of the noise -->
-          <stddev>0.007</stddev>
-        </noise>
-      </camera>
       
-      <!-- Gazebo plugin for sensor functionality -->
-      <plugin
-        filename="libgz-sim-sensors-system.so"
-        name="gz::sim::systems::Sensors">
-        <!-- Rendering engine to be used -->
-        <render_engine>ogre2</render_engine>
-      </plugin>
-      
-      <!-- ROS 2 integration plugin for the RGBD camera -->
-      <plugin
-        filename="libgz-sim-ros-camera-system.so"
-        name="gz::sim::systems::RosCamera">
-        <!-- ROS 2 namespace for the published topics -->
-        <namespace>robot</namespace>
-        
-        <!-- RGB camera topic configurations -->
-        <ros>
-          <!-- ROS 2 QoS profile settings for reliable communication -->
-          <qos>
-            <profile>sensor_data</profile>
-            <durability>volatile</durability>
-            <reliability>reliable</reliability>
-          </qos>
-          
-          <!-- RGB image topic name suffix -->
-          <camera_info_topic>camera_info</camera_info_topic>
-          <image_topic>image_raw</image_topic>
-        </ros>
-        
-        <!-- TF frame name for this camera sensor -->
-        <frame_name>camera_link</frame_name>
-        
-        <!-- Camera information -->
-        <camera_name>camera</camera_name>
-        <camera_info_topic>camera_info</camera_info_topic>
-        <hack_baseline>0.07</hack_baseline>
-      </plugin>
-      
-      <!-- ROS 2 integration plugin for the depth camera -->
-      <plugin
-        filename="libgz-sim-ros-depth-camera-system.so"
-        name="gz::sim::systems::RosDepthCamera">
-        <!-- ROS 2 namespace for the published topics -->
-        <namespace>robot</namespace>
-        
-        <!-- Depth camera topic configurations -->
-        <ros>
-          <!-- ROS 2 QoS profile settings for reliable communication -->
-          <qos>
-            <profile>sensor_data</profile>
-            <durability>volatile</durability>
-            <reliability>reliable</reliability>
-          </qos>
-          
-          <!-- Depth image topic name suffix -->
-          <camera_info_topic>depth/camera_info</camera_info_topic>
-          <image_topic>depth/image_raw</image_topic>
-          <points_topic>depth/points</points_topic>
-        </ros>
-        
-        <!-- TF frame name for the depth sensor -->
-        <frame_name>camera_link</frame_name>
-        
-        <!-- Depth camera information -->
-        <camera_name>depth_camera</camera_name>
-        <camera_info_topic>depth/camera_info</camera_info_topic>
-        <hack_baseline>0.07</hack_baseline>
-      </plugin>
-    </sensor>
+      <sensor name="rs_front" type="rgbd_camera">
+        <pose>0 0 0 0 0 0</pose>
+        <always_on>1</always_on>
+        <update_rate>30</update_rate>
+        <topic>camera</topic>
+        <camera name="camera_front">
+          <horizontal_fov>1.0472</horizontal_fov>
+          <lens>
+            <intrinsics>
+              <!-- fx = fy = width / ( 2 * tan (hfov / 2 ) ) -->
+              <fx>277.1</fx>
+              <fy>277.1</fy>
+                <!-- cx = ( width + 1 ) / 2 -->
+              <cx>160.5</cx>
+                <!-- cy = ( height + 1 ) / 2 -->
+              <cy>120.5</cy>
+              <s>0</s>
+            </intrinsics>
+          </lens>
+          <distortion>
+            <k1>0.0</k1>
+            <k2>0.0</k2>
+            <k3>0.0</k3>
+            <p1>0.0</p1>
+            <p2>0.0</p2>
+            <center>0.5 0.5</center>
+          </distortion>
+          <image>
+            <width>320</width>
+            <height>240</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.01</near>
+            <far>300</far>
+          </clip>
+          <depth_camera>
+            <clip>
+              <near>0.1</near>
+              <far>10</far>
+            </clip>
+          </depth_camera>
+          <noise>
+            <type>gaussian</type>
+            <mean>0</mean>
+            <stddev>0.007</stddev>
+          </noise>
+        </camera>
+      </sensor>
 
+    </link>
 
-
-
-    <!-- 3D Lidar -->
-
-    <!-- Sensor definition -->
-    <sensor name="lidar" type="gpu_lidar">
-      <!-- Position and orientation of the lidar relative to its parent link
-          Format: x y z roll pitch yaw (in meters and radians) -->
-      <pose>0 0 0.5 0 0 0</pose>
-      
-      <!-- Topic name for raw lidar data in Gazebo -->
-      <topic>lidar</topic>
-      
-      <!-- Frequency of sensor data publication in Hz -->
-      <update_rate>10</update_rate>
-      
-      <lidar>
-        <scan>
-          <!-- Horizontal scan configuration -->
-          <horizontal>
-            <!-- Number of rays in the horizontal plane -->
-            <samples>360</samples>
-            <!-- Angular resolution between rays -->
-            <resolution>1</resolution>
-            <!-- Horizontal field of view (min angle in radians) -->
-            <min_angle>-3.14159</min_angle>
-            <!-- Horizontal field of view (max angle in radians) -->
-            <max_angle>3.14159</max_angle>
-          </horizontal>
-          
-          <!-- Vertical scan configuration (for 3D lidar) -->
-          <vertical>
-            <!-- Number of layers in the vertical direction -->
-            <samples>16</samples>
-            <!-- Angular resolution between vertical layers -->
-            <resolution>1</resolution>
-            <!-- Vertical field of view (min angle in radians) -->
-            <min_angle>-0.261799</min_angle>
-            <!-- Vertical field of view (max angle in radians) -->
-            <max_angle>0.261799</max_angle>
-          </vertical>
-        </scan>
-        
-        <!-- Range properties of the lidar -->
-        <range>
-          <!-- Minimum detection range in meters -->
-          <min>0.08</min>
-          <!-- Maximum detection range in meters -->
-          <max>30.0</max>
-          <!-- Resolution of range measurements in meters -->
-          <resolution>0.01</resolution>
-        </range>
-        
-        <!-- Noise model for more realistic simulation -->
-        <noise>
-          <!-- Gaussian (normal) distribution noise -->
-          <type>gaussian</type>
-          <!-- Mean value of the noise (bias) -->
-          <mean>0.0</mean>
-          <!-- Standard deviation of the noise -->
-          <stddev>0.01</stddev>
-        </noise>
-      </lidar>
-      
-      <!-- Enable visualization of the lidar rays in Gazebo -->
-      <visualize>true</visualize>
-      
-      <!-- Gazebo plugin for sensor functionality -->
-      <plugin
-        filename="libgz-sim-sensors-system.so"
-        name="gz::sim::systems::Sensors">
-        <!-- Rendering engine to be used -->
-        <render_engine>ogre2</render_engine>
-      </plugin>
-      
-      <!-- ROS 2 integration plugin for the GPU lidar -->
-      <plugin
-        filename="libgz-sim-ros-gpu-lidar-system.so"
-        name="gz::sim::systems::RosGpuLidar">
-        <!-- ROS 2 namespace for the published topics -->
-        <namespace>robot</namespace>
-        <!-- ROS 2 topic name for laser scan data -->
-        <topic>scan</topic>
-        <!-- TF frame name for this lidar sensor -->
-        <frame_name>lidar_link</frame_name>
-      </plugin>
-    </sensor>
+    <joint name="BaseCameraJoint" type="fixed">
+      <parent>base_link</parent>
+      <child>CameraLink</child>
+      <pose>0 0 0.2 0 0 0</pose>
+    </joint>
 
 
 
     <plugin
-      filename="ignition-gazebo-diff-drive-system"
+      filename="gz-sim-diff-drive-system"
       name="gz::sim::systems::DiffDrive">
       <right_joint>BackLeftHubMotorWheelJoint</right_joint>
       <left_joint>FrontLeftHubMotorWheelJoint</left_joint>
@@ -990,7 +848,7 @@
     </plugin>
 
     <!-- Joint publisher -->
-    <plugin filename="libignition-gazebo-joint-state-publisher-system.so" name="ignition::gazebo::systems::JointStatePublisher"/>
+    <plugin filename="libgz-sim-joint-state-publisher-system.so" name="gz::sim::systems::JointStatePublisher"/>
 
 
   </model>
