@@ -1,6 +1,6 @@
 import numpy as np
 
-def showImage(windowName, img, max_dim=650):
+def showImage(windowName, img, max_dim=600):
     """Show a scaled down version of an image"""
     import cv2
 

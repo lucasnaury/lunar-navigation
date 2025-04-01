@@ -47,7 +47,7 @@ def return_path(current_node):
     return path[::-1]  # Return reversed path
 
 
-def astar(slopeMap, illuminationMap, start, end, modified, isDebug=False, allow_diagonal_movement=True):
+def astar(slopeMap, illuminationMap, start, end, modified, isDebug=False, gui=False):
     """
     Returns a list of tuples as a path from the given start to the given end in the given costmap
     :param costmap:
@@ -65,10 +65,12 @@ def astar(slopeMap, illuminationMap, start, end, modified, isDebug=False, allow_
     closed_list = []
 
     if isDebug:
-        cropped = [(4100, 5300), (4300, 6100)]
-        # size = (slopeMap.shape[0],slopeMap.shape[1],3)
-        size = (1200,1800,3)
+        cropped = [(0,slopeMap.shape[0]), (0,slopeMap.shape[1])]
+        # cropped = [(4100, 5300), (4300, 6100)]
+        size = (slopeMap.shape[0],slopeMap.shape[1],3)
+        # size = (1200,1800,3)
         explored = np.zeros(size)
+        explored[start] = (255,255,255)
         not_walkable = np.empty((0,2), int)
 
 
@@ -78,12 +80,10 @@ def astar(slopeMap, illuminationMap, start, end, modified, isDebug=False, allow_
 
     # Adding a stop condition
     outer_iterations = 0
-    max_iterations = (len(slopeMap[0]) * len(slopeMap) // 2)
+    max_iterations = len(slopeMap[0]) * len(slopeMap) * 2
 
     # what squares do we search
-    adjacent_squares = ((0, -1), (0, 1), (-1, 0), (1, 0),)
-    if allow_diagonal_movement:
-        adjacent_squares = ((0, -1), (0, 1), (-1, 0), (1, 0), (-1, -1), (-1, 1), (1, -1), (1, 1),)
+    adjacent_squares = ((0, -1), (0, 1), (-1, 0), (1, 0), (-1, -1), (-1, 1), (1, -1), (1, 1),)
 
     # Loop until you find the end
     while len(open_list) > 0:
@@ -102,22 +102,21 @@ def astar(slopeMap, illuminationMap, start, end, modified, isDebug=False, allow_
 
         # Debug
         if isDebug:
-            print(f"{outer_iterations}/{max_iterations}: ", current_node.position, current_node.f, current_node.h)
+            print(f"{outer_iterations}/{max_iterations}: ", current_node.position, f"F{current_node.f:.02f} H{current_node.h}")
             
             # Show not walkable nodes
             if len(not_walkable) > 0:
                 explored[not_walkable[:,0] - cropped[0][0], not_walkable[:,1]- cropped[1][0]] = (0,0,1.0)
             
-
             
             # Show current node
             explored_img = explored.copy()
             current_pos = (current_node.position[0] - cropped[0][0], current_node.position[1] - cropped[1][0])
             explored_img[current_pos] = (255,0,0)
 
-
-            # showImage("Explored", explored_img,800)
-            # cv2.waitKey(1)
+            if gui:
+                showImage("Explored", explored_img)
+                cv2.waitKey(1)
 
         # Found the goal
         if current_node == end_node:
@@ -144,7 +143,6 @@ def astar(slopeMap, illuminationMap, start, end, modified, isDebug=False, allow_
             if slopeMap[node_position[0]][node_position[1]] >= 1:
                 if isDebug:
                     not_walkable = np.vstack((not_walkable,node_position))
-                    print(not_walkable)
                 continue
 
             # Create new node
@@ -195,7 +193,7 @@ def astar(slopeMap, illuminationMap, start, end, modified, isDebug=False, allow_
                 # ------------------------------------------------ V2 ------------------------------------------------
                 w_dist = 2.0
                 w_steering = 1.0
-                w_slope = 5.0
+                w_slope = 10.0
                 w_light = 1.0
 
                 child.g = current_node.g + (w_dist*distance_cost + w_steering*steering_cost + w_slope*slope_cost + w_light*illumination_cost) / (w_dist+w_steering+w_slope+w_light)

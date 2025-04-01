@@ -1,15 +1,17 @@
+import sys
 import cv2
+import time
 import numpy as np
 from pathlib import Path
 from include.helpers import showImage, normaliseImage
 from include.a_star import astar
 
 
-def drawPath(map, start, end, path):
+def drawPath(map, start, end, path=[]):
     # Visualisation
     colormap = cv2.cvtColor(map, cv2.COLOR_GRAY2BGR)
 
-    thickness = int(np.floor(20 * 9000 / map.shape[0]))
+    thickness = max(1,int(np.floor(20 * map.shape[0] / 9000)))
 
     # Draw line
     for i in range(len(path) - 1):
@@ -24,9 +26,9 @@ def drawPath(map, start, end, path):
 
 
 
-def main():
+def main(map_folder_name:str, startPos, endPos, isDebug=False, gui=False):
 
-    mapsPath = (Path(__file__).parent.absolute() / "maps")
+    mapsPath = (Path(__file__).parent.absolute() / map_folder_name)
 
     # Load costmaps
     print("Loading costmaps...")
@@ -37,19 +39,19 @@ def main():
     slopeMap = normaliseImage(slopes)
     illuminationMap = normaliseImage(illumination)
 
-    # showImage("Costmap",costmap)
+    # Show start and end points
+    if gui:
+        targetImage = drawPath(illumination, startPos, endPos)
+        showImage("Output", targetImage)
 
     # map = np.floor(map * 255).astype(np.uint8)
-
-    # Set start and end positions
-    startPos = (4200, 4400)   # (Y,X)
-    endPos = (5200, 6000)     # (Y,X)
-
 
     # Test algorithm
     print("Starting A* algorithm")
     # path = astar(costmap, illuminationMap, startPos, endPos, test=False)
-    path_modified = astar(slopeMap, illuminationMap, startPos, endPos, modified=True, isDebug=True)
+    before = time.time()
+    path_modified = astar(slopeMap, illuminationMap, startPos, endPos, modified=True, isDebug=True, gui=gui)
+    print(f"-> A* finished running in {time.time() - before}s")
 
 
     # # print("Same" if path == path2 else "not same")
@@ -60,8 +62,9 @@ def main():
 
     # Show results
     outputImg = drawPath(illumination, startPos, endPos, path_modified)
-    # showImage("Output", outputImg)
-    # cv2.waitKey(0)
+    if gui:
+        showImage("Output", outputImg)
+        cv2.waitKey(0)
 
     # Save results
     outputImgPath = str(Path(__file__).parent.absolute() / "output" / "path.png")
@@ -72,4 +75,11 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    map_folder_name = sys.argv[1] if len(sys.argv) > 1 else "maps"
+    
+    # Start and end positions (Y,X)
+    startPos = (int(sys.argv[2]), int(sys.argv[3])) if len(sys.argv) > 5 else (4200, 4400)
+    endPos   = (int(sys.argv[4]), int(sys.argv[5])) if len(sys.argv) > 5 else (5200, 6000)
+ 
+    # Run program
+    main(map_folder_name, startPos, endPos, isDebug=True, gui=True)
