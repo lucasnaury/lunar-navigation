@@ -2,7 +2,7 @@ import os
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, GroupAction, SetEnvironmentVariable, IncludeLaunchDescription
 from launch_ros.actions import Node
-from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
+from launch.substitutions import LaunchConfiguration
 from launch_ros.substitutions import FindPackageShare
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from ament_index_python import get_package_prefix
@@ -27,7 +27,6 @@ def generate_launch_description():
 
         GroupAction([
             # Set gazebo env variable
-            # SetEnvironmentVariable("GZ_SIM_RESOURCE_PATH",value = PathJoinSubstitution([FindPackageShare('euro2moon'),"worlds"])),
             SetEnvironmentVariable("GZ_SIM_RESOURCE_PATH",value = os.path.join(get_package_prefix('euro2moon'), 'share')),
             
 
@@ -53,17 +52,6 @@ def generate_launch_description():
         ),
 
         # Spawn sdf
-        # ROS HUMBLE
-        # Node(package='ros_gz_sim', executable='create',
-        #     arguments=['-name', 'rover',
-        #         # Default spawn point
-        #         '-x', LaunchConfiguration('x'),
-        #         '-y', LaunchConfiguration('y'),
-        #         '-z', LaunchConfiguration('z'),
-        #         '-Y', LaunchConfiguration('yaw'),
-        #         '-file', urdfPath],
-        #     output='screen'),
-        # ROS JAZZY
         Node(
             package='ros_gz_sim',
             executable='create',
@@ -78,10 +66,7 @@ def generate_launch_description():
         ),
 
 
-
-
-
-        # robot state publisher node
+        # Robot state publisher node
         Node(package='robot_state_publisher', executable='robot_state_publisher',
             output='screen',
             parameters = [
