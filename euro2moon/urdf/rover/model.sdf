@@ -639,6 +639,7 @@
         <update_rate>30</update_rate>
         <topic>camera</topic>
         <camera name="camera_front">
+          <optical_frame_id>camera_link</optical_frame_id>
           <horizontal_fov>1.0472</horizontal_fov>
           <lens>
             <intrinsics>
@@ -717,19 +718,19 @@
 
       <!-- TF Output -->
       <tf_topic>tf</tf_topic>
-      <!-- <frame_id>odom</frame_id>
-      <child_frame_id>base_link</child_frame_id> -->
+      <frame_id>odom</frame_id>
+      <child_frame_id>base_link</child_frame_id>
 
       <!-- Odometry Output -->
       <odom_topic>odom</odom_topic>
-      <odom_publish_frequency>10</odom_publish_frequency>
+      <odom_publish_frequency>30</odom_publish_frequency>
 
     </plugin>
 
     <!-- Joint publisher -->
-    <plugin filename="libgz-sim-joint-state-publisher-system.so" name="gz::sim::systems::JointStatePublisher">
+    <!-- <plugin filename="libgz-sim-joint-state-publisher-system.so" name="gz::sim::systems::JointStatePublisher">
       <topic>joint_states</topic>
-    </plugin>
+    </plugin> -->
 
 
   </model>

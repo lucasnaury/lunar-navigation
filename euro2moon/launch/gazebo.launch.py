@@ -85,12 +85,10 @@ def generate_launch_description():
         Node(package='robot_state_publisher', executable='robot_state_publisher',
             output='screen',
             parameters = [
-                {'ignore_timestamp': True},
+                # {'ignore_timestamp': False},
+                # {'frame_prefix': 'rover/'},
                 {'use_sim_time': True},
-                {'use_tf_static': True},
-                {'frame_prefix': 'rover/'},
                 {'robot_description': open(urdfPath).read()}],
-            # arguments = [urdfPath]
         )	
 
 
