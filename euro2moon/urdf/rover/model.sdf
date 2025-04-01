@@ -1,8 +1,21 @@
 <sdf version='1.9'>
   <model name='Rover'>
     <self_collide>false</self_collide>
-    <static>true</static>
+    <static>false</static>
     <link name="base_link">
+      <inertial>
+        <mass>18.71</mass>
+        <inertia>
+          <ixx>0.3986</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1.092</iyy>
+          <iyz>0</iyz>
+          <izz>1.337</izz>
+        </inertia>
+      </inertial>
+      <gravity>true</gravity>
+      <velocity_decay/>
       <collision name="Base_Collision">
         <pose>0 0 .0875 0 0 0</pose>
         <geometry>

@@ -107,7 +107,7 @@
     <include>
       <uri>package://euro2moon/worlds/models/qr_rock1</uri>
       <name>qr_rock1</name>
-      <pose>2 0 0.3244 0 0 0</pose>
+      <pose>4 0 0.15 0 0 0</pose>
     </include>
 
     <include>
@@ -128,10 +128,10 @@
       <pose>24 1 0.0065 -0.1654 0 0.8644</pose>
     </include>
 
-        <include>
+    <include>
       <uri>package://euro2moon/worlds/models/qr_rock1</uri>
       <name>qr_rock5</name>
-      <pose>35 0 0.3244 0 0 1.57</pose>
+      <pose>35 0 0.15 0 0 1.57</pose>
     </include>
 
     <include>

@@ -21,7 +21,7 @@ def generate_launch_description():
             launch_arguments={
                 'x': '-10',
                 'y': '0',
-                'z': '2',
+                'z': '20',
                 'yaw': '0',
 
                 'world_file': os.path.join(FindPackageShare('euro2moon').find('euro2moon'), 'worlds', 'plane.world')
