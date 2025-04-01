@@ -30,6 +30,16 @@ def generate_launch_description():
             }.items()
         ),
 
+        # Launch RViz with the simulation config
+        Node(
+            package='rviz2',
+            executable='rviz2',
+            name='rviz',
+            output='screen',
+            arguments=['-d', os.path.join(FindPackageShare('euro2moon').find('euro2moon'), 'config', 'local.rviz')],
+            respawn=False
+        )
+
         # Local path planning nodes
         # ...
         
