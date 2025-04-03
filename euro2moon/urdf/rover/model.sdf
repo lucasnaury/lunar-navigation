@@ -657,7 +657,7 @@
       </axis>
     </joint>
 
-    <!-- RGBD camera -->
+    <!-- RGBD camera Plugin -->
 
     <!-- Sensor definition -->
     <link name="camera_link">
@@ -737,15 +737,10 @@
 
 <!--Lidar Plugin -->
 
-
-
-
 <link name="lidar_link">
       <pose>0.4 0 0.2 0 0 0</pose> <!-- Lidar position-->
       <visual name="LidarVisual"> 
         <pose>0 0 0 0 0 0</pose>
-        
-
         <geometry>
           <box>
             <size>0.05 0.05 0.05</size> <!-- Lidar small box-->
@@ -756,15 +751,12 @@
         </material>
       </visual>
 
-        
-
-    </link>
 <!-- Try keeping sensor  between </visual> and </link>  throws error for some reason -->
     <sensor name="front_laser" type="gpu_lidar">
         <pose>0.37 0 0.55 0 0 0</pose>
-        <topic>lidar</topic>
         <always_on>1</always_on>
         <update_rate>10</update_rate>
+        <topic>lidar</topic>
         <ray>
           <scan>
             <horizontal>
@@ -789,8 +781,9 @@
             <mean>0</mean>
             <stddev>0.01</stddev>
           </noise>
-        </ray>
+        </ray>            <topic>lidar</topic>
       </sensor>
+    </link>
 
     <joint name="BaseLidarJoint" type="fixed">
       <parent>base_link</parent>
