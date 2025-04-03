@@ -64,10 +64,10 @@
 
   # ----------------------------- LiDAR ----------------------------- #
 
-  ros_topic_name: "scan"
-  gz_topic_name: "/lidar/scan"
-  ros_type_name: "sensor_msgs/msg/LaserScan"
-  gz_type_name: "gz.msgs.LaserScan"
+- ros_topic_name: "cloud"
+  gz_topic_name: "cloud/points"
+  ros_type_name: "sensor_msgs/msg/PointCloud2"
+  gz_type_name: "gz.msgs.PointCloudPacked"
   direction: GZ_TO_ROS
 
 
