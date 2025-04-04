@@ -38,33 +38,38 @@
 
     
 
-    <gravity>0 0 -1.62</gravity>
     <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
-    <atmosphere type='adiabatic'/>
+    <!-- Moon gravity -->
+    <gravity>0.0 0.0 -1.622</gravity>
+
+    <!-- Scene -->
     <scene>
-      <ambient>0.4 0.4 0.4 0.7851</ambient>
-      <background>0.7 0.7 0.7 1</background>
-      <shadows>true</shadows>
+      <ambient>0 0 0</ambient>
+      <background>0 0 0</background>
+      <grid>false</grid>
     </scene>
 
-    <!-- Load the light -->
-    <light type="point" name="sun">
+    <!-- Illumination -->
+    <light type="directional" name="sun">
       <cast_shadows>true</cast_shadows>
-      <pose>0 0 100 0 0 0</pose>
-      <intensity>3</intensity>
-      <diffuse>0.8 0.8 0.8 1</diffuse>
-      <specular>0.8 0.8 0.8 1</specular>
-      
+      <pose>0 0 100.0 0 0 0</pose>
+      <diffuse>1.0 1.0 1.0 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <intensity>5</intensity>
       <attenuation>
         <range>1000</range>
         <constant>0.9</constant>
         <linear>0.01</linear>
         <quadratic>0.001</quadratic>
       </attenuation>
-      <direction>-0.5 0.1 -0.9</direction>
+      <direction>0.25 -0.5 -0.1</direction>
     </light>
 
-      
+    <!--        -->
+    <!-- Models -->
+    <!--        -->
+
+    <!-- Terrain -->
     <model name='ground_plane'>
       <static>true</static>
       <link name='link'>
@@ -103,51 +108,51 @@
       <self_collide>false</self_collide>
     </model>
 
-    <!-- Create a line with rocks -->
+    <!-- Line of rocks -->
     <include>
-      <uri>package://euro2moon/worlds/models/qr_rock1</uri>
+      <uri>package://euro2moon/worlds/models/plane_rocks/qr_rock1</uri>
       <name>qr_rock1</name>
       <pose>4 0 0.15 0 0 0</pose>
     </include>
 
     <include>
-      <uri>package://euro2moon/worlds/models/qr_rock2</uri>
+      <uri>package://euro2moon/worlds/models/plane_rocks/qr_rock2</uri>
       <name>qr_rock2</name>
       <pose>10 1.5 0 0 0 0</pose>
     </include>
 
     <include>
-      <uri>package://euro2moon/worlds/models/qr_rock3</uri>
+      <uri>package://euro2moon/worlds/models/plane_rocks/qr_rock3</uri>
       <name>qr_rock3</name>
       <pose>17 -1 0 0 0 3.14/2</pose>
     </include>
 
     <include>
-      <uri>package://euro2moon/worlds/models/qr_rock4</uri>
+      <uri>package://euro2moon/worlds/models/plane_rocks/qr_rock4</uri>
       <name>qr_rock4</name>
       <pose>24 1 0.0065 -0.1654 0 0.8644</pose>
     </include>
 
     <include>
-      <uri>package://euro2moon/worlds/models/qr_rock1</uri>
+      <uri>package://euro2moon/worlds/models/plane_rocks/qr_rock1</uri>
       <name>qr_rock5</name>
       <pose>35 0 0.15 0 0 1.57</pose>
     </include>
 
     <include>
-      <uri>package://euro2moon/worlds/models/qr_rock2</uri>
+      <uri>package://euro2moon/worlds/models/plane_rocks/qr_rock2</uri>
       <name>qr_rock6</name>
       <pose>45 1.5 0 0 0 1.57</pose>
     </include>
 
     <include>
-      <uri>package://euro2moon/worlds/models/qr_rock3</uri>
+      <uri>package://euro2moon/worlds/models/plane_rocks/qr_rock3</uri>
       <name>qr_rock7</name>
       <pose>59 -1 0 0 0 0</pose>
     </include>
 
     <include>
-      <uri>package://euro2moon/worlds/models/qr_rock4</uri>
+      <uri>package://euro2moon/worlds/models/plane_rocks/qr_rock4</uri>
       <name>qr_rock8</name>
       <pose>50 1 0.0065 -0.1654 0 0</pose>
     </include>

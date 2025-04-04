@@ -24,7 +24,7 @@ def generate_launch_description():
                 'z': '20',
                 'yaw': '0',
 
-                'world_file': os.path.join(FindPackageShare('euro2moon').find('euro2moon'), 'worlds', 'plane.world')
+                'world_file': os.path.join(FindPackageShare('euro2moon').find('euro2moon'), 'worlds', 'moon.world')
             }.items()
         ),
 

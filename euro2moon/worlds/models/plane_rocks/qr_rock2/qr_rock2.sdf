@@ -1,0 +1,52 @@
+<?xml version="1.0" ?>
+<sdf version='1.6'>
+  <model name="qr_rock2">
+    
+    <static>true</static>
+    
+    <link name="qr_rock2_link">
+
+    <visual name="link0_visual">
+        <geometry>
+          <mesh>
+            <uri>package://euro2moon/worlds/models/qr_rock2/meshes/qr_rock2.dae</uri>
+            <scale>3 3 3</scale>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.2 0.2 0.2</diffuse>
+          <specular>0.2 0.2 0.2</specular>
+          <pbr>
+            <metal>
+              <albedo_map>package://euro2moon/worlds/models/qr_rock2/meshes/textures/qr_rock2_diffuse.png</albedo_map>
+              <!-- <normal_map>package://euro2moon/worlds/models/qr_rock2/meshes/textures/qr_rock2_normal.png</normal_map> -->
+              <!-- <roughness_map>package://euro2moon/worlds/models/qr_rock2/meshes/textures/qr_rock2_roughness.png</roughness_map> -->
+              <!-- <environment_map>package://euro2moon/worlds/models/qr_rock2/meshes/textures/rural_asphalt_road_1k.dds</environment_map> -->
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+      
+      <collision name="qr_rock2_colission">
+        <geometry>
+          <mesh>
+            <uri>package://euro2moon/worlds/models/qr_rock2/meshes/qr_rock2.dae</uri>
+            <scale>3 3 3</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <bounce/>
+          <friction>
+            <ode/>
+          </friction>
+          <contact>
+            <ode/>
+          </contact>
+        </surface>
+      </collision>
+      
+    </link>    
+
+  </model> 
+</sdf>
