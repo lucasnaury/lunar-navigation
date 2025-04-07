@@ -17,5 +17,5 @@ sudo apt install ros-humble-ros-gz python xterm
 To install Python libraries, please run the following command:
 
 ```bash
-pip install numpy opencv-python numpy-stl matplotlib pathlib heapq pillow
+pip install numpy opencv-python matplotlib pathlib pillow
 ```
