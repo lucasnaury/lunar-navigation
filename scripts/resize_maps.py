@@ -1,7 +1,8 @@
 import cv2
 from pathlib import Path
+import sys
 
-def main():    
+def main(newSize):    
     mapsPath = Path(__file__).parent.absolute() / "maps"
 
     # Load images
@@ -11,7 +12,6 @@ def main():
 
 
     # Resize images
-    newSize = 256
     heightMap = cv2.resize(height, (newSize,newSize))
     slopeMap = cv2.resize(slopes, (newSize,newSize))
     illuminationMap = cv2.resize(illumination, (newSize,newSize))
@@ -22,5 +22,9 @@ def main():
     cv2.imwrite(str(outputPath / "slopemap.png"), slopeMap)
     cv2.imwrite(str(outputPath / "illumination.png"), illuminationMap)
 
+
+
+
 if __name__ == "__main__":
-    main()
+    newSize = int(sys.argv[1]) if len(sys.argv) > 1 else 256
+    main(newSize)

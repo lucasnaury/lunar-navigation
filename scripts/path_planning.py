@@ -1,10 +1,32 @@
 import sys
+import os
 import cv2
 import time
 import numpy as np
 from pathlib import Path
 from include.helpers import showImage, normaliseImage
 from include.a_star import astar
+
+
+# -------------------------------------------------------------------------
+#                                  HELPERS 
+# -------------------------------------------------------------------------
+
+def loadMaps(map_folder_name):
+    # Get maps path
+    mapsPath = Path(__file__).parent.absolute() / map_folder_name
+    
+    # Load costmaps
+    print("Loading costmaps...")
+    slopes = cv2.imread(str(mapsPath / "slopemap.png"), cv2.IMREAD_GRAYSCALE)
+    illumination = cv2.imread(str(mapsPath / "illumination.png"), cv2.IMREAD_GRAYSCALE)
+    
+    # Normalise costmaps
+    slopeMap = normaliseImage(slopes)
+    illuminationMap = normaliseImage(illumination)
+
+    return slopes, slopeMap, illumination, illuminationMap
+
 
 
 def drawPath(map, start, end, path=[]):
@@ -26,52 +48,125 @@ def drawPath(map, start, end, path=[]):
 
 
 
-def main(map_folder_name:str, startPos, endPos, isDebug=False, gui=False):
+# -------------------------------------------------------------------------
+#                                  MAIN 
+# -------------------------------------------------------------------------
 
-    mapsPath = (Path(__file__).parent.absolute() / map_folder_name)
+def debug(map_folder_name:str, startPos, endPos):
+    """To test specific weights, and debug algorithm"""
 
-    # Load costmaps
-    print("Loading costmaps...")
-    slopes = cv2.imread(str(mapsPath / "slopemap.png"), cv2.IMREAD_GRAYSCALE)
-    illumination = cv2.imread(str(mapsPath / "illumination.png"), cv2.IMREAD_GRAYSCALE)
-    
-    # Normalise costmaps
-    slopeMap = normaliseImage(slopes)
-    illuminationMap = normaliseImage(illumination)
+    # Load maps
+    slopes, slopeMap, illumination, illuminationMap = loadMaps(map_folder_name)
 
     # Show start and end points
-    if gui:
-        targetImage = drawPath(illumination, startPos, endPos)
-        showImage("Output", targetImage)
+    slopePathImage = drawPath(slopes, startPos, endPos)
+    showImage("Slope output", slopePathImage)
 
-    # map = np.floor(map * 255).astype(np.uint8)
+    illuminationPathImage = drawPath(illumination, startPos, endPos)
+    showImage("Output", illuminationPathImage)
+
+
+    weights = [
+        2.0,    # Distance weight
+        1.0,    # Steering weight
+        10.0,   # Slope weight
+        1.0,    # Illumination weight
+
+        0.8,    # Traveled distance weight
+        0.2     # Heuristic distance weight 
+    ]
+
 
     # Test algorithm
     print("Starting A* algorithm")
-    # path = astar(costmap, illuminationMap, startPos, endPos, test=False)
     before = time.time()
-    path_modified = astar(slopeMap, illuminationMap, startPos, endPos, modified=True, isDebug=True, gui=gui)
+    path_modified, explored = astar(slopeMap, illuminationMap, startPos, endPos, weights, isDebug=True, gui=True)
     print(f"-> A* finished running in {time.time() - before}s")
 
 
-    # # print("Same" if path == path2 else "not same")
-    # diff = 0
-    # for i in range(min(len(path),len(path2))):
-    #     diff += path[i][0] + path[i][1] - (path2[i][0] + path2[i][1])
-    # print("Average difference", diff / min(len(path),len(path2)))
+
+
 
     # Show results
-    outputImg = drawPath(illumination, startPos, endPos, path_modified)
-    if gui:
-        showImage("Output", outputImg)
-        cv2.waitKey(0)
+    slopePathImage = drawPath(slopes, startPos, endPos, path_modified)
+    illuminationPathImage = drawPath(illumination, startPos, endPos, path_modified)
+    
+    showImage("Slope output", slopePathImage)
+    showImage("Output", illuminationPathImage)
+    cv2.waitKey(0)
 
     # Save results
     outputImgPath = str(Path(__file__).parent.absolute() / "output" / "path.png")
-    cv2.imwrite(outputImgPath, outputImg)
+    cv2.imwrite(outputImgPath, illuminationPathImage)
+
+    outputImgPath = str(Path(__file__).parent.absolute() / "output" / "slope_path.png")
+    cv2.imwrite(outputImgPath, slopePathImage)
 
     outputDataPath = str(Path(__file__).parent.absolute() / "output" / "path.txt")
     np.savetxt(outputDataPath, path_modified)
+
+
+
+
+def hpc(map_folder_name:str, startPos, endPos):
+    """To run on the HPC to compare all configurations of A* weights"""
+
+    # Load maps
+    slopes, slopeMap, illumination, illuminationMap = loadMaps(map_folder_name)
+
+    # Compared weights
+    weights_list = [
+        # Distance, steering, slope, illumination, G,   H
+        # High G cost
+        [2.0,       1.0,      15.0,  1.0,         0.8, 0.2], # Very high slope cost
+        [2.0,       1.0,      10.0,  1.0,         0.8, 0.2], # High slope cost
+        [2.0,       1.0,      5.0,   1.0,         0.8, 0.2], # Medium slope cost
+        [2.0,       1.0,      5.0,   5.0,         0.8, 0.2], # Medium slope cost, medium illumination cost
+        [5.0,       1.0,      10.0,  1.0,         0.8, 0.2], # High slope cost, medium distance cost
+        # Medium G Cost
+        [2.0,       1.0,      15.0,  1.0,         0.65, 0.35], # Very high slope cost
+        [2.0,       1.0,      10.0,  1.0,         0.65, 0.35], # High slope cost
+        [2.0,       1.0,      5.0,   1.0,         0.65, 0.35], # Medium slope cost
+        [2.0,       1.0,      5.0,   5.0,         0.65, 0.35], # Medium slope cost, medium illumination cost
+        [5.0,       1.0,      10.0,  1.0,         0.65, 0.35], # High slope cost, medium distance cost
+    ]
+
+    for i,weights in enumerate(weights_list):
+
+        # Test algorithm
+        print(f"Starting A* algorithm with weights N°{i}: {weights}")
+        before = time.time()
+        path_modified, explored = astar(slopeMap, illuminationMap, startPos, endPos, weights, isDebug=True, gui=False)
+        print(f"-> A* finished running in {time.time() - before}s")
+
+        if path_modified is None:
+            continue
+
+        # Draw results
+        slopePathImage = drawPath(slopes, startPos, endPos, path_modified)
+        illuminationPathImage = drawPath(illumination, startPos, endPos, path_modified)
+
+
+
+        # Check that result folder exists or create it
+        outputFolder = Path(__file__).parent.absolute() / "output" / "hpc" / f"weights_{i}"
+        outputFolder.mkdir(parents=True, exist_ok=True)
+
+        # Save results
+        outputImgPath = str(outputFolder / "path.png")
+        cv2.imwrite(outputImgPath, illuminationPathImage)
+
+        outputImgPath = str(outputFolder / "slope_path.png")
+        cv2.imwrite(outputImgPath, slopePathImage)
+
+        if explored is not None:
+            outputImgPath = str(outputFolder / "explored.png")
+            cv2.imwrite(outputImgPath, explored)
+        
+
+        outputDataPath = str(outputFolder / "path.txt")
+        np.savetxt(outputDataPath, path_modified)
+
 
 
 if __name__ == "__main__":
@@ -81,5 +176,8 @@ if __name__ == "__main__":
     startPos = (int(sys.argv[2]), int(sys.argv[3])) if len(sys.argv) > 5 else (4200, 4400)
     endPos   = (int(sys.argv[4]), int(sys.argv[5])) if len(sys.argv) > 5 else (5200, 6000)
  
-    # Run program
-    main(map_folder_name, startPos, endPos, isDebug=True, gui=True)
+    # Run program to test weights
+    # debug(map_folder_name, startPos, endPos)
+
+    # Run program on HPC to compare all configurations
+    hpc(map_folder_name, startPos, endPos)

@@ -3,5 +3,7 @@
 
 scripts/maps/*.png
 scripts/test_maps
+
 scripts/output/*.png
 scripts/output/*.txt
+scripts/output/hpc

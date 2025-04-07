@@ -47,7 +47,7 @@ def return_path(current_node):
     return path[::-1]  # Return reversed path
 
 
-def astar(slopeMap, illuminationMap, start, end, modified, isDebug=False, gui=False):
+def astar(slopeMap, illuminationMap, start, end, weights, isDebug=False, gui=False):
     """
     Returns a list of tuples as a path from the given start to the given end in the given costmap
     :param costmap:
@@ -80,7 +80,7 @@ def astar(slopeMap, illuminationMap, start, end, modified, isDebug=False, gui=Fa
 
     # Adding a stop condition
     outer_iterations = 0
-    max_iterations = len(slopeMap[0]) * len(slopeMap) * 2
+    max_iterations = len(slopeMap[0]) * len(slopeMap) * 5
 
     # what squares do we search
     adjacent_squares = ((0, -1), (0, 1), (-1, 0), (1, 0), (-1, -1), (-1, 1), (1, -1), (1, 1),)
@@ -90,10 +90,10 @@ def astar(slopeMap, illuminationMap, start, end, modified, isDebug=False, gui=Fa
         outer_iterations += 1
 
         if outer_iterations > max_iterations:
-          # if we hit this point return the path such as it is
-          # it will not contain the destination
-          warn("giving up on pathfinding too many iterations")
-          return return_path(current_node)       
+            # if we hit this point return the path such as it is
+            # it will not contain the destination
+            warn("giving up on pathfinding too many iterations")
+            return return_path(current_node), explored  
         
         # Get the current node
         current_node = heapq.heappop(open_list)
@@ -121,11 +121,10 @@ def astar(slopeMap, illuminationMap, start, end, modified, isDebug=False, gui=Fa
         # Found the goal
         if current_node == end_node:
             if isDebug:
-                # Save explored img
-                path = str(Path(__file__).parent.parent.absolute() / "output" / "explored.png")
-                cv2.imwrite(path, explored)
+                return return_path(current_node), explored
 
-            return return_path(current_node)
+
+            return return_path(current_node), None
 
         # Generate children
         children = []
@@ -162,43 +161,20 @@ def astar(slopeMap, illuminationMap, start, end, modified, isDebug=False, gui=Fa
             distance_cost, slope_cost, illumination_cost, steering_cost = getCosts(child, slopeMap, illuminationMap)
 
 
-            # Create the f, g, and h values
+            # Create the f, g, and h values with modified cost
+            child.h = np.sqrt((child.position[0] - end_node.position[0]) ** 2 + (child.position[1] - end_node.position[1]) ** 2)
+            # child.h = np.abs(child.position[0] - end_node.position[0]) + np.abs(child.position[1] - end_node.position[1])
 
-            if not modified:
-                child.g = current_node.g + distance_cost
-                # child.h = ((child.position[0] - end_node.position[0]) ** 2) + ((child.position[1] - end_node.position[1]) ** 2)
-                child.h = np.abs(child.position[0] - end_node.position[0]) + np.abs(child.position[1] - end_node.position[1])
-                
-                child.f = child.g + child.h
-            
-            
-            else: # Modified A*
-                # child.h = ((child.position[0] - end_node.position[0]) ** 2) + ((child.position[1] - end_node.position[1]) ** 2)
-                child.h = np.abs(child.position[0] - end_node.position[0]) + np.abs(child.position[1] - end_node.position[1])
+            w_dist = weights[0]
+            w_steering = weights[1]
+            w_slope = weights[2]
+            w_light = weights[3]
 
-                # ------------------------------------------------ V1 ------------------------------------------------
-                # child.g = current_node.g + distance_cost
+            w_g = weights[4]
+            w_h = weights[5]
 
-                # # Modified version A* 
-                # w_g = 2.0
-                # w_h = 10.0
-                # w_ext = 2.0
-                # w_steering = 1.0
-                # w_sum = w_g + w_h + w_ext + w_steering
-
-                # # child.f = 0.1*child.g + 0.1*child.h + 0.8*cost_function(child, costmap)
-                # child.f = (w_g*child.g + w_h*child.h + w_ext*costmap_cost + w_steering*steering_cost) / w_sum
-                # # child.f = (w_g*child.g + w_h*child.h + w_ext*costmap_cost + w_steering*steering_cost)
-
-                # ------------------------------------------------ V2 ------------------------------------------------
-                w_dist = 2.0
-                w_steering = 1.0
-                w_slope = 10.0
-                w_light = 1.0
-
-                child.g = current_node.g + (w_dist*distance_cost + w_steering*steering_cost + w_slope*slope_cost + w_light*illumination_cost) / (w_dist+w_steering+w_slope+w_light)
-                child.f = 0.8*child.g + 0.2*child.h
-                # child.f = 0.5*child.g + 0.5*child.h
+            child.g = current_node.g + (w_dist*distance_cost + w_steering*steering_cost + w_slope*slope_cost + w_light*illumination_cost) / (w_dist+w_steering+w_slope+w_light)
+            child.f = (w_g*child.g + w_h*child.h) / (w_g + w_h)
 
             if isDebug:
                 child_pos = (child.position[0] - cropped[0][0], child.position[1] - cropped[1][0])
@@ -212,7 +188,7 @@ def astar(slopeMap, illuminationMap, start, end, modified, isDebug=False, gui=Fa
             heapq.heappush(open_list, child)
 
     warn("Couldn't get a path to destination")
-    return None
+    return None, explored
 
 
 # IMPORTANT PART
@@ -228,7 +204,7 @@ def getCosts(child:Node, slopeMap, illuminationMap):
     # -> Distance cost
     vect = [child.position[0] - child.parent.position[0],
             child.position[1] - child.parent.position[1]]
-    distance_cost = (vect[0]**2 + vect[1]**2) / 2.0
+    distance_cost = np.sqrt(vect[0]**2 + vect[1]**2)
 
 
     if child.parent.parent is None:
