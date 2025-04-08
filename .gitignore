@@ -1,7 +1,7 @@
 **/__pycache__/
 **/*.gif
 
-scripts/maps/*.png
+scripts/maps/**/*.png
 scripts/test_maps
 
 scripts/output/*.png

@@ -177,7 +177,7 @@ if __name__ == "__main__":
     endPos   = (int(sys.argv[4]), int(sys.argv[5])) if len(sys.argv) > 5 else (5200, 6000)
  
     # Run program to test weights
-    # debug(map_folder_name, startPos, endPos)
+    debug(map_folder_name, startPos, endPos)
 
     # Run program on HPC to compare all configurations
-    hpc(map_folder_name, startPos, endPos)
+    # hpc(map_folder_name, startPos, endPos)

@@ -3,8 +3,9 @@ from pathlib import Path
 
 def main():
 
-    # Get current path
-    path = Path(__file__).parent.absolute()
+    # Get folder path
+    outputFolder = Path(__file__).parent.absolute() / "maps" / "downloaded"
+    outputFolder.mkdir(parents=True, exist_ok=True)
 
     maps = {
         # Heightmap
@@ -12,7 +13,7 @@ def main():
             "zoom": 9,
             "start": (238,238),
             "end": (273,273),
-            "outputPath": str(path / "maps" / "heightmap.png")
+            "outputPath": str(outputFolder / "heightmap.png")
         },
 
         # Slope map
@@ -20,7 +21,7 @@ def main():
             "zoom": 9,
             "start": (238,238),
             "end": (273,273),
-            "outputPath": str(path / "maps" / "slopemap_color.png")
+            "outputPath": str(outputFolder / "slopemap_color.png")
         },
 
         # Hillshade map
@@ -28,7 +29,7 @@ def main():
             "zoom": 9,
             "start": (238,238),
             "end": (273,273),
-            "outputPath": str(path / "maps" / "illumination.png")
+            "outputPath": str(outputFolder / "illumination.png")
         },
 
     }

@@ -1,7 +1,5 @@
 import sys
-import os
 from pathlib import Path
-import numpy as np
 import cv2
 from include.helpers import showImage
 
@@ -15,7 +13,6 @@ def main(path):
     slopeMap = cv2.imread(path)
 
     # Remove noise
-    # slopeMap = cv2.GaussianBlur(slopeMap, (5,5), 0.5)
     slopeMap = cv2.medianBlur(slopeMap, 5)
 
     # Only extract the Hue channel, which represents the variation in color and thus slope
@@ -26,7 +23,7 @@ def main(path):
     slopeMap = 255 - H
 
     # Save image
-    outputPath = str(Path(__file__).parent.absolute() / "maps" / "slopemap.png")
+    outputPath = str(Path(__file__).parent.absolute() / "maps" / "downloaded" / "slopemap.png")
     cv2.imwrite(outputPath, slopeMap)
 
     # Show image
@@ -42,8 +39,7 @@ def main(path):
 
 if __name__ == "__main__":
 
-    default_path = str(Path(__file__).parent.absolute() / "maps" / "slopemap_color.png")
-    # default_path = str(Path(__file__).parent.absolute() / "slopemap_screen.png")
+    default_path = str(Path(__file__).parent.absolute() / "maps" / "downloaded" / "slopemap_color.png")
 
     # Check if STL path is given as arg
     filepath = sys.argv[1] if len(sys.argv) > 1 else default_path

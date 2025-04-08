@@ -2,7 +2,7 @@ import cv2
 from pathlib import Path
 import sys
 
-def main(newSize):    
+def main(xStart, yStart, newSize):    
     mapsPath = Path(__file__).parent.absolute() / "maps" / "downloaded"
 
     # Load images
@@ -12,12 +12,13 @@ def main(newSize):
 
 
     # Resize images
-    heightMap = cv2.resize(height, (newSize,newSize))
-    slopeMap = cv2.resize(slopes, (newSize,newSize))
-    illuminationMap = cv2.resize(illumination, (newSize,newSize))
+    heightMap = height[yStart:yStart+newSize, xStart:xStart+newSize]
+    slopeMap = slopes[yStart:yStart+newSize, xStart:xStart+newSize]
+    illuminationMap = illumination[yStart:yStart+newSize, xStart:xStart+newSize]
+
 
     # Create output folder
-    outputPath = Path(__file__).parent.absolute() / "maps" / "resized"
+    outputPath = Path(__file__).parent.absolute() / "maps" / "cropped"
     outputPath.mkdir(parents=True, exist_ok=True)
 
     # Save images
@@ -29,5 +30,8 @@ def main(newSize):
 
 
 if __name__ == "__main__":
-    newSize = int(sys.argv[1]) if len(sys.argv) > 1 else 256
-    main(newSize)
+    xStart = int(sys.argv[1]) if len(sys.argv) > 2 else 0
+    yStart = int(sys.argv[2]) if len(sys.argv) > 2 else 0
+    newSize = int(sys.argv[3]) if len(sys.argv) > 3 else 512
+
+    main(xStart, yStart, newSize)
