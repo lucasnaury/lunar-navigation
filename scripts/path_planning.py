@@ -4,7 +4,7 @@ import cv2
 import time
 import numpy as np
 from pathlib import Path
-from include.helpers import showImage, normaliseImage
+from include.helpers import showImage, normaliseImage, loadUnits, writeToFile
 from include.a_star import astar
 
 
@@ -97,7 +97,7 @@ def debug(map_folder_name:str, output_folder_name:str, startPos, endPos):
 
     
     # Check that result folder exists or create it
-    outputFolder = Path(__file__).parent.absolute() / output_folder_name
+    outputFolder = Path(__file__).parent.absolute() / "output" / output_folder_name
     outputFolder.mkdir(parents=True, exist_ok=True)
 
     # Save results
@@ -112,8 +112,7 @@ def debug(map_folder_name:str, output_folder_name:str, startPos, endPos):
 
 
 
-
-def hpc(map_folder_name:str, output_folder_name:str, startPos, endPos):
+def hpc_weights(map_folder_name:str, output_folder_name:str, startPos, endPos):
     """To run on the HPC to compare all configurations of A* weights"""
 
     # Load maps
@@ -154,7 +153,7 @@ def hpc(map_folder_name:str, output_folder_name:str, startPos, endPos):
 
 
         # Check that result folder exists or create it
-        outputFolder = Path(__file__).parent.absolute() / output_folder_name / "hpc" / f"weights_{i}"
+        outputFolder = Path(__file__).parent.absolute() / "output" / output_folder_name / f"weights_{i}"
         outputFolder.mkdir(parents=True, exist_ok=True)
 
         # Save results
@@ -173,6 +172,70 @@ def hpc(map_folder_name:str, output_folder_name:str, startPos, endPos):
         np.savetxt(outputDataPath, path_modified)
 
 
+def hpc_all_routes(map_folder_name:str, output_folder_name:str):
+    """To run on the HPC to calculate all routes between ISRU units"""
+
+    # Load maps
+    slopes, slopeMap, illumination, illuminationMap = loadMaps(map_folder_name)
+
+    # Compared weights
+    weights = [2.0, 1.0, 5.0, 5.0, 0.8, 0.2] # Medium slope cost, medium illumination cost
+
+    path = str(Path(__file__).parent.absolute() / "units.json")
+
+    units = loadUnits(path)
+    unitNames = list(units.keys())
+
+    # Test all routes
+    for i,key in enumerate(unitNames):
+        for j, key2 in enumerate(unitNames):
+            # Skip routes that have already been visited
+            if j <= i:
+                continue
+
+            # Define points
+            startPos = units[key]
+            endPos   = units[key2]
+
+            # Test algorithm
+            print(f"Starting A* algorithm from {key} to {key2}")
+            before = time.time()
+            path_modified, explored = astar(slopeMap, illuminationMap, startPos, endPos, weights, isDebug=True, gui=False)
+            print(f"-> A* finished running in {time.time() - before}s")
+
+            if path_modified is None:
+                continue
+
+            # Draw results
+            slopePathImage = drawPath(slopes, startPos, endPos, path_modified)
+            illuminationPathImage = drawPath(illumination, startPos, endPos, path_modified)
+
+
+
+            # Check that result folder exists or create it
+            outputFolder = Path(__file__).parent.absolute() / "output" / output_folder_name / f"route_{i}-{j}"
+            outputFolder.mkdir(parents=True, exist_ok=True)
+
+            # Save results
+            outputImgPath = str(outputFolder / "path.png")
+            cv2.imwrite(outputImgPath, illuminationPathImage)
+
+            outputImgPath = str(outputFolder / "slope_path.png")
+            cv2.imwrite(outputImgPath, slopePathImage)
+
+            if explored is not None:
+                outputImgPath = str(outputFolder / "explored.png")
+                cv2.imwrite(outputImgPath, explored)
+
+
+            outputDataPath = str(outputFolder / "path.txt")
+            np.savetxt(outputDataPath, path_modified)
+
+            writeToFile(str(outputFolder / "route_info.txt"), f"Route from \"{key}\" to \"{key2}\"")
+
+
+
+
 
 if __name__ == "__main__":
     map_folder_name = sys.argv[1] if len(sys.argv) > 1 else "maps"
@@ -186,4 +249,6 @@ if __name__ == "__main__":
     # debug(map_folder_name, output_folder_name, startPos, endPos)
 
     # Run program on HPC to compare all configurations
-    hpc(map_folder_name, output_folder_name, startPos, endPos)
+    # hpc_weights(map_folder_name, output_folder_name, startPos, endPos)
+    
+    hpc_all_routes(map_folder_name, output_folder_name)
