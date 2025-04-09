@@ -52,7 +52,7 @@ def drawPath(map, start, end, path=[]):
 #                                  MAIN 
 # -------------------------------------------------------------------------
 
-def debug(map_folder_name:str, startPos, endPos):
+def debug(map_folder_name:str, output_folder_name:str, startPos, endPos):
     """To test specific weights, and debug algorithm"""
 
     # Load maps
@@ -95,20 +95,25 @@ def debug(map_folder_name:str, startPos, endPos):
     showImage("Output", illuminationPathImage)
     cv2.waitKey(0)
 
+    
+    # Check that result folder exists or create it
+    outputFolder = Path(__file__).parent.absolute() / output_folder_name
+    outputFolder.mkdir(parents=True, exist_ok=True)
+
     # Save results
-    outputImgPath = str(Path(__file__).parent.absolute() / "output" / "path.png")
+    outputImgPath = str(outputFolder / "path.png")
     cv2.imwrite(outputImgPath, illuminationPathImage)
 
-    outputImgPath = str(Path(__file__).parent.absolute() / "output" / "slope_path.png")
+    outputImgPath = str(outputFolder / "slope_path.png")
     cv2.imwrite(outputImgPath, slopePathImage)
 
-    outputDataPath = str(Path(__file__).parent.absolute() / "output" / "path.txt")
+    outputDataPath = str(outputFolder / "path.txt")
     np.savetxt(outputDataPath, path_modified)
 
 
 
 
-def hpc(map_folder_name:str, startPos, endPos):
+def hpc(map_folder_name:str, output_folder_name:str, startPos, endPos):
     """To run on the HPC to compare all configurations of A* weights"""
 
     # Load maps
@@ -149,7 +154,7 @@ def hpc(map_folder_name:str, startPos, endPos):
 
 
         # Check that result folder exists or create it
-        outputFolder = Path(__file__).parent.absolute() / "output" / "hpc" / f"weights_{i}"
+        outputFolder = Path(__file__).parent.absolute() / output_folder_name / "hpc" / f"weights_{i}"
         outputFolder.mkdir(parents=True, exist_ok=True)
 
         # Save results
@@ -171,13 +176,14 @@ def hpc(map_folder_name:str, startPos, endPos):
 
 if __name__ == "__main__":
     map_folder_name = sys.argv[1] if len(sys.argv) > 1 else "maps"
+    output_folder_name = sys.argv[2] if len(sys.argv) > 2 else "output"
     
     # Start and end positions (Y,X)
-    startPos = (int(sys.argv[2]), int(sys.argv[3])) if len(sys.argv) > 5 else (4200, 4400)
-    endPos   = (int(sys.argv[4]), int(sys.argv[5])) if len(sys.argv) > 5 else (5200, 6000)
+    startPos = (int(sys.argv[3]), int(sys.argv[4])) if len(sys.argv) > 6 else (4200, 4400)
+    endPos   = (int(sys.argv[5]), int(sys.argv[6])) if len(sys.argv) > 6 else (5200, 6000)
  
     # Run program to test weights
-    debug(map_folder_name, startPos, endPos)
+    # debug(map_folder_name, output_folder_name, startPos, endPos)
 
     # Run program on HPC to compare all configurations
-    # hpc(map_folder_name, startPos, endPos)
+    hpc(map_folder_name, output_folder_name, startPos, endPos)
