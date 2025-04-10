@@ -1,9 +1,10 @@
 import cv2
+import os
 from pathlib import Path
 import sys
 
-def main(newSize):    
-    mapsPath = Path(__file__).parent.absolute() / "maps" / "downloaded"
+def main(inputFolder, outputFolder, newSize):    
+    mapsPath = Path(__file__).parent.absolute() / "maps" / inputFolder
 
     # Load images
     height = cv2.imread(str(mapsPath / "heightmap.png"), cv2.IMREAD_GRAYSCALE)
@@ -17,7 +18,7 @@ def main(newSize):
     illuminationMap = cv2.resize(illumination, (newSize,newSize))
 
     # Create output folder
-    outputPath = Path(__file__).parent.absolute() / "maps" / "resized"
+    outputPath = Path(__file__).parent.absolute() / "maps" / outputFolder
     outputPath.mkdir(parents=True, exist_ok=True)
 
     # Save images
@@ -29,5 +30,8 @@ def main(newSize):
 
 
 if __name__ == "__main__":
-    newSize = int(sys.argv[1]) if len(sys.argv) > 1 else 256
-    main(newSize)
+    inputFolder  = sys.argv[1] if len(sys.argv) > 1 else "downloaded"
+    outputFolder = sys.argv[2] if len(sys.argv) > 2 else "resized"
+    newSize = int(sys.argv[3]) if len(sys.argv) > 3 else 256
+
+    main(inputFolder, outputFolder, newSize)
