@@ -4,7 +4,7 @@ import cv2
 import time
 import numpy as np
 from pathlib import Path
-from include.helpers import showImage, normaliseImage, loadUnits, writeToFile
+from include.helpers import showImage, normaliseImage, loadUnits, writeToFile, drawPath
 from include.a_star import astar
 
 
@@ -28,23 +28,25 @@ def loadMaps(map_folder_name):
     return slopes, slopeMap, illumination, illuminationMap
 
 
-
-def drawPath(map, start, end, path=[]):
+def drawWaypointsAndPath(map, start, end, path=None):
     # Visualisation
     colormap = cv2.cvtColor(map, cv2.COLOR_GRAY2BGR)
 
     thickness = max(1,int(np.floor(20 * map.shape[0] / 9000)))
-
-    # Draw line
-    for i in range(len(path) - 1):
-        p_start = (path[i][1], path[i][0])
-        p_end = (path[i+1][1], path[i+1][0])
-        cv2.line(colormap, p_start, p_end, (255,0,0), thickness)
-
+    
+    # Draw waypoints
     cv2.circle(colormap, (start[1], start[0]), thickness*2, (0,0,255), -1)
     cv2.circle(colormap, (end[1], end[0]),   thickness*2, (0,255,0), -1)
 
+    # Draw path
+    if path is not None:
+        drawPath(colormap,path)
+
     return colormap
+
+
+
+
 
 
 
@@ -88,8 +90,8 @@ def debug(map_folder_name:str, output_folder_name:str, startPos, endPos):
 
 
     # Show results
-    slopePathImage = drawPath(slopes, startPos, endPos, path_modified)
-    illuminationPathImage = drawPath(illumination, startPos, endPos, path_modified)
+    slopePathImage = drawWaypointsAndPath(slopes, startPos, endPos, path_modified)
+    illuminationPathImage = drawWaypointsAndPath(illumination, startPos, endPos, path_modified)
     
     showImage("Slope output", slopePathImage)
     showImage("Output", illuminationPathImage)
@@ -147,8 +149,8 @@ def hpc_weights(map_folder_name:str, output_folder_name:str, startPos, endPos):
             continue
 
         # Draw results
-        slopePathImage = drawPath(slopes, startPos, endPos, path_modified)
-        illuminationPathImage = drawPath(illumination, startPos, endPos, path_modified)
+        slopePathImage = drawWaypointsAndPath(slopes, startPos, endPos, path_modified)
+        illuminationPathImage = drawWaypointsAndPath(illumination, startPos, endPos, path_modified)
 
 
 
@@ -183,7 +185,7 @@ def hpc_all_routes(map_folder_name:str, output_folder_name:str):
 
     path = str(Path(__file__).parent.absolute() / "units.json")
 
-    units,_ = loadUnits(path, slopes.shape[0])
+    units,_,_ = loadUnits(path, slopes.shape[0])
     unitNames = list(units.keys())
 
     # Test all routes
@@ -207,8 +209,8 @@ def hpc_all_routes(map_folder_name:str, output_folder_name:str):
                 continue
 
             # Draw results
-            slopePathImage = drawPath(slopes, startPos, endPos, path_modified)
-            illuminationPathImage = drawPath(illumination, startPos, endPos, path_modified)
+            slopePathImage = drawWaypointsAndPath(slopes, startPos, endPos, path_modified)
+            illuminationPathImage = drawWaypointsAndPath(illumination, startPos, endPos, path_modified)
 
 
 
