@@ -6,18 +6,16 @@ import cv2
 import numpy as np
 from include.helpers import showImage, loadUnits
 
-def main(jsonFile, mapPath, px2m):
+def main(jsonFile, mapPath):
 
     # Load map image
     map = cv2.imread(mapPath)
-    scale = 2000 / map.shape[0]
     map = cv2.resize(map, (2000,2000))
 
     # Load units data
     path = str(Path(__file__).parent.absolute() / jsonFile)
-    units = loadUnits(path, scale)
+    units, px2m = loadUnits(path, 2000)
 
-    print("---------------------------- UNITS ----------------------------")
 
     minDist = -1
     for key,(x,y) in units.items():
@@ -41,7 +39,7 @@ def main(jsonFile, mapPath, px2m):
 
         # Draw unit landing range
         overlay = map.copy()
-        landingRange = 6000*scale/px2m # 6km range in px
+        landingRange = 6000/px2m # 6km range in px
         cv2.circle(overlay, (x,y), int(landingRange/2), (0,255,0), -2)
         map = cv2.addWeighted(overlay, 0.2, map, 0.8, 0)
 
@@ -56,11 +54,9 @@ def main(jsonFile, mapPath, px2m):
             new_x = x - int(w/2)
         cv2.putText(map, key, (new_x,y - y_offset), cv2.FONT_HERSHEY_DUPLEX, 2, (255,0,0), 2)
 
-    print("---------------------------------------------------------------")
-
 
     # Show min distance
-    minDist = minDist / scale * px2m
+    minDist = minDist * px2m
     print(f"-> Minimum distance between 2 units: {minDist:0.2f}m")
 
 
@@ -78,9 +74,8 @@ if __name__ == "__main__":
     # Load parameters
     unitsFileName = sys.argv[1] if len(sys.argv) > 1 else "units.json"
     mapsFolderPath = sys.argv[2] if len(sys.argv) > 2 else os.path.join("maps","cropped")
-    px2m = sys.argv[2] if len(sys.argv) > 2 else 16.7269519188
 
     mapPath = str(Path(__file__).parent.absolute() / mapsFolderPath / "illumination.png")
     
     # Run program
-    main(unitsFileName, mapPath, px2m)
+    main(unitsFileName, mapPath)

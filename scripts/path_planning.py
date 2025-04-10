@@ -183,7 +183,7 @@ def hpc_all_routes(map_folder_name:str, output_folder_name:str):
 
     path = str(Path(__file__).parent.absolute() / "units.json")
 
-    units = loadUnits(path)
+    units,_ = loadUnits(path, slopes.shape[0])
     unitNames = list(units.keys())
 
     # Test all routes

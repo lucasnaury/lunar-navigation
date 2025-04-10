@@ -26,21 +26,35 @@ def writeToFile(filepath:str, txt:str):
     f.write(txt)
     f.close()
 
-def loadUnits(path, scale=1) -> dict:
+def loadUnits(path, targetSize=None) -> tuple[dict, float]:
     with open(path) as f:
         # Read JSON as dict
         data = json.load(f)
 
+        # Separate data
+        metadata = data["metadata"]
+        units_data = data["units"]
+
+        # Calculate scaling factor
+        if targetSize == None:
+            scale = 1
+        else:
+            scale = targetSize / int(metadata["mapSize"])
+
+        px2m = float(metadata["px2m"]) / scale
+
         # Clean data
         units = dict()
-        for key,val in data.items():
+        for val in units_data:
             # Extract position for each unit
+            name = val['name']
             x = int(val['x'])
             y = int(val['y'])
-            print(f"{key}: ({x},{y})")
-            units[key] = (int(scale*x), int(scale*y))
+            
+            # Store it in dict
+            units[name] = (int(scale*x), int(scale*y))
 
-        return units
+        return units, px2m
     
     print("[ERROR] Couldn't open JSON file")
-    return {}
+    return {}, 0
