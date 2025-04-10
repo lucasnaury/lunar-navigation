@@ -36,10 +36,15 @@ def generate_launch_description():
             output='screen',
             arguments=['-d', os.path.join(FindPackageShare('euro2moon').find('euro2moon'), 'config', 'local.rviz')],
             respawn=False
-        )
+        ),
 
         # Local path planning nodes
-        # ...
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(os.path.join(pkg_path, 'launch', 'navigation_launch.py')),
+            launch_arguments={
+                'params_file': os.path.join(FindPackageShare('euro2moon').find('euro2moon'), 'config', 'nav2_params.yaml')
+            }.items()
+        )
         
 
     ])
