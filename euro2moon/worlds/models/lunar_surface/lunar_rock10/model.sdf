@@ -6,6 +6,7 @@
       <visual name="lunar_rock10_visual">
         <geometry>
           <mesh>
+            <scale>2 2 2</scale>
             <uri>package://euro2moon/worlds/models/lunar_surface/lunar_rock10/meshes/lunar_rock10.glb</uri>
           </mesh>
         </geometry>
@@ -13,6 +14,7 @@
       <collision name="lunar_rock10_collision">
         <geometry>
           <mesh>
+            <scale>2 2 2</scale>
             <uri>package://euro2moon/worlds/models/lunar_surface/lunar_rock10/meshes/lunar_rock10.glb</uri>
           </mesh>
         </geometry>
