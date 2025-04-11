@@ -2,40 +2,32 @@
 
 import rclpy
 from rclpy.node import Node
-from nav_msgs.msg import Path, OccupancyGrid
+from rclpy.action import ActionClient
+from rclpy.duration import Duration
+from nav_msgs.msg import Path, OccupancyGrid, Odometry
 from sensor_msgs.msg import PointCloud2
-from geometry_msgs.msg import PoseStamped, Twist
-from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
-import numpy as np
-import math
-import tf2_ros
+from geometry_msgs.msg import PoseStamped, Twist, Point
+from nav2_msgs.action import NavigateToPose
+from lifecycle_msgs.srv import GetState
 from tf2_ros.buffer import Buffer
 from tf2_ros.transform_listener import TransformListener
+import tf2_geometry_msgs
+import numpy as np
+import math
 from threading import Lock
 from sensor_msgs_py import point_cloud2
-import struct
+import time
 
 class ObstacleAvoider(Node):
     def __init__(self):
-        super().__init__('obstacle_avoider')
-        
-        # Declare and get parameters
-        self.declare_parameter('use_sim_time', True)
-        self.declare_parameter('base_frame', 'base_link')
-        self.declare_parameter('global_frame', 'map')
-        self.declare_parameter('lidar_topic', '/lidar')
-        self.declare_parameter('camera_points_topic', '/camera_points')
-        self.declare_parameter('costmap_topic', '/local_costmap/costmap')
-        self.declare_parameter('cmd_vel_topic', '/cmd_vel')
-        self.declare_parameter('path_topic', '/plan')
-        self.declare_parameter('safety_distance', 0.05)  # meters
-        self.declare_parameter('max_linear_velocity', 0.5)  # m/s
-        self.declare_parameter('max_angular_velocity', 1.0)  # rad/s
-        self.declare_parameter('goal_tolerance', 0.2)  # meters
-        self.declare_parameter('obstacle_height_threshold', 0.3)  # meters
-        self.declare_parameter('update_frequency', 10.0)  # Hz
-        
-        # Get parameters
+        super().__init__(
+            'obstacle_avoider',
+            parameter_overrides=[],
+            allow_undeclared_parameters=True,
+            automatically_declare_parameters_from_overrides=True
+        )
+
+        # Get parameters passed from launch file
         self.use_sim_time = self.get_parameter('use_sim_time').value
         self.base_frame = self.get_parameter('base_frame').value
         self.global_frame = self.get_parameter('global_frame').value
@@ -50,389 +42,185 @@ class ObstacleAvoider(Node):
         self.goal_tolerance = self.get_parameter('goal_tolerance').value
         self.obstacle_height_threshold = self.get_parameter('obstacle_height_threshold').value
         self.update_frequency = self.get_parameter('update_frequency').value
-        
-        # Initialize variables
+        self.goal_x = self.get_parameter('goal_x').value
+        self.goal_y = self.get_parameter('goal_y').value
+        self.goal_z = self.get_parameter('goal_z').value
+        self.direct_control = self.get_parameter('direct_control').value
+
+        self.nav_to_pose_client = ActionClient(self, NavigateToPose, 'navigate_to_pose')
+
+        self.cmd_vel_pub = self.create_publisher(Twist, self.cmd_vel_topic, 10)
+        self.lidar_sub = self.create_subscription(PointCloud2, self.lidar_topic, self.lidar_callback, 10)
+        self.camera_sub = self.create_subscription(PointCloud2, self.camera_points_topic, self.camera_callback, 10)
+        self.costmap_sub = self.create_subscription(OccupancyGrid, self.costmap_topic, self.costmap_callback, 10)
+        self.path_sub = self.create_subscription(Path, self.path_topic, self.path_callback, 10)
+        self.odom_sub = self.create_subscription(Odometry, '/odom', self.odom_callback, 10)
+
+        self.tf_buffer = Buffer()
+        self.tf_listener = TransformListener(self.tf_buffer, self)
+
         self.current_path = None
         self.lidar_points = None
         self.camera_points = None
         self.current_costmap = None
         self.is_goal_reached = False
+        self.is_navigating = False
+        self.nav2_initialized = False
         self.path_lock = Lock()
         self.lidar_lock = Lock()
         self.camera_lock = Lock()
         self.costmap_lock = Lock()
-        
-        # Set up QoS profiles
-        sensor_qos = QoSProfile(
-            reliability=ReliabilityPolicy.BEST_EFFORT,
-            history=HistoryPolicy.KEEP_LAST,
-            depth=10
-        )
-        
-        # Create publishers and subscribers
-        self.cmd_vel_pub = self.create_publisher(Twist, self.cmd_vel_topic, 10)
-        
-        self.lidar_sub = self.create_subscription(
-            PointCloud2,
-            self.lidar_topic,
-            self.lidar_callback,
-            sensor_qos
-        )
-        
-        self.camera_sub = self.create_subscription(
-            PointCloud2,
-            self.camera_points_topic,
-            self.camera_callback,
-            sensor_qos
-        )
-        
-        self.costmap_sub = self.create_subscription(
-            OccupancyGrid,
-            self.costmap_topic,
-            self.costmap_callback,
-            10
-        )
-        
-        self.path_sub = self.create_subscription(
-            Path,
-            self.path_topic,
-            self.path_callback,
-            10
-        )
-        
-        # Setup TF2 listener
-        self.tf_buffer = Buffer()
-        self.tf_listener = TransformListener(self.tf_buffer, self)
-        
-        # Create a timer for obstacle avoidance
-        self.timer = self.create_timer(1.0 / self.update_frequency, self.obstacle_avoidance_callback)
-        
-        self.get_logger().info('Obstacle Avoider node initialized')
-    
+        self.navigation_result = None
+        self.odom_data = None
+        self.init_attempts = 0
+        self.max_init_attempts = 10
+
+        self.goal_sent_time = None
+        self.nav2_init_timer = self.create_timer(1.0, self.init_nav2)
+        self.goal_timer = self.create_timer(5.0, self.check_goal_status)
+
+        self.get_logger().info('Starting obstacle avoider...')
+        self.get_logger().info(f'Target goal: x={self.goal_x}, y={self.goal_y}, z={self.goal_z}')
+
+    def odom_callback(self, msg):
+        self.odom_data = msg
+
     def lidar_callback(self, msg):
-        """Callback for LiDAR pointcloud data"""
         with self.lidar_lock:
             self.lidar_points = msg
-    
+
     def camera_callback(self, msg):
-        """Callback for RGBD camera pointcloud data"""
         with self.camera_lock:
             self.camera_points = msg
-    
+
     def costmap_callback(self, msg):
-        """Callback for costmap data"""
         with self.costmap_lock:
             self.current_costmap = msg
-    
+
     def path_callback(self, msg):
-        """Callback for path data"""
         with self.path_lock:
             self.current_path = msg
-            self.is_goal_reached = False
-    
-    def get_next_waypoint(self):
-        """Get the next waypoint from the current path"""
-        if self.current_path is None or len(self.current_path.poses) == 0:
-            return None
-        
-        try:
-            # Get the transform from map to base_link
-            transform = self.tf_buffer.lookup_transform(
-                self.base_frame,
-                self.global_frame,
-                rclpy.time.Time()
-            )
-            
-            # Find the closest point on the path that is ahead of the robot
-            min_dist = float('inf')
-            next_waypoint = None
-            
-            for pose in self.current_path.poses:
-                # Transform the pose from map frame to base_link frame
-                x = pose.pose.position.x - transform.transform.translation.x
-                y = pose.pose.position.y - transform.transform.translation.y
-                
-                # Only consider points ahead of the robot (positive x)
-                if x > 0:
-                    dist = math.sqrt(x * x + y * y)
-                    if dist < min_dist:
-                        min_dist = dist
-                        next_waypoint = pose
-            
-            # If no point is ahead, take the last point
-            if next_waypoint is None and len(self.current_path.poses) > 0:
-                next_waypoint = self.current_path.poses[-1]
-            
-            return next_waypoint
-        
-        except tf2_ros.TransformException as ex:
-            self.get_logger().error(f'Could not transform from {self.global_frame} to {self.base_frame}: {ex}')
-            return None
-    
-    def check_lidar_obstacles(self):
-        """Check for obstacles using LiDAR pointcloud data"""
-        if self.lidar_points is None:
-            return False, 0.0
-            
-        with self.lidar_lock:
-            try:
-                # Extract points from the PointCloud2 message
-                pc_data = list(point_cloud2.read_points(
-                    self.lidar_points, 
-                    field_names=("x", "y", "z"),
-                    skip_nans=True
-                ))
-                
-                if not pc_data:
-                    return False, 0.0
-                    
-                # Convert to numpy array for faster processing
-                points = np.array(pc_data)
-                
-                # Only consider points in front of the robot and within safety distance
-                points_in_range = points[
-                    (points[:, 0] > 0) &                          # In front of robot
-                    (points[:, 0] < self.safety_distance) &       # Within forward safety distance
-                    (np.abs(points[:, 1]) < self.safety_distance) # Within lateral safety distance
-                ]
-                
-                if len(points_in_range) > 5:  # More than 5 points to be considered an obstacle
-                    min_distance = np.min(np.sqrt(points_in_range[:, 0]**2 + points_in_range[:, 1]**2))
-                    self.get_logger().debug(f'LiDAR obstacle detected at distance: {min_distance:.2f}m')
-                    return True, min_distance
-                
-                return False, 0.0
-                
-            except Exception as e:
-                self.get_logger().error(f'Error processing LiDAR data: {e}')
-                return False, 0.0
-    
-    def check_camera_obstacles(self):
-        """Check for obstacles using camera pointcloud data"""
-        if self.camera_points is None:
-            return False, 0.0
-            
-        with self.camera_lock:
-            try:
-                # Extract points from the PointCloud2 message
-                pc_data = list(point_cloud2.read_points(
-                    self.camera_points, 
-                    field_names=("x", "y", "z"),
-                    skip_nans=True
-                ))
-                
-                if not pc_data:
-                    return False, 0.0
-                    
-                # Convert to numpy array for faster processing
-                points = np.array(pc_data)
-                
-                # Filter points by height to separate ground from obstacles
-                # Only consider points above a minimum height but below a maximum height
-                points_filtered = points[
-                    (points[:, 2] > 0.05) &                       # Above ground
-                    (points[:, 2] < self.obstacle_height_threshold) # Below max height
-                ]
-                
-                # Check for obstacles in front of the robot
-                points_in_range = points_filtered[
-                    (points_filtered[:, 0] > 0) &                          # In front of robot
-                    (points_filtered[:, 0] < self.safety_distance) &       # Within forward safety distance
-                    (np.abs(points_filtered[:, 1]) < self.safety_distance) # Within lateral safety distance
-                ]
-                
-                if len(points_in_range) > 5:  # More than 5 points to be considered an obstacle
-                    min_distance = np.min(np.sqrt(points_in_range[:, 0]**2 + points_in_range[:, 1]**2))
-                    self.get_logger().debug(f'Camera obstacle detected at distance: {min_distance:.2f}m')
-                    return True, min_distance
-                
-                return False, 0.0
-                
-            except Exception as e:
-                self.get_logger().error(f'Error processing camera data: {e}')
-                return False, 0.0
-    
-    def check_costmap_obstacles(self):
-        """Check for obstacles using the costmap"""
-        if self.current_costmap is None:
-            return False, 0.0
-        
-        with self.costmap_lock:
-            try:
-                # Extract costmap data
-                width = self.current_costmap.info.width
-                height = self.current_costmap.info.height
-                resolution = self.current_costmap.info.resolution
-                origin_x = self.current_costmap.info.origin.position.x
-                origin_y = self.current_costmap.info.origin.position.y
-                
-                # Try to get the robot's position in the costmap
-                transform = self.tf_buffer.lookup_transform(
-                    self.current_costmap.header.frame_id,
-                    self.base_frame,
-                    rclpy.time.Time()
-                )
-                
-                robot_x = transform.transform.translation.x
-                robot_y = transform.transform.translation.y
-                
-                # Convert to grid coordinates
-                grid_x = int((robot_x - origin_x) / resolution)
-                grid_y = int((robot_y - origin_y) / resolution)
-                
-                # Check a rectangular area in front of the robot
-                safe_distance_cells = int(self.safety_distance / resolution)
-                min_distance = float('inf')
-                has_obstacle = False
-                
-                for i in range(grid_x, min(grid_x + safe_distance_cells, width)):
-                    for j in range(grid_y - safe_distance_cells // 2, min(grid_y + safe_distance_cells // 2, height)):
-                        if 0 <= i < width and 0 <= j < height:
-                            index = j * width + i
-                            if index < len(self.current_costmap.data):
-                                cost = self.current_costmap.data[index]
-                                # Check if the cost indicates an obstacle (typically cost > 50)
-                                if cost > 50:
-                                    # Calculate distance to this obstacle
-                                    cell_x = origin_x + (i + 0.5) * resolution
-                                    cell_y = origin_y + (j + 0.5) * resolution
-                                    dist = math.sqrt((cell_x - robot_x)**2 + (cell_y - robot_y)**2)
-                                    min_distance = min(min_distance, dist)
-                                    has_obstacle = True
-                
-                if has_obstacle:
-                    self.get_logger().debug(f'Costmap obstacle detected at distance: {min_distance:.2f}m')
-                    return True, min_distance
-                
-                return False, 0.0
-                
-            except tf2_ros.TransformException as ex:
-                self.get_logger().error(f'Could not transform from {self.current_costmap.header.frame_id} to {self.base_frame}: {ex}')
-                return False, 0.0
-            except Exception as e:
-                self.get_logger().error(f'Error checking costmap: {e}')
-                return False, 0.0
-    
-    def check_goal_reached(self, goal_pose):
-        """Check if the robot has reached the goal"""
-        if goal_pose is None:
-            return False
-        
-        try:
-            # Get the transform from global frame to base_link
-            transform = self.tf_buffer.lookup_transform(
-                self.global_frame,
-                self.base_frame,
-                rclpy.time.Time()
-            )
-            
-            # Calculate distance to goal
-            dx = goal_pose.pose.position.x - transform.transform.translation.x
-            dy = goal_pose.pose.position.y - transform.transform.translation.y
-            distance = math.sqrt(dx * dx + dy * dy)
-            
-            return distance < self.goal_tolerance
-            
-        except tf2_ros.TransformException as ex:
-            self.get_logger().error(f'Could not transform from {self.global_frame} to {self.base_frame}: {ex}')
-            return False
-    
-    def calculate_avoidance_velocity(self, obstacle_distance):
-        """Calculate velocity command for obstacle avoidance"""
-        if obstacle_distance <= 0.0:
-            return 0.0, 0.0  # Stop if obstacle is too close
-        
-        # Scale velocity based on obstacle distance
-        linear_velocity = min(self.max_linear_velocity, 
-                             self.max_linear_velocity * (obstacle_distance / self.safety_distance))
-        
-        # Always slow down when obstacles are detected
-        linear_velocity = max(0.0, min(linear_velocity, 0.2))
-        
-        # Encourage turning away from obstacles by setting angular velocity
-        angular_velocity = self.max_angular_velocity * 0.5
-        
-        return linear_velocity, angular_velocity
-    
-    def obstacle_avoidance_callback(self):
-        """Main callback for obstacle avoidance"""
-        # Check if we have a path
-        if self.current_path is None:
-            self.get_logger().debug('No path available')
-            self.stop_robot()
+
+    def init_nav2(self):
+        if self.nav2_initialized:
+            self.nav2_init_timer.cancel()
             return
-        
-        # Get the next waypoint
-        next_waypoint = self.get_next_waypoint()
-        if next_waypoint is None:
-            self.get_logger().debug('No valid waypoint found')
-            self.stop_robot()
+
+        self.init_attempts += 1
+        if self.init_attempts > self.max_init_attempts:
+            self.get_logger().warn('Nav2 initialization failed after max attempts')
+            self.nav2_init_timer.cancel()
             return
-        
-        # Check if we've reached the final goal
-        if self.check_goal_reached(self.current_path.poses[-1]):
-            self.get_logger().info('Goal reached!')
-            self.stop_robot()
+
+        try:
+            client = self.create_client(GetState, 'bt_navigator/get_state')
+            if not client.wait_for_service(timeout_sec=1.0):
+                self.get_logger().info('Waiting for bt_navigator to become available...')
+                return
+
+            request = GetState.Request()
+            future = client.call_async(request)
+            rclpy.spin_until_future_complete(self, future, timeout_sec=1.0)
+
+            if future.done():
+                response = future.result()
+                if response.current_state.id == 3:
+                    self.get_logger().info('Nav2 is active!')
+                else:
+                    self.get_logger().info(f'Nav2 not ready. Current state: {response.current_state.id}')
+                    return
+            else:
+                self.get_logger().info('No response from lifecycle node')
+                return
+
+            if not self.nav_to_pose_client.wait_for_server(timeout_sec=2.0):
+                self.get_logger().info('Waiting for navigate_to_pose server...')
+                return
+
+            # self.nav2_initialized = True
+            # self.send_goal()
+            self.get_logger().info('Waiting for bt_navigator to activate after transition...')
+            time.sleep(2.0)  # Wait briefly for activation to complete
+
+            # Check if it's now active
+            future = client.call_async(request)
+            rclpy.spin_until_future_complete(self, future, timeout_sec=2.0)
+            if future.done() and future.result().current_state.id == 3:
+                self.nav2_initialized = True
+                self.get_logger().info('bt_navigator is now ACTIVE. Proceeding to send goal...')
+                self.send_goal()
+            else:
+                self.get_logger().warn('bt_navigator still not active. Will retry on next timer tick.')
+
+
+
+
+        except Exception as e:
+            self.get_logger().error(f'Nav2 init exception: {e}')
+
+    def send_goal(self):
+        if not self.nav2_initialized:
+            self.get_logger().warn('Nav2 not initialized')
+            return
+
+        if self.is_navigating:
+            self.get_logger().info('Already navigating')
+            return
+
+        goal_msg = NavigateToPose.Goal()
+        goal_msg.pose.header.frame_id = self.global_frame
+        goal_msg.pose.header.stamp = self.get_clock().now().to_msg()
+        goal_msg.pose.pose.position.x = self.goal_x
+        goal_msg.pose.pose.position.y = self.goal_y
+        goal_msg.pose.pose.position.z = self.goal_z
+        goal_msg.pose.pose.orientation.w = 1.0
+
+        self.goal_sent_time = self.get_clock().now()
+        self.is_navigating = True
+
+        self.get_logger().info('Sending goal to Nav2...')
+        future = self.nav_to_pose_client.send_goal_async(goal_msg)
+        future.add_done_callback(self.goal_response_callback)
+
+    def goal_response_callback(self, future):
+        goal_handle = future.result()
+        if not goal_handle.accepted:
+            self.get_logger().error('Goal was rejected!')
+            self.is_navigating = False
+            return
+
+        self.get_logger().info('Goal accepted!')
+        result_future = goal_handle.get_result_async()
+        result_future.add_done_callback(self.get_result_callback)
+
+    def get_result_callback(self, future):
+        status = future.result().status
+        if status == 4:
+            self.get_logger().info('Goal reached successfully!')
             self.is_goal_reached = True
-            return
-        
-        # Check for obstacles from multiple sources
-        lidar_obstacle, lidar_distance = self.check_lidar_obstacles()
-        camera_obstacle, camera_distance = self.check_camera_obstacles()
-        costmap_obstacle, costmap_distance = self.check_costmap_obstacles()
-        
-        # Determine the overall obstacle status and closest obstacle
-        has_obstacle = lidar_obstacle or camera_obstacle or costmap_obstacle
-        
-        if has_obstacle:
-            # Find minimum distance to nearest obstacle
-            distances = []
-            if lidar_obstacle:
-                distances.append(lidar_distance)
-            if camera_obstacle:
-                distances.append(camera_distance)
-            if costmap_obstacle:
-                distances.append(costmap_distance)
-                
-            min_distance = min(distances) if distances else self.safety_distance
-            
-            # Log obstacle detection sources
-            obstacles_found = []
-            if lidar_obstacle:
-                obstacles_found.append("LiDAR")
-            if camera_obstacle:
-                obstacles_found.append("Camera")
-            if costmap_obstacle:
-                obstacles_found.append("Costmap")
-                
-            self.get_logger().info(f'Obstacles detected by: {", ".join(obstacles_found)} at {min_distance:.2f}m')
-            
-            # Calculate avoidance velocity
-            linear_vel, angular_vel = self.calculate_avoidance_velocity(min_distance)
-            
-            # Publish velocity command for avoidance
-            # Note: In a real system with Nav2, you might want to let Nav2 handle this
-            # and only intervene if absolutely necessary
-            cmd_vel = Twist()
-            cmd_vel.linear.x = linear_vel
-            cmd_vel.angular.z = angular_vel
-            self.cmd_vel_pub.publish(cmd_vel)
-            
-            self.get_logger().debug(f'Avoiding obstacle: lin_vel={linear_vel:.2f}, ang_vel={angular_vel:.2f}')
         else:
-            # No obstacles, let Nav2 handle normal navigation
-            self.get_logger().debug('No obstacles detected, proceeding with Nav2 path')
-    
-    def stop_robot(self):
-        """Stop the robot by publishing zero velocity"""
-        cmd_vel = Twist()
-        cmd_vel.linear.x = 0.0
-        cmd_vel.linear.y = 0.0
-        cmd_vel.linear.z = 0.0
-        cmd_vel.angular.x = 0.0
-        cmd_vel.angular.y = 0.0
-        cmd_vel.angular.z = 0.0
-        self.cmd_vel_pub.publish(cmd_vel)
+            self.get_logger().error(f'Goal failed with status: {status}')
+
+        self.is_navigating = False
+        self.goal_sent_time = None
+
+    def check_goal_status(self):
+        if not self.nav2_initialized:
+            return
+
+        if self.is_goal_reached:
+            return
+
+        if not self.is_navigating:
+            self.get_logger().info('Resending goal...')
+            self.send_goal()
+        elif self.goal_sent_time is not None:
+            elapsed = (self.get_clock().now() - self.goal_sent_time).nanoseconds / 1e9
+            if elapsed > 60.0:
+                self.get_logger().warn(f'Navigation timeout after {elapsed:.1f}s')
+                self.is_navigating = False
+                self.goal_sent_time = None
+
 
 def main(args=None):
     rclpy.init(args=args)
@@ -442,8 +230,12 @@ def main(args=None):
     except KeyboardInterrupt:
         pass
     finally:
+        node.get_logger().info('Shutting down obstacle avoider...')
+        cmd_vel = Twist()
+        node.cmd_vel_pub.publish(cmd_vel)
         node.destroy_node()
         rclpy.shutdown()
+
 
 if __name__ == '__main__':
     main()
