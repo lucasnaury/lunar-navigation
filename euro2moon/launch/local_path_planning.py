@@ -19,10 +19,10 @@ def generate_launch_description():
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(os.path.join(pkg_path, 'launch', 'simulation.launch.py')),
             launch_arguments={
-                'x': '-10',
-                'y': '0',
-                'z': '20',
-                'yaw': '0',
+                'x': '-16.0',
+                'y': '16.0',
+                'z': '2.0',
+                'yaw': '-0.785',
 
                 'world_file': os.path.join(FindPackageShare('euro2moon').find('euro2moon'), 'worlds', 'moon.world')
             }.items()
