@@ -41,8 +41,6 @@ def main(mapFolder, outputFolder):
             path *= scale * astarScale
             path = path.astype(int)
 
-            path = [(x,y) for (y,x) in path]
-
             # Draw path
             map = drawPath(map, path, randomColor())
 

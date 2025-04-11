@@ -196,8 +196,8 @@ def hpc_all_routes(map_folder_name:str, output_folder_name:str):
                 continue
 
             # Define points
-            startPos = units[key]
-            endPos   = units[key2]
+            startPos = (units[key][1],  units[key][0])
+            endPos   = (units[key2][1], units[key2][0])
 
             # Test algorithm
             print(f"Starting A* algorithm from {key} to {key2}")
