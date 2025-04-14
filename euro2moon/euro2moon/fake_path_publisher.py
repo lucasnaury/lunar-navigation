@@ -4,17 +4,13 @@ import rclpy
 from rclpy.node import Node
 from nav_msgs.msg import Path
 from geometry_msgs.msg import PoseStamped
-from builtin_interfaces.msg import Time
-import math
 
 class FakePathPublisher(Node):
     def __init__(self):
         super().__init__('fake_path_publisher')
-
         self.publisher_ = self.create_publisher(Path, '/plan', 10)
         timer_period = 0.5  # seconds
-        self.publish_path()
-        # self.timer = self.create_timer(timer_period, self.publish_path)
+        self.timer = self.create_timer(timer_period, self.publish_path)  # ✅ start repeating timer
         self.get_logger().info('Fake path publisher started.')
 
     def publish_path(self):
@@ -22,11 +18,9 @@ class FakePathPublisher(Node):
         now = self.get_clock().now().to_msg()
 
         path_msg.header.stamp = now
-        path_msg.header.frame_id = 'odom'  
+        path_msg.header.frame_id = 'odom'
 
         poses = []
-
-        # Path from (0, 0) to (60, 1)
         steps = 20
         for i in range(steps + 1):
             pose = PoseStamped()
@@ -40,7 +34,7 @@ class FakePathPublisher(Node):
         path_msg.poses = poses
 
         self.publisher_.publish(path_msg)
-        self.get_logger().info('Published fake path with %d poses to (60, 1).' % len(poses))
+        self.get_logger().info(f'Published fake path with {len(poses)} poses.')
 
 
 def main(args=None):
@@ -51,10 +45,9 @@ def main(args=None):
     except KeyboardInterrupt:
         pass
     finally:
-     if rclpy.ok():
-        node.destroy_node()
-        rclpy.shutdown()
-
+        if node.context.ok():
+            node.destroy_node()
+            rclpy.shutdown()
 
 
 if __name__ == '__main__':
