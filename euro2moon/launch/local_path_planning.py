@@ -66,7 +66,7 @@ def generate_launch_description():
     # Include Nav2 navigation launch
     nav2_bringup_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('nav2_bringup'), 'launch', 'navigation_launch.py')
+            os.path.join(get_package_share_directory('euro2moon'), 'launch', 'navigation_launch.py')
         ),
         launch_arguments={
             'use_sim_time': use_sim_time,
@@ -109,6 +109,6 @@ def generate_launch_description():
         declare_autostart_arg,
         simulation_launch,
         rviz_node,
-        nav2_bringup_launch,
-        obstacle_avoider_node
+        # nav2_bringup_launch,
+        # obstacle_avoider_node
     ])

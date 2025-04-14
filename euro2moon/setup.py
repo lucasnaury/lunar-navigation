@@ -64,7 +64,8 @@ setup(
             # 'my_robot_driver = my_package.my_robot_driver:main',
             # 'obstacle_avoider = my_package.obstacle_avoider:main'
             'my_robot_driver = euro2moon.my_robot_driver:main',
-            'obstacle_avoider = euro2moon.obstacle_avoider:main'
+            'obstacle_avoider = euro2moon.obstacle_avoider:main',
+            'fake_path_publisher = euro2moon.fake_path_publisher:main'
         ],
     },
 )

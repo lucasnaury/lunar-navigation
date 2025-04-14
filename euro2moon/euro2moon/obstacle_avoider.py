@@ -76,7 +76,7 @@ class ObstacleAvoider(Node):
         self.max_init_attempts = 10
 
         self.goal_sent_time = None
-        self.nav2_init_timer = self.create_timer(1.0, self.init_nav2)
+        self.nav2_init_timer = self.create_timer(5.0, self.init_nav2)
         self.goal_timer = self.create_timer(5.0, self.check_goal_status)
 
         self.get_logger().info('Starting obstacle avoider...')
@@ -104,7 +104,9 @@ class ObstacleAvoider(Node):
     def init_nav2(self):
         if self.nav2_initialized:
             self.nav2_init_timer.cancel()
-            return
+        else:
+            self.get_logger().info('Nav2 not ready yet — will retry..........')
+        return
 
         self.init_attempts += 1
         if self.init_attempts > self.max_init_attempts:
@@ -239,4 +241,3 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
-    

@@ -1,6 +1,8 @@
 bt_navigator:
   ros__parameters:
-    global_frame: map
+    # global_frame: "map"
+    default_nav_to_pose_bt_xml: "/home/e2m/ros_ws/src/euro2moon/euro2moon/config/navigate_local_only.xml"
+    default_nav_through_poses_bt_xml: /home/e2m/ros_ws/src/euro2moon/euro2moon/config/navigate_local_only.xml
     robot_base_frame: base_link
     odom_topic: /odom
     bt_loop_duration: 10
@@ -152,52 +154,52 @@ local_costmap:
         cost_scaling_factor: 3.0
         inflation_radius: 0.8
 
-global_costmap:
-  global_costmap:
-    ros__parameters:
-      update_frequency: 1.0
-      publish_frequency: 1.0
-      global_frame: map
-      robot_base_frame: base_link
-      use_sim_time: True
-      footprint: "[ [0.4, 0.4], [0.4, -0.4], [-0.4, -0.4], [-0.4, 0.4] ]"
-      resolution: 0.05
-      track_unknown_space: true
-      plugins: ["static_layer", "obstacle_layer", "inflation_layer"]
+# global_costmap:
+#   global_costmap:
+#     ros__parameters:
+#       update_frequency: 1.0
+#       publish_frequency: 1.0
+#       global_frame: odom
+#       robot_base_frame: base_link
+#       use_sim_time: True
+#       footprint: "[ [0.4, 0.4], [0.4, -0.4], [-0.4, -0.4], [-0.4, 0.4] ]"
+#       resolution: 0.05
+#       track_unknown_space: true
+#       plugins: ["static_layer", "obstacle_layer", "inflation_layer"]
       
-      static_layer:
-        plugin: "nav2_costmap_2d::StaticLayer"
-        map_subscribe_transient_local: True
+#       static_layer:
+#         plugin: "nav2_costmap_2d::StaticLayer"
+#         map_subscribe_transient_local: True
         
-      obstacle_layer:
-        plugin: "nav2_costmap_2d::ObstacleLayer"
-        enabled: True
-        observation_sources: lidar
-        lidar:
-          topic: /lidar
-          max_obstacle_height: 2.0
-          clearing: True
-          marking: True
-          data_type: "PointCloud2"
-          raytrace_max_range: 5.0
-          raytrace_min_range: 0.0
-          obstacle_max_range: 4.0
-          obstacle_min_range: 0.0
+#       obstacle_layer:
+#         plugin: "nav2_costmap_2d::ObstacleLayer"
+#         enabled: True
+#         observation_sources: lidar
+#         lidar:
+#           topic: /lidar
+#           max_obstacle_height: 2.0
+#           clearing: True
+#           marking: True
+#           data_type: "PointCloud2"
+#           raytrace_max_range: 5.0
+#           raytrace_min_range: 0.0
+#           obstacle_max_range: 4.0
+#           obstacle_min_range: 0.0
           
-      inflation_layer:
-        plugin: "nav2_costmap_2d::InflationLayer"
-        cost_scaling_factor: 3.0
-        inflation_radius: 1.0
+#       inflation_layer:
+#         plugin: "nav2_costmap_2d::InflationLayer"
+#         cost_scaling_factor: 3.0
+#         inflation_radius: 1.0
 
-planner_server:
-  ros__parameters:
-    expected_planner_frequency: 20.0
-    planner_plugins: ["GridBased"]
-    GridBased:
-      plugin: "nav2_navfn_planner::NavfnPlanner"
-      tolerance: 0.5
-      use_astar: false
-      allow_unknown: true
+# planner_server:
+#   ros__parameters:
+#     expected_planner_frequency: 20.0
+#     planner_plugins: ["GridBased"]
+#     GridBased:
+#       plugin: "nav2_navfn_planner::NavfnPlanner"
+#       tolerance: 0.5
+#       use_astar: false
+#       allow_unknown: true
 
 behavior_server:
   ros__parameters:
@@ -206,13 +208,13 @@ behavior_server:
     cycle_frequency: 10.0
     behavior_plugins: ["spin", "backup", "drive_on_heading", "wait"]
     spin:
-      plugin: "nav2_behaviors/Spin"
+      plugin: "nav2_behaviors::Spin"
     backup:
-      plugin: "nav2_behaviors/BackUp"
+      plugin: "nav2_behaviors::BackUp"
     drive_on_heading:
-      plugin: "nav2_behaviors/DriveOnHeading"
+      plugin: "nav2_behaviors::DriveOnHeading"
     wait:
-      plugin: "nav2_behaviors/Wait"
+      plugin: "nav2_behaviors::Wait"
     global_frame: odom
     robot_base_frame: base_link
     transform_timeout: 0.1
@@ -279,9 +281,10 @@ lifecycle_manager:
   ros__parameters:
     use_sim_time: True
     autostart: True
+    bond_timeout: 5.0
     node_names: [
       'controller_server',
-      'planner_server',
+      # 'planner_server',
       'behavior_server',
       'velocity_smoother',
       'bt_navigator',
