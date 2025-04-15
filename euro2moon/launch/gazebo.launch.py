@@ -13,12 +13,12 @@ def generate_launch_description():
 
     return LaunchDescription([
         # Declare launch arguments
-        DeclareLaunchArgument('x', default_value='0', description='X position of the robot'),
-        DeclareLaunchArgument('y', default_value='0', description='Y position of the robot'),
-        DeclareLaunchArgument('z', default_value='5', description='Z position of the robot'),
-        DeclareLaunchArgument('roll', default_value='0', description='Roll of the robot'),
-        DeclareLaunchArgument('pitch', default_value='0', description='Pitch of the robot'),
-        DeclareLaunchArgument('yaw', default_value='0', description='Yaw of the robot'),
+        DeclareLaunchArgument('x', default_value='0.0', description='X position of the robot'),
+        DeclareLaunchArgument('y', default_value='0.0', description='Y position of the robot'),
+        DeclareLaunchArgument('z', default_value='5.0', description='Z position of the robot'),
+        DeclareLaunchArgument('roll', default_value='0.0', description='Roll of the robot'),
+        DeclareLaunchArgument('pitch', default_value='0.0', description='Pitch of the robot'),
+        DeclareLaunchArgument('yaw', default_value='0.0', description='Yaw of the robot'),
         DeclareLaunchArgument('robot_name', default_value='rover', description='Robot name'),
         DeclareLaunchArgument('world_file', default_value=LaunchConfiguration('world_file', default=os.path.join(FindPackageShare('euro2moon').find('euro2moon'), 'worlds', 'moon.world')),
                                description='World file for the simulation'),
@@ -56,13 +56,14 @@ def generate_launch_description():
             package='ros_gz_sim',
             executable='create',
             output='screen',
-            parameters=[{'file': urdfPath,
-                        'name': 'rover',
-                        '-x': LaunchConfiguration('x'),
-                        '-y': LaunchConfiguration('y'),
-                        '-z': LaunchConfiguration('z'),
-                        '-Y': LaunchConfiguration('yaw')
-                        }],
+            parameters=[{
+                'file': urdfPath,
+                'name': LaunchConfiguration('robot_name'),
+                'x': LaunchConfiguration('x'),
+                'y': LaunchConfiguration('y'),
+                'z': LaunchConfiguration('z'),
+                'Y': LaunchConfiguration('yaw')
+            }],
         ),
 
 
