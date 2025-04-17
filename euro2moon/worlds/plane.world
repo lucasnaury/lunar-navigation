@@ -152,6 +152,5 @@
       <pose>50 1 0.0065 -0.1654 0 0</pose>
     </include>
 
-
   </world>
 </sdf>

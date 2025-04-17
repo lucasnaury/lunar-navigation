@@ -21,6 +21,7 @@ def generate_launch_description():
         Node(
             package='teleop_twist_keyboard',
             executable='teleop_twist_keyboard',
+            # remappings=[('cmd_vel', 'cmd_vel_teleop')],
             name='teleop',
             output='screen',
             prefix = 'xterm -e',

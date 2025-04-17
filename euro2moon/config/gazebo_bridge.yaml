@@ -16,14 +16,13 @@
   gz_type_name: "gz.msgs.Twist"
   direction: ROS_TO_GZ  # BIDIRECTIONAL or ROS_TO_GZ or GZ_TO_ROS
 
-- ros_topic_name: "odom"
-  gz_topic_name: "/odom"
-  ros_type_name: "nav_msgs/msg/Odometry"
-  gz_type_name: "gz.msgs.Odometry"
+# ----------------------------- TF ----------------------------- #
+- ros_topic_name: "tf"
+  gz_topic_name: "/model/rover/tf"
+  ros_type_name: "tf2_msgs/msg/TFMessage"
+  gz_type_name: "gz.msgs.Pose_V"
   direction: GZ_TO_ROS
 
-
-# ----------------------------- TF ----------------------------- #
 - ros_topic_name: "tf"
   gz_topic_name: "/tf"
   ros_type_name: "tf2_msgs/msg/TFMessage"
@@ -71,3 +70,11 @@
   direction: GZ_TO_ROS
 
 
+
+
+
+- ros_topic_name: "/tf"
+  gz_topic_name: "model/rover/pose"
+  ros_type_name: "tf2_msgs/msg/TFMessage"
+  gz_type_name: "gz.msgs.Pose_V"
+  direction: GZ_TO_ROS

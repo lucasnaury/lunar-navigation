@@ -2,17 +2,21 @@
   <model name='Rover'>
     <self_collide>false</self_collide>
     <static>false</static>
+    <link name="base_footprint">
+    </link>
     <link name="base_link">
+      <!-- <pose relative_to="base_footprint">-0.4 0 0.15 0 0 0</pose> -->
+      <pose relative_to="base_footprint">0 0 0.15 0 0 0</pose>
       <inertial>
         <mass>18.71</mass>
-        <inertia>
+        <!-- <inertia>
           <ixx>0.3986</ixx>
           <ixy>0</ixy>
           <ixz>0</ixz>
           <iyy>1.092</iyy>
           <iyz>0</iyz>
           <izz>1.337</izz>
-        </inertia>
+        </inertia> -->
       </inertial>
       <gravity>true</gravity>
       <velocity_decay/>
@@ -183,6 +187,14 @@
         </surface>
       </collision>
     </link>
+
+
+
+    <joint name="footprintJoint" type="fixed">
+      <parent>base_footprint</parent>
+      <child>base_link</child>
+    </joint>
+
     <joint name="FrontLeftArmJoint" type="revolute">
       <parent>base_link</parent>
       <child>FrontLeftArm</child>
@@ -632,9 +644,9 @@
 
     <!-- Sensor definition -->
     <link name="camera_link">
-      <pose>0.4 0 0.2 0 0 0</pose> <!-- Camera position-->
+      <pose relative_to="base_link">0.4 0 0.2 0 0 0</pose> <!-- Camera position-->
       <visual name="CameraVisual"> 
-        <pose>0 0 0 0 0 0</pose>
+        <pose>-0.025 0 0 0 0 0</pose>
         <geometry>
           <box>
             <size>0.05 0.05 0.05</size> <!-- Camera small box-->
@@ -647,18 +659,17 @@
 
       
       <sensor name="rs_front" type="rgbd_camera">
-        <pose>0 0 0 0 0 0</pose>
         <always_on>1</always_on>
         <update_rate>30</update_rate>
         <topic>camera</topic>
         <camera name="camera_front">
-          <optical_frame_id>camera_link</optical_frame_id>
-          <horizontal_fov>1.0472</horizontal_fov>
+          <optical_frame_id>rover/camera_link</optical_frame_id>
+          <horizontal_fov>1.57</horizontal_fov>
           <lens>
             <intrinsics>
               <!-- fx = fy = width / ( 2 * tan (hfov / 2 ) ) -->
-              <fx>277.1</fx>
-              <fy>277.1</fy>
+              <fx>160</fx>
+              <fy>160</fy>
                 <!-- cx = ( width + 1 ) / 2 -->
               <cx>160.5</cx>
                 <!-- cy = ( height + 1 ) / 2 -->
@@ -703,9 +714,12 @@
       <child>camera_link</child>
     </joint>
 
+
+
+
     <!--Lidar Plugin -->
     <link name="lidar_link">
-      <pose>0.4 0 0.2 0 0 0</pose> <!-- Lidar position-->
+      <pose relative_to="base_link">0.4 0 0.2 0 0 0</pose>
       <visual name="LidarVisual"> 
         <pose>0 0 0 0 0 0</pose>
         <geometry>
@@ -719,8 +733,8 @@
       </visual>
 
       <sensor name="front_laser" type="gpu_lidar">
-        <pose>0 0 0 0 0 0</pose>
         <always_on>1</always_on>
+        <visualize>true</visualize>
         <update_rate>10</update_rate>
         <topic>lidar</topic>
         <lidar>
@@ -761,37 +775,24 @@
 
 
     <!-- Dummy link between lidar_link frame and the frame that the lidar point cloud is published into -->
-    <link name="rover/lidar_link/front_laser">
-      <pose>0.4 0 0.2 0 0 0</pose> <!-- Lidar position-->
+    <link name="lidar_link/front_laser">
+      <pose relative_to="base_footprint">0.4 0 0.2 0 0 0</pose> <!-- Lidar position-->
     </link>
     <joint name="lidarJoint" type="fixed">
       <parent>lidar_link</parent>
-      <child>rover/lidar_link/front_laser</child>
+      <child>lidar_link/front_laser</child>
     </joint>
 
 
 
-
-
-
-
-
-
-
-
-
-
-<!-- Lidar End -->
-
-
-
+    <!-- Differential drive -->
     <plugin
       filename="gz-sim-diff-drive-system"
       name="gz::sim::systems::DiffDrive">
+      <right_joint>FrontRightHubMotorWheelJoint</right_joint>
       <right_joint>BackLeftHubMotorWheelJoint</right_joint>
       <left_joint>FrontLeftHubMotorWheelJoint</left_joint>
       <left_joint>BackRightHubMotorWheelJoint</left_joint>
-      <right_joint>FrontRightHubMotorWheelJoint</right_joint>
       <wheel_separation>0.667</wheel_separation>
       <wheel_radius>0.108</wheel_radius>
       <max_linear_acceleration>3</max_linear_acceleration>
@@ -807,22 +808,25 @@
       <!-- Input -->
       <topic>cmd_vel</topic>
 
-      <!-- TF Output -->
-      <tf_topic>tf</tf_topic>
-      <frame_id>odom</frame_id>
-      <child_frame_id>base_link</child_frame_id>
-
-      <!-- Odometry Output -->
-      <odom_topic>odom</odom_topic>
-      <odom_publish_frequency>30</odom_publish_frequency>
+      <!-- Do not use this output -->
+      <tf_topic>wrong_tf</tf_topic>
+      <odom_publish_frequency>0</odom_publish_frequency>
 
     </plugin>
 
-    <!-- Joint publisher -->
-    <!-- <plugin filename="libgz-sim-joint-state-publisher-system.so" name="gz::sim::systems::JointStatePublisher">
-      <topic>joint_states</topic>
-    </plugin> -->
 
+    <plugin
+      filename="gz-sim-odometry-publisher-system"
+      name="gz::sim::systems::OdometryPublisher">
+      <odom_frame>rover/odom</odom_frame>
+      <robot_base_frame>rover/base_footprint</robot_base_frame>
+      <tf_topic>/tf</tf_topic>
+    </plugin>
+
+    <!-- Joint publisher -->
+    <plugin filename="libgz-sim-joint-state-publisher-system.so" name="gz::sim::systems::JointStatePublisher">
+      <topic>joint_states</topic>
+    </plugin>
 
   </model>
 </sdf>

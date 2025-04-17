@@ -72,10 +72,11 @@ def generate_launch_description():
             output='screen',
             parameters = [
                 # {'ignore_timestamp': False},
-                # {'frame_prefix': 'rover/'},
+                {'frame_prefix': 'rover/'},
                 {'use_sim_time': True},
                 {'robot_description': open(urdfPath).read()}],
-        )	
+        )
+
 
 
     ])
