@@ -1,13 +1,13 @@
 import os
-import launch
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
+from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, RegisterEventHandler, TimerAction, LogInfo
 from launch.conditions import IfCondition, UnlessCondition
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from ament_index_python.packages import get_package_share_directory
 from launch.substitutions import LaunchConfiguration
+from launch.event_handlers import OnProcessStart
 
 
 def generate_launch_description():
@@ -18,7 +18,7 @@ def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
     autostart = LaunchConfiguration('autostart', default='true')
     map_yaml_file = os.path.join(pkg_path, 'maps', 'map.yaml')
-    params_file = os.path.join(pkg_path, 'config', 'nav2_params.yaml')
+    params_file = os.path.join(pkg_path, 'config', 'navigation', 'nav2_params.yaml')
     use_rviz = LaunchConfiguration('use_rviz', default='true')
     
     # Declare launch arguments
@@ -64,7 +64,7 @@ def generate_launch_description():
     )
     
     # Include Nav2 navigation launch
-    nav2_bringup_launch = IncludeLaunchDescription(
+    navigation_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(pkg_path, 'launch', 'navigation_launch.py')
         ),
@@ -75,11 +75,34 @@ def generate_launch_description():
         }.items()
     )
 
+    # Static transform between map and odon
+    static_tf = Node(
+        condition=IfCondition(use_rviz),
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='odom_map_pub',
+        arguments=["--frame-id", "rover/map", "--child-frame-id", "rover/odom"],
+    )
+
     return LaunchDescription([
         declare_use_sim_time_arg,
         declare_use_rviz_arg,
         declare_autostart_arg,
         simulation_launch,
         rviz_node,
-        # nav2_bringup_launch
+        static_tf,
+
+        # launch nav2 5s after gazebo
+        RegisterEventHandler(
+            OnProcessStart(
+                target_action=rviz_node,
+                on_start=[
+                    LogInfo(msg='\nSTARTING nav2\n'),
+                    TimerAction(
+                        period=5.0,
+                        actions=[navigation_launch],
+                    )
+                ]
+            )
+        ),
     ])

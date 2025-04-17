@@ -30,7 +30,7 @@ def createPath(node):
     path_msg.header.frame_id = 'rover/map'
 
     poses = []
-    steps = 20
+    steps = 120
     for i in range(steps + 1):
         pose = PoseStamped()
         pose.header.stamp = now
@@ -62,24 +62,16 @@ def main() -> None:
 
     # Wait for navigation to fully activate, since autostarting nav2
     # navigator.waitUntilNav2Active()
-    navigator.lifecycleStartup()
-
-    # Go to our demos first goal pose
-    goal_pose = PoseStamped()
-    goal_pose.header.frame_id = 'rover/map'
-    goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-    goal_pose.pose.position.x = 60.0
-    goal_pose.pose.position.y = 0.0
-    goal_pose.pose.orientation.w = 1.0
+    # navigator.lifecycleStartup()
 
     # Get the path, smooth it
     path = createPath(navigator)
-    # smoothed_path = navigator.smoothPath(path)
+    smoothed_path = navigator.smoothPath(path)
 
     # navigator.get_logger().info(str(smoothed_path))
 
     # Follow path
-    navigator.followPath(path)
+    navigator.followPath(smoothed_path)
 
     i = 0
     while not navigator.isTaskComplete():
