@@ -26,7 +26,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: StereoCamera
+    SyncSource: ""
 Visualization Manager:
   Class: ""
   Displays:
@@ -57,19 +57,11 @@ Visualization Manager:
         All Enabled: false
         rover/BackLeftArm:
           Value: false
-        rover/BackLeftHubMotorWheel:
-          Value: false
         rover/BackRightArm:
-          Value: false
-        rover/BackRightHubMotorWheel:
           Value: false
         rover/FrontLeftArm:
           Value: false
-        rover/FrontLeftHubMotorWheel:
-          Value: false
         rover/FrontRightArm:
-          Value: false
-        rover/FrontRightHubMotorWheel:
           Value: false
         rover/base_footprint:
           Value: true
@@ -96,17 +88,13 @@ Visualization Manager:
             rover/base_footprint:
               rover/base_link:
                 rover/BackLeftArm:
-                  rover/BackLeftHubMotorWheel:
-                    {}
+                  {}
                 rover/BackRightArm:
-                  rover/BackRightHubMotorWheel:
-                    {}
+                  {}
                 rover/FrontLeftArm:
-                  rover/FrontLeftHubMotorWheel:
-                    {}
+                  {}
                 rover/FrontRightArm:
-                  rover/FrontRightHubMotorWheel:
-                    {}
+                  {}
                 rover/camera_link:
                   {}
                 rover/lidar_link:
@@ -317,8 +305,8 @@ Visualization Manager:
       Scale: 100.46871948242188
       Target Frame: <Fixed Frame>
       Value: TopDownOrtho (rviz_default_plugins)
-      X: 2.9442639350891113
-      Y: 0.5671674013137817
+      X: 4.039130210876465
+      Y: 0.42782115936279297
     Saved: ~
 Window Geometry:
   Displays:

@@ -195,7 +195,7 @@
       <child>base_link</child>
     </joint>
 
-    <joint name="FrontLeftArmJoint" type="revolute">
+    <joint name="FrontLeftArmJoint" type="fixed">
       <parent>base_link</parent>
       <child>FrontLeftArm</child>
       <pose relative_to="base_link">.263 .238 .029 0 0 0</pose>
@@ -333,7 +333,7 @@
         </surface>
       </collision>
     </link>
-    <joint name="BackLeftArmJoint" type="revolute">
+    <joint name="BackLeftArmJoint" type="fixed">
       <parent>base_link</parent>
       <child>BackLeftArm</child>
       <pose relative_to="base_link">-.263 -.238 .029 0 0 3.14159265359</pose>
@@ -471,7 +471,7 @@
         </surface>
       </collision>
     </link>
-    <joint name="FrontRightArmJoint" type="revolute">
+    <joint name="FrontRightArmJoint" type="fixed">
       <parent>base_link</parent>
       <child>FrontRightArm</child>
       <pose relative_to="base_link">.263 -.238 .029 0 0 0</pose>
@@ -609,7 +609,7 @@
         </surface>
       </collision>
     </link>
-    <joint name="BackRightArmJoint" type="revolute">
+    <joint name="BackRightArmJoint" type="fixed">
       <parent>base_link</parent>
       <child>BackRightArm</child>
       <pose relative_to="base_link">-.263 .238 .029 0 0 3.14159265359</pose>
@@ -824,9 +824,9 @@
     </plugin>
 
     <!-- Joint publisher -->
-    <plugin filename="libgz-sim-joint-state-publisher-system.so" name="gz::sim::systems::JointStatePublisher">
+    <!-- <plugin filename="libgz-sim-joint-state-publisher-system.so" name="gz::sim::systems::JointStatePublisher">
       <topic>joint_states</topic>
-    </plugin>
+    </plugin> -->
 
   </model>
 </sdf>

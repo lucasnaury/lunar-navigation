@@ -17,6 +17,7 @@ from geometry_msgs.msg import PoseStamped
 from nav2_simple_commander.robot_navigator import BasicNavigator, TaskResult
 import rclpy
 from nav_msgs.msg import Path
+from time import sleep
 
 """
 Basic navigation demo to follow a given path after smoothing
@@ -64,48 +65,49 @@ def main() -> None:
     # navigator.waitUntilNav2Active()
     # navigator.lifecycleStartup()
 
-    # Get the path, smooth it
-    path = createPath(navigator)
-    smoothed_path = navigator.smoothPath(path)
+    while True:
 
-    # navigator.get_logger().info(str(smoothed_path))
+        # Get the path, smooth it
+        path = createPath(navigator)
+        smoothed_path = navigator.smoothPath(path)
 
-    # Follow path
-    navigator.followPath(smoothed_path)
+        # navigator.get_logger().info(str(smoothed_path))
 
-    i = 0
-    while not navigator.isTaskComplete():
-        ################################################
-        #
-        # Implement some code here for your application!
-        #
-        ################################################
+        # Follow path
+        navigator.followPath(smoothed_path)
 
-        # Do something with the feedback
-        i += 1
-        feedback = navigator.getFeedback()
-        if feedback and i % 5 == 0:
-            print(
-                'Estimated distance remaining to goal position: '
-                + f'{feedback.distance_to_goal:.3f}'
-                + '\nCurrent speed of the robot: '
-                + f'{feedback.speed:.3f}'
-            )
+        i = 0
+        while not navigator.isTaskComplete():
+            ################################################
+            #
+            # Implement some code here for your application!
+            #
+            ################################################
 
-    # Do something depending on the return code
-    result = navigator.getResult()
-    if result == TaskResult.SUCCEEDED:
-        print('Goal succeeded!')
-    elif result == TaskResult.CANCELED:
-        print('Goal was canceled!')
-    elif result == TaskResult.FAILED:
-        print("Goal failed")
-    else:
-        print('Goal has an invalid return status!')
+            # Do something with the feedback
+            i += 1
+            feedback = navigator.getFeedback()
+            if feedback and i % 5 == 0:
+                print(
+                    'Estimated distance remaining to goal position: '
+                    + f'{feedback.distance_to_goal:.3f}'
+                    + '\nCurrent speed of the robot: '
+                    + f'{feedback.speed:.3f}'
+                )
 
-    navigator.lifecycleShutdown()
+        # Do something depending on the return code
+        result = navigator.getResult()
+        if result == TaskResult.SUCCEEDED:
+            print('Goal succeeded!')
+        elif result == TaskResult.CANCELED:
+            print('Goal was canceled!')
+        elif result == TaskResult.FAILED:
+            print("Goal failed")
+        else:
+            print('Goal has an invalid return status!')
 
-    exit(0)
+
+        sleep(1)
 
 
 if __name__ == '__main__':

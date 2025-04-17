@@ -65,6 +65,7 @@ controller_server:
   ros__parameters:
     controller_frequency: 20.0
     costmap_update_timeout: 0.30
+    action_server_result_timeout: 600.0
     min_x_velocity_threshold: 0.001
     min_y_velocity_threshold: 0.5
     min_theta_velocity_threshold: 0.001
@@ -110,18 +111,22 @@ controller_server:
       decel_lim_x: -2.5
       decel_lim_y: 0.0
       decel_lim_theta: -2.5
+
+      forward_prune_distance: -1.0
+      # forward_prune_distance: 4.0
       
       # DWA specific parameters
       vx_samples: 20
       vy_samples: 5
-      vtheta_samples: 40
-      sim_time: 1.7
+      vtheta_samples: 20
+      sim_time: 2.0
       linear_granularity: 0.05
       angular_granularity: 0.025
       transform_tolerance: 0.2
       xy_goal_tolerance: 0.25
       trans_stopped_velocity: 0.25
-      short_circuit_trajectory_evaluation: True
+      # short_circuit_trajectory_evaluation: True
+      short_circuit_trajectory_evaluation: False
       limit_vel_cmd_in_traj: False
       stateful: True
       
@@ -130,18 +135,31 @@ controller_server:
       # critics: ["RotateToGoal", "BaseObstacle", "GoalAlign", "PathAlign", "GoalDist"]
       # critics: ["BaseObstacle", "GoalAlign", "PathDist", "GoalDist"]
       # critics: ["RotateToGoal", "BaseObstacle", "PathDist", "GoalDist"]
-      critics: ["PathDist", "BaseObstacle", "GoalDist"]
-      PathAlign.scale: 2.0
-      PathAlign.forward_point_distance: 2.0
-      GoalAlign.scale: 2.0
-      GoalAlign.forward_point_distance: 2.0
-      PathDist.scale: 2.0
-      GoalDist.scale: 2.0
-      RotateToGoal.scale: 3.0
-      # RotateToGoal.slowing_factor: 5.0
-      RotateToGoal.lookahead_time: 2.0
+      # # critics: ["PathDist", "BaseObstacle", "GoalDist"]
+      # PathAlign.scale: 2.0
+      # PathAlign.forward_point_distance: 2.0
+      # GoalAlign.scale: 2.0
+      # GoalAlign.forward_point_distance: 2.0
+      # PathDist.scale: 5.0
+      # GoalDist.scale: 10.0
+      # RotateToGoal.scale: 8.0
+      # # RotateToGoal.slowing_factor: 5.0
+      # RotateToGoal.lookahead_time: 2.0
+      # BaseObstacle.scale: 32.0
+      # # BaseObstacle.sum_scores: true
+
+
+
+      critics: ["Oscillation", "BaseObstacle", "PathAlign", "PathDist", "GoalDist"] # ["RotateToGoal", "Oscillation", "BaseObstacle", "GoalAlign", "PathAlign", "PathDist", "GoalDist"]
       BaseObstacle.scale: 50.0
-      # BaseObstacle.sum_scores: true
+      BaseObstacle.sum_scores: true
+      PathAlign.scale: 32.0
+      PathAlign.forward_point_distance: 0.1
+      PathDist.scale: 32.0
+      GoalDist.scale: 24.0
+      RotateToGoal.scale: 32.0
+      RotateToGoal.slowing_factor: 5.0
+      RotateToGoal.lookahead_time: -1.0
 
 
     # https://answers.ros.org/question/392441/
@@ -228,9 +246,6 @@ controller_server:
     #   yaw_goal_tolerance: 0.2
     #   xy_goal_tolerance: 0.1
     #   include_costmap_obstacles: True
-    #   publish_feedback: True # Publish planner feedback containing the full trajectory and a list of active obstacles (should be enabled only for evaluation or debugging)
-
-
 local_costmap:
   local_costmap:
     ros__parameters:
@@ -244,7 +259,8 @@ local_costmap:
       height: 15
       resolution: 0.05
       # footprint: "[ [0.4, 0.4], [0.4, -0.4], [-0.4, -0.4], [-0.4, 0.4] ]"
-      plugins: ["obstacle_layer", "inflation_layer"]
+      plugins: ["obstacle_layer", "inflation_layer1", "inflation_layer2"]
+      # plugins: ["obstacle_layer", "inflation_layer1"]
       
       obstacle_layer:
         plugin: "nav2_costmap_2d::ObstacleLayer"
@@ -252,10 +268,7 @@ local_costmap:
         observation_sources: lidar camera
         lidar:
           topic: /lidar
-          max_obstacle_height: 2.0
-          clearing: True
-          marking: True
-          data_type: "PointCloud2"
+          max_obslocal_costmape: "PointCloud2"
           raytrace_max_range: 5.0
           raytrace_min_range: 0.0
           obstacle_max_range: 4.0
@@ -272,10 +285,14 @@ local_costmap:
           obstacle_max_range: 4.0
           obstacle_min_range: 0.0
           
-      inflation_layer:
+      inflation_layer1:
         plugin: "nav2_costmap_2d::InflationLayer"
-        cost_scaling_factor: 1.5
-        inflation_radius: 1.2
+        cost_scaling_factor: 0.25
+        inflation_radius: 0.8
+      inflation_layer2:
+        plugin: "nav2_costmap_2d::InflationLayer"
+        cost_scaling_factor: 1.0
+        inflation_radius: 1.4
 
 # global_costmap:
 #   global_costmap:
