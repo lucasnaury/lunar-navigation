@@ -107,13 +107,13 @@
     <include>
       <uri>package://euro2moon/worlds/models/qr_rock1</uri>
       <name>qr_rock1</name>
-      <pose>4 0 0.15 0 0 0</pose>
+      <pose>10 1.5 0 0 0 0</pose>
     </include>
 
     <include>
       <uri>package://euro2moon/worlds/models/qr_rock2</uri>
       <name>qr_rock2</name>
-      <pose>10 1.5 0 0 0 0</pose>
+      <pose>4 0 0.15 0 0 0</pose>
     </include>
 
     <include>

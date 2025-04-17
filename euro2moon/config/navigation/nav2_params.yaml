@@ -98,24 +98,24 @@ controller_server:
       min_vel_y: 0.0
       max_vel_x: 5.0
       max_vel_y: 0.0
-      max_vel_theta: 2.0
+      max_vel_theta: 4.0
       min_speed_xy: 0.0
       max_speed_xy: 5.0
-      min_speed_theta: 0.0
+      min_speed_theta: -2.0
       
       # Acceleration limits
       acc_lim_x: 3.0
       acc_lim_y: 0.0
       acc_lim_theta: 3.0
-      decel_lim_x: 0.0
+      decel_lim_x: -2.5
       decel_lim_y: 0.0
-      decel_lim_theta: 0.0
+      decel_lim_theta: -2.5
       
       # DWA specific parameters
       vx_samples: 20
       vy_samples: 5
-      vtheta_samples: 20
-      sim_time: 3.0
+      vtheta_samples: 40
+      sim_time: 1.7
       linear_granularity: 0.05
       angular_granularity: 0.025
       transform_tolerance: 0.2
@@ -129,18 +129,19 @@ controller_server:
       # critics: ["RotateToGoal", "BaseObstacle", "GoalAlign", "PathAlign", "PathDist", "GoalDist"]
       # critics: ["RotateToGoal", "BaseObstacle", "GoalAlign", "PathAlign", "GoalDist"]
       # critics: ["BaseObstacle", "GoalAlign", "PathDist", "GoalDist"]
-      critics: ["RotateToGoal", "BaseObstacle", "PathDist", "GoalDist"]
+      # critics: ["RotateToGoal", "BaseObstacle", "PathDist", "GoalDist"]
+      critics: ["PathDist", "BaseObstacle", "GoalDist"]
       PathAlign.scale: 2.0
       PathAlign.forward_point_distance: 2.0
       GoalAlign.scale: 2.0
       GoalAlign.forward_point_distance: 2.0
       PathDist.scale: 2.0
-      GoalDist.scale: 3.0
+      GoalDist.scale: 2.0
       RotateToGoal.scale: 3.0
-      RotateToGoal.slowing_factor: 5.0
-      RotateToGoal.lookahead_time: -1.0
+      # RotateToGoal.slowing_factor: 5.0
+      RotateToGoal.lookahead_time: 2.0
       BaseObstacle.scale: 50.0
-      BaseObstacle.sum_scores: true
+      # BaseObstacle.sum_scores: true
 
 
     # https://answers.ros.org/question/392441/
@@ -273,7 +274,7 @@ local_costmap:
           
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
-        cost_scaling_factor: 1.0
+        cost_scaling_factor: 1.5
         inflation_radius: 1.2
 
 # global_costmap:
