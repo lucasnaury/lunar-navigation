@@ -1,29 +1,30 @@
 from pathlib import Path
 import sys
-from include.helpers import loadUnits, drawPath, showImage, randomColor
+from include.units import Unit
+from include.helpers import drawPath, showImage, randomColor
 from draw_units import drawPoints
 import numpy as np
 import cv2
 
-def main(mapFolder, outputFolder):
+def main(unitsJsonfile, mapFolder, outputFolder):
     # Paths
-    jsonPath = str(Path(__file__).parent.absolute() / "units.json")
+    jsonPath = str(Path(__file__).parent.absolute() / "units" / unitsJsonfile)
     mapPath  = Path(__file__).parent.absolute() / "maps" / mapFolder / "illumination.png"
     outputFolderPath = Path(__file__).parent.absolute() / "output" / outputFolder 
 
     targetImgSize = 2000
 
     # Load units data
-    units, px2m, scale = loadUnits(jsonPath, targetImgSize)
-    unitNames = list(units.keys())
+    units, px2m, scale = Unit.loadUnits(jsonPath, targetImgSize)
+    nUnits = len(units)
     
     # Load map image
     map = cv2.imread(mapPath)
     map = cv2.resize(map, (targetImgSize,targetImgSize))
 
     # Check all paths
-    for i,_ in enumerate(unitNames):
-        for j,_ in enumerate(unitNames):
+    for i in range(nUnits):
+        for j in range(nUnits):
             # Skip routes that have already been visited
             if j <= i:
                 continue
@@ -57,7 +58,8 @@ def main(mapFolder, outputFolder):
 
 
 if __name__ == "__main__":
-    mapFolder    = sys.argv[1] if len(sys.argv) > 1 else "cropped_resized"
-    outputFolder = sys.argv[2] if len(sys.argv) > 2 else "cropped_resized"
+    unitsFileName = sys.argv[1] if len(sys.argv) > 1 else "config1.json"
+    mapFolder     = sys.argv[2] if len(sys.argv) > 2 else "cropped_resized"
+    outputFolder  = sys.argv[3] if len(sys.argv) > 3 else "cropped_resized"
 
-    main(mapFolder,outputFolder)
+    main(unitsFileName,mapFolder,outputFolder)

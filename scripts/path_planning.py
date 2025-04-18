@@ -4,7 +4,8 @@ import cv2
 import time
 import numpy as np
 from pathlib import Path
-from include.helpers import showImage, normaliseImage, loadUnits, writeToFile, drawPath
+from include.units import Unit
+from include.helpers import showImage, normaliseImage, writeToFile, drawPath
 from include.a_star import astar
 
 
@@ -185,22 +186,22 @@ def hpc_all_routes(map_folder_name:str, output_folder_name:str):
 
     path = str(Path(__file__).parent.absolute() / "units.json")
 
-    units,_,_ = loadUnits(path, slopes.shape[0])
-    unitNames = list(units.keys())
+    units,_,_ = Unit.loadUnits(path, slopes.shape[0])
+    nUnits = len(units)
 
     # Test all routes
-    for i,key in enumerate(unitNames):
-        for j, key2 in enumerate(unitNames):
+    for i in range(nUnits):
+        for j in range(nUnits):
             # Skip routes that have already been visited
             if j <= i:
                 continue
 
             # Define points
-            startPos = (units[key][1],  units[key][0])
-            endPos   = (units[key2][1], units[key2][0])
+            startPos = units[i].YXpos()
+            endPos   = units[j].YXpos()
 
             # Test algorithm
-            print(f"Starting A* algorithm from {key} to {key2}")
+            print(f"Starting A* algorithm from {units[i].name} to {units[j].name}")
             before = time.time()
             path_modified, explored = astar(slopeMap, illuminationMap, startPos, endPos, weights, isDebug=True, gui=False)
             print(f"-> A* finished running in {time.time() - before}s")
@@ -233,7 +234,7 @@ def hpc_all_routes(map_folder_name:str, output_folder_name:str):
             outputDataPath = str(outputFolder / "path.txt")
             np.savetxt(outputDataPath, path_modified)
 
-            writeToFile(str(outputFolder / "route_info.txt"), f"Route from \"{key}\" to \"{key2}\"")
+            writeToFile(str(outputFolder / "route_info.txt"), f"Route from \n{units[i].name} with ID {units[i].id}\nto\n{units[j].name} with ID {units[j].id}")
 
 
 
@@ -243,14 +244,21 @@ if __name__ == "__main__":
     map_folder_name = sys.argv[1] if len(sys.argv) > 1 else "maps"
     output_folder_name = sys.argv[2] if len(sys.argv) > 2 else "output"
     
-    # Start and end positions (Y,X)
-    startPos = (int(sys.argv[3]), int(sys.argv[4])) if len(sys.argv) > 6 else (4200, 4400)
-    endPos   = (int(sys.argv[5]), int(sys.argv[6])) if len(sys.argv) > 6 else (5200, 6000)
- 
-    # Run program to test weights
-    # debug(map_folder_name, output_folder_name, startPos, endPos)
 
-    # Run program on HPC to compare all configurations
-    # hpc_weights(map_folder_name, output_folder_name, startPos, endPos)
+
+    if len(sys.argv) > 3 and ".json" in sys.argv[3]:
+        # Run all routes if JSON file given
+        jsonFileName = sys.argv[3]
+        hpc_all_routes(map_folder_name, output_folder_name)
     
-    hpc_all_routes(map_folder_name, output_folder_name)
+    else:
+        # Start and end positions (Y,X)
+        startPos = (int(sys.argv[3]), int(sys.argv[4])) if len(sys.argv) > 6 else (4200, 4400)
+        endPos   = (int(sys.argv[5]), int(sys.argv[6])) if len(sys.argv) > 6 else (5200, 6000)
+    
+        # Run program to test weights
+        # debug(map_folder_name, output_folder_name, startPos, endPos)
+
+        # Run program on HPC to compare all configurations
+        hpc_weights(map_folder_name, output_folder_name, startPos, endPos)
+    

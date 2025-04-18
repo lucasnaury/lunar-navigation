@@ -1,0 +1,39 @@
+{
+    "units": [
+        {
+            "name": "Maintenance",
+            "x": 235,
+            "y": 120
+        },
+        {
+            "name": "Habitat",
+            "x": 281,
+            "y": 119
+        },
+        {
+            "name": "O2 Production",
+            "x": 364,
+            "y": 59
+        },
+        {
+            "name": "Charging",
+            "x": 353,
+            "y": 99
+        },
+        {
+            "name": "ISRU Consumer",
+            "x": 382,
+            "y": 326
+        },
+        {
+            "name": "Charging 2",
+            "x": 366,
+            "y": 356
+        }
+    ],
+    "routes": [],
+    "metadata": {
+        "mapSize": 598,
+        "px2m": 16.7269519188
+    }
+}

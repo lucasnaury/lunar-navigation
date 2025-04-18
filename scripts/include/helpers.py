@@ -1,5 +1,4 @@
 import numpy as np
-import json
 import cv2
 
 def showImage(windowName, img, max_dim=600):
@@ -32,39 +31,6 @@ def writeToFile(filepath:str, txt:str):
 def randomColor():
     return tuple(np.random.choice(range(256), size=3).tolist())
 
-
-def loadUnits(path, targetSize=None) -> tuple[dict, float]:
-    with open(path) as f:
-        # Read JSON as dict
-        data = json.load(f)
-
-        # Separate data
-        metadata = data["metadata"]
-        units_data = data["units"]
-
-        # Calculate scaling factor
-        if targetSize == None:
-            scale = 1
-        else:
-            scale = targetSize / int(metadata["mapSize"])
-
-        px2m = float(metadata["px2m"]) / scale
-
-        # Clean data
-        units = dict()
-        for val in units_data:
-            # Extract position for each unit
-            name = val['name']
-            x = int(val['x'])
-            y = int(val['y'])
-            
-            # Store it in dict
-            units[name] = (int(scale*x), int(scale*y))
-
-        return units, px2m, scale
-    
-    print("[ERROR] Couldn't open JSON file")
-    return {}, 0, 0
 
 
 def drawPath(map, path, color=(255,0,0)):
