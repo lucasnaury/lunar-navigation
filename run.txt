@@ -1,0 +1,35 @@
+# On 256 map around crater
+python .\path_planning.py "test_maps" 118 124 146 169
+
+# On 256 map all the way through
+python .\path_planning.py "test_maps" "resized256" 10 10 230 230
+F122.86 cost
+
+# On 128 map
+python .\path_planning.py "test_maps" "resized128" 10 10 110 110
+
+# Crop map
+python .\scripts\crop_maps.py 4730 3050 598
+
+# Resize cropped map
+python .\scripts\resize_maps.py "cropped" "cropped_resized" 256
+
+# On 900 Cropped map
+python .\path_planning.py "maps/cropped" "cropped_test" 10 10 880 880
+python .\path_planning.py "maps/cropped" "all_routes" 10 10 880 880
+
+
+# Merged all routes done on 256maps 
+python .\merge_paths.py config1.json cropped_resized all_routes_resized
+
+# --------------------------FINAL-----------------------------------
+python .\scripts\crop_maps.py 4730 3050 598
+python .\scripts\resize_maps.py "cropped" "cropped_resized" 256
+
+python path_planning.py "maps/cropped_resized" "all_resized_conf1" "config1.json"
+python path_planning.py "maps/cropped_resized" "all_resized_conf2" "config2.json"
+python path_planning.py "maps/cropped_resized" "all_resized_conf3" "config3.json"
+
+python .\merge_paths.py config1.json cropped all_resized_conf1
+python .\merge_paths.py config2.json cropped all_resized_conf2
+python .\merge_paths.py config3.json cropped all_resized_conf3
