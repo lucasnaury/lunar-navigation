@@ -8,7 +8,7 @@ from include.helpers import showImage
 from include.units import Unit
 
 
-def drawPoints(map, units:list[Unit], px2m, size=None, showRange=False):
+def drawPoints(map, units:list[Unit], px2m, size=None, showRange=False, showText=False):
 
     if size is not None:
         map = cv2.resize(map, (size,size))
@@ -17,7 +17,7 @@ def drawPoints(map, units:list[Unit], px2m, size=None, showRange=False):
 
     # Define drawing parameters
     circleSize = max(1, int(10 * size / 2000))
-    fontSize   = max(1, int(2  * size / 2000))
+    fontSize   = max(1, int(3  * size / 2000))
 
 
     for unit in units:
@@ -31,16 +31,17 @@ def drawPoints(map, units:list[Unit], px2m, size=None, showRange=False):
             cv2.circle(overlay, unit.pos(), int(landingRange/2), (0,255,0), -2)
             map = cv2.addWeighted(overlay, 0.2, map, 0.8, 0)
 
-        # Draw unit name
-        (w,h),b = cv2.getTextSize(unit.name, cv2.FONT_HERSHEY_DUPLEX, fontSize, fontSize)
-        y_offset = h if unit.y - h > 0 else -(h+b)
-        if unit.x - int(w/2) < 0:
-            new_x = 0
-        elif unit.x + int(w/2) > map.shape[1]:
-            new_x = map.shape[1] - w
-        else:
-            new_x = unit.x - int(w/2)
-        cv2.putText(map, unit.name, (new_x, unit.y - y_offset), cv2.FONT_HERSHEY_DUPLEX, fontSize, (255,0,0), fontSize)
+        if showText:
+            # Draw unit name
+            (w,h),b = cv2.getTextSize(unit.name, cv2.FONT_HERSHEY_DUPLEX, fontSize, fontSize)
+            y_offset = h if unit.y - h > 0 else -(h+b)
+            if unit.x - int(w/2) < 0:
+                new_x = 0
+            elif unit.x + int(w/2) > map.shape[1]:
+                new_x = map.shape[1] - w
+            else:
+                new_x = unit.x - int(w/2)
+            cv2.putText(map, unit.name, (new_x, unit.y - y_offset), cv2.FONT_HERSHEY_DUPLEX, fontSize, (255,0,0), fontSize)
 
     return map
 
@@ -56,7 +57,7 @@ def main(jsonFile:str, mapPath:str):
     map = cv2.imread(mapPath)
 
     # Draw units
-    map = drawPoints(map, units, px2m, size=targetImgSize, showRange=True)
+    map = drawPoints(map, units, px2m, size=targetImgSize, showRange=True,showText=True)
 
     # Draw routes
     # for unit in units:

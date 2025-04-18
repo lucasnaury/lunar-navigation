@@ -16,27 +16,24 @@ def main(unitsJsonfile, mapFolder, outputFolder):
 
     # Load units data
     units, px2m, scale = Unit.loadUnits(jsonPath, targetImgSize)
-    nUnits = len(units)
     
     # Load map image
     map = cv2.imread(mapPath)
+    initialSize = map.shape[0]
     map = cv2.resize(map, (targetImgSize,targetImgSize))
 
     # Check all paths
-    for i in range(nUnits):
-        for j in range(nUnits):
-            # Skip routes that have already been visited
-            if j <= i:
-                continue
+    for unit in units:
+        for other_unit in unit.routes:
 
             # Load path
-            pathFile = str(outputFolderPath / f"route_{i}-{j}" / "path.txt")
+            pathFile = str(outputFolderPath / f"route_{unit.id}-{other_unit.id}" / "path.txt")
             path = np.loadtxt(pathFile)
 
             # Path image
-            pathFile = str(outputFolderPath / f"route_{i}-{j}" / "path.png")
+            pathFile = str(outputFolderPath / f"route_{unit.id}-{other_unit.id}" / "path.png")
             pathImg = cv2.imread(pathFile)
-            astarScale = 900 / pathImg.shape[0]
+            astarScale = initialSize / pathImg.shape[0]
 
             # Change path coordinates
             path *= scale * astarScale

@@ -28,8 +28,34 @@ def writeToFile(filepath:str, txt:str):
     f.close()
 
 
+
+color_list = [
+    (107,206,35),
+    (130,41,126),
+    (79,84,240),
+    (44,167,236),
+    (34,86,238),
+    (243,164,32),
+    (116,118,238),
+    (119,167,4),
+    (69,128,201),
+]
+returned_colors = []
 def randomColor():
-    return tuple(np.random.choice(range(256), size=3).tolist())
+    global returned_colors
+
+    while True:
+        randomIndex = np.random.randint(0,len(color_list))
+        
+        if randomIndex not in returned_colors:
+            break
+
+    returned_colors.append(randomIndex)
+
+    if len(returned_colors) == len(color_list):
+        returned_colors = []
+
+    return color_list[randomIndex]
 
 
 
@@ -39,7 +65,7 @@ def drawPath(map, path, color=(255,0,0)):
     colormap = cv2.cvtColor(map, cv2.COLOR_GRAY2BGR) if isGrayscale else map
     
     # Compute thickness based on image size
-    thickness = max(1,int(np.floor(1 * map.shape[0] / 200)))
+    thickness = max(1,int(np.floor(1 * map.shape[0] / 150)))
 
     # Draw line
     for i in range(len(path) - 1):
