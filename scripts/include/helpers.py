@@ -73,8 +73,8 @@ def drawPath(map, path, color=(255,0,0)):
 
     # Draw line
     for i in range(len(path) - 1):
-        if i%10 > 1:
-            continue
+        # if i%10 > 1:
+        #     continue
         p_start = (path[i][1], path[i][0])
         p_end = (path[i+1][1], path[i+1][0])
         cv2.line(colormap, p_start, p_end, color, thickness)
