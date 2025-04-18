@@ -175,7 +175,7 @@ def hpc_weights(map_folder_name:str, output_folder_name:str, startPos, endPos):
         np.savetxt(outputDataPath, path_modified)
 
 
-def hpc_all_routes(map_folder_name:str, output_folder_name:str):
+def hpc_all_routes(map_folder_name:str, output_folder_name:str, jsonUnitFile:str):
     """To run on the HPC to calculate all routes between ISRU units"""
 
     # Load maps
@@ -184,24 +184,20 @@ def hpc_all_routes(map_folder_name:str, output_folder_name:str):
     # Compared weights
     weights = [2.0, 1.0, 5.0, 5.0, 0.8, 0.2] # Medium slope cost, medium illumination cost
 
-    path = str(Path(__file__).parent.absolute() / "units.json")
+    path = str(Path(__file__).parent.absolute() / "units" / jsonUnitFile)
 
     units,_,_ = Unit.loadUnits(path, slopes.shape[0])
-    nUnits = len(units)
 
     # Test all routes
-    for i in range(nUnits):
-        for j in range(nUnits):
-            # Skip routes that have already been visited
-            if j <= i:
-                continue
+    for unit in units:
+        for otherUnit in unit.routes:
 
             # Define points
-            startPos = units[i].YXpos()
-            endPos   = units[j].YXpos()
+            startPos = unit.YXpos()
+            endPos   = otherUnit.YXpos()
 
             # Test algorithm
-            print(f"Starting A* algorithm from {units[i].name} to {units[j].name}")
+            print(f"Starting A* algorithm from {unit.name} to {otherUnit.name}")
             before = time.time()
             path_modified, explored = astar(slopeMap, illuminationMap, startPos, endPos, weights, isDebug=True, gui=False)
             print(f"-> A* finished running in {time.time() - before}s")
@@ -216,7 +212,7 @@ def hpc_all_routes(map_folder_name:str, output_folder_name:str):
 
 
             # Check that result folder exists or create it
-            outputFolder = Path(__file__).parent.absolute() / "output" / output_folder_name / f"route_{i}-{j}"
+            outputFolder = Path(__file__).parent.absolute() / "output" / output_folder_name / f"route_{unit.id}-{otherUnit.id}"
             outputFolder.mkdir(parents=True, exist_ok=True)
 
             # Save results
@@ -234,7 +230,7 @@ def hpc_all_routes(map_folder_name:str, output_folder_name:str):
             outputDataPath = str(outputFolder / "path.txt")
             np.savetxt(outputDataPath, path_modified)
 
-            writeToFile(str(outputFolder / "route_info.txt"), f"Route from \n{units[i].name} with ID {units[i].id}\nto\n{units[j].name} with ID {units[j].id}")
+            writeToFile(str(outputFolder / "route_info.txt"), f"Route from \n{unit.name} with ID {unit.id}\nto\n{otherUnit.name} with ID {otherUnit.id}")
 
 
 
@@ -249,7 +245,7 @@ if __name__ == "__main__":
     if len(sys.argv) > 3 and ".json" in sys.argv[3]:
         # Run all routes if JSON file given
         jsonFileName = sys.argv[3]
-        hpc_all_routes(map_folder_name, output_folder_name)
+        hpc_all_routes(map_folder_name, output_folder_name, jsonFileName)
     
     else:
         # Start and end positions (Y,X)

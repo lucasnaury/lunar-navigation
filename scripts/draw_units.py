@@ -25,7 +25,7 @@ def drawPoints(map, units:list[Unit], px2m, size=None, showRange=False):
         cv2.circle(map, unit.pos(), circleSize, (0,0,255), -1)
 
         # Draw unit landing range
-        if showRange:
+        if showRange and unit.isFixed:
             overlay = map.copy()
             landingRange = 2000/px2m # 2km range in px
             cv2.circle(overlay, unit.pos(), int(landingRange/2), (0,255,0), -2)
@@ -58,11 +58,16 @@ def main(jsonFile:str, mapPath:str):
     # Draw units
     map = drawPoints(map, units, px2m, size=targetImgSize, showRange=True)
 
+    # Draw routes
+    # for unit in units:
+    #     for r in unit.routes:
+    #         cv2.line(map,unit.pos(),r.pos(), (0,0,255),5)
 
     # Compute min distance
     minDist = -1
-    for unit in units:
-        for other_unit in units:
+    fixedUnits = [u for u in units if u.isFixed]
+    for unit in fixedUnits:
+        for other_unit in fixedUnits:
             if unit.id == other_unit.id:
                 break
 
@@ -71,7 +76,7 @@ def main(jsonFile:str, mapPath:str):
                 minDist = dist
 
     minDist = minDist * px2m
-    print(f"-> Minimum distance between 2 units: {minDist:0.2f}m")
+    print(f"-> Minimum distance between 2 fixed units: {minDist:0.2f}m")
 
 
     # Save image

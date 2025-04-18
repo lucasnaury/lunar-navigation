@@ -3,40 +3,62 @@
         {
             "name": "Maintenance",
             "x": 457,
-            "y": 45
+            "y": 45,
+            "code": "maintenance",
+            "isFixed": true
         },
         {
             "name": "Habitat",
             "x": 413,
-            "y": 342
+            "y": 342,
+            "code": "habitat",
+            "isFixed": true
         },
         {
             "name": "O2 Production",
             "x": 208,
-            "y": 119
+            "y": 119,
+            "code": "prod",
+            "isFixed": true
         },
         {
             "name": "Charging",
             "x": 345,
-            "y": 105
+            "y": 105,
+            "code": "charging_top",
+            "isFixed": true
         },
         {
             "name": "ISRU Consumer",
             "x": 119,
-            "y": 469
+            "y": 469,
+            "code": "consumer",
+            "isFixed": true
         },
         {
-            "name": "Charging 2",
-            "x": 285,
-            "y": 435
+            "name": "Charging",
+            "x": 56,
+            "y": 327,
+            "code": "charging_left",
+            "isFixed": true
         },
         {
             "name": "Storage",
             "x": 115,
-            "y": 205
+            "y": 205,
+            "code": "storage",
+            "isFixed": true
         }
     ],
-    "routes": [],
+    "routes": [
+        {"from": "maintenance", "to": "charging_top"},
+        {"from": "charging_top", "to": "habitat"},
+        {"from": "charging_top", "to": "prod"},
+        {"from": "prod", "to": "storage"},
+        {"from": "storage", "to": "charging_left"},
+        {"from": "charging_left", "to": "consumer"},
+        {"from": "consumer", "to": "habitat"}
+    ],
     "metadata": {
         "mapSize": 598,
         "px2m": 16.7269519188
