@@ -17,9 +17,9 @@
   direction: ROS_TO_GZ  # BIDIRECTIONAL or ROS_TO_GZ or GZ_TO_ROS
 
 - ros_topic_name: "odom"
-  gz_topic_name: "/model/rover/odometry"
+  gz_topic_name: "/model/rover/odometry_with_covariance"
   ros_type_name: "nav_msgs/msg/Odometry"
-  gz_type_name: "gz.msgs.Odometry"
+  gz_type_name: "gz.msgs.OdometryWithCovariance"
   direction: GZ_TO_ROS  # BIDIRECTIONAL or ROS_TO_GZ or GZ_TO_ROS
 
 # ----------------------------- TF ----------------------------- #

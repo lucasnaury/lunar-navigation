@@ -52,14 +52,14 @@ def main() -> None:
     navigator = BasicNavigator()
 
     # Set our demo's initial pose
-    initial_pose = PoseStamped()
-    initial_pose.header.frame_id = 'rover/map'
-    initial_pose.header.stamp = navigator.get_clock().now().to_msg()
-    initial_pose.pose.position.x = 0.0
-    initial_pose.pose.position.y = 0.0
-    initial_pose.pose.orientation.z = 0.0
-    initial_pose.pose.orientation.w = 1.0
-    navigator.setInitialPose(initial_pose)
+    # initial_pose = PoseStamped()
+    # initial_pose.header.frame_id = 'rover/map'
+    # initial_pose.header.stamp = navigator.get_clock().now().to_msg()
+    # initial_pose.pose.position.x = 0.0
+    # initial_pose.pose.position.y = 0.0
+    # initial_pose.pose.orientation.z = 0.0
+    # initial_pose.pose.orientation.w = 1.0
+    # navigator.setInitialPose(initial_pose)
 
     # Wait for navigation to fully activate, since autostarting nav2
     # navigator.waitUntilNav2Active()
@@ -69,12 +69,13 @@ def main() -> None:
 
         # Get the path, smooth it
         path = createPath(navigator)
-        smoothed_path = navigator.smoothPath(path)
+        # smoothed_path = navigator.smoothPath(path)
 
         # navigator.get_logger().info(str(smoothed_path))
 
         # Follow path
-        navigator.followPath(smoothed_path)
+        # navigator.followPath(smoothed_path)
+        navigator.followPath(path)
 
         i = 0
         while not navigator.isTaskComplete():
@@ -108,6 +109,7 @@ def main() -> None:
 
 
         sleep(1)
+        break
 
 
 if __name__ == '__main__':

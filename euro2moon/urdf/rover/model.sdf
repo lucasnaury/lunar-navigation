@@ -5,8 +5,8 @@
     <link name="base_footprint">
     </link>
     <link name="base_link">
-      <!-- <pose relative_to="base_footprint">-0.4 0 0.15 0 0 0</pose> -->
-      <pose relative_to="base_footprint">0 0 0.15 0 0 0</pose>
+      <pose relative_to="base_footprint">-0.4 0 0.15 0 0 0</pose>
+      <!-- <pose relative_to="base_footprint">0 0 0.15 0 0 0</pose> -->
       <inertial>
         <mass>18.71</mass>
         <!-- <inertia>
@@ -819,6 +819,7 @@
       filename="gz-sim-odometry-publisher-system"
       name="gz::sim::systems::OdometryPublisher">
       <odom_frame>rover/odom</odom_frame>
+      <odom_publish_frequency>20</odom_publish_frequency>
       <robot_base_frame>rover/base_footprint</robot_base_frame>
       <tf_topic>/tf</tf_topic>
     </plugin>

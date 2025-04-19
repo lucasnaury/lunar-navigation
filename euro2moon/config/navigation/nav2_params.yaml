@@ -69,18 +69,17 @@ controller_server:
     min_x_velocity_threshold: 0.001
     min_y_velocity_threshold: 0.5
     min_theta_velocity_threshold: 0.001
-    failure_tolerance: 0.3
+    failure_tolerance: -1.0
     progress_checker_plugins: ["progress_checker"]
     goal_checker_plugins: ["general_goal_checker"]
-    # controller_plugin_types: ["teb_local_planner::TebLocalPlannerROS"]
     controller_plugins: ["FollowPath"]
     use_realtime_priority: false
     
     # Progress checker parameters
     progress_checker:
       plugin: "nav2_controller::SimpleProgressChecker"
-      required_movement_radius: 0.5
-      movement_time_allowance: 10.0
+      required_movement_radius: 0.1
+      movement_time_allowance: 20.0
     
     # Goal checker parameters
     general_goal_checker:
@@ -112,14 +111,13 @@ controller_server:
       decel_lim_y: 0.0
       decel_lim_theta: -2.5
 
-      forward_prune_distance: -1.0
-      # forward_prune_distance: 4.0
-      
       # DWA specific parameters
       vx_samples: 20
-      vy_samples: 5
+      vy_samples: 2
       vtheta_samples: 20
       sim_time: 2.0
+      # discretize_by_time: True
+      # time_granularity: 0.5
       linear_granularity: 0.05
       angular_granularity: 0.025
       transform_tolerance: 0.2
@@ -149,17 +147,36 @@ controller_server:
       # # BaseObstacle.sum_scores: true
 
 
+      forward_prune_distance: -1.0
+      # forward_prune_distance: 4.0
+      # prune_plan: True
+      # prune_distance: 0.5
+      
 
-      critics: ["Oscillation", "BaseObstacle", "PathAlign", "PathDist", "GoalDist"] # ["RotateToGoal", "Oscillation", "BaseObstacle", "GoalAlign", "PathAlign", "PathDist", "GoalDist"]
+      # Best params
+      # critics: ["Oscillation", "BaseObstacle", "PathAlign", "PathDist", "GoalDist"] # ["RotateToGoal", "Oscillation", "BaseObstacle", "GoalAlign", "PathAlign", "PathDist", "GoalDist"]
+      # BaseObstacle.scale: 100.0
+      # BaseObstacle.sum_scores: true
+      # PathAlign.scale: 32.0
+      # PathAlign.forward_point_distance: 0.1
+      # PathDist.scale: 32.0
+      # GoalDist.scale: 24.0
+      # RotateToGoal.scale: 32.0
+      # RotateToGoal.slowing_factor: 5.0
+      # RotateToGoal.lookahead_time: -1.0
+
+
+
+      critics: ["Oscillation", "BaseObstacle", "GoalAlign", "PathAlign", "PathDist", "GoalDist"] # ["RotateToGoal", "Oscillation", "BaseObstacle", "GoalAlign", "PathAlign", "PathDist", "GoalDist"]
       BaseObstacle.scale: 50.0
-      BaseObstacle.sum_scores: true
       PathAlign.scale: 32.0
       PathAlign.forward_point_distance: 0.1
+      GoalAlign.scale: 24.0
+      GoalAlign.forward_point_distance: 0.1
       PathDist.scale: 32.0
-      GoalDist.scale: 24.0
-      RotateToGoal.scale: 32.0
-      RotateToGoal.slowing_factor: 5.0
-      RotateToGoal.lookahead_time: -1.0
+      GoalDist.scale: 40.0
+      Oscillation.scale: 20.0
+
 
 
     # https://answers.ros.org/question/392441/
@@ -207,45 +224,6 @@ controller_server:
 
 
 
-
-    # TEB parameters
-    # http://wiki.ros.org/teb_local_planner
-    # FollowPath:
-    #   plugin: "teb_local_planner::TebLocalPlannerROS"
-    #   odom_topic: odom
-    #   map_frame: map
-
-    #   # footprint_model.type: circular
-    #   # footprint_model.radius: 2.0
-    #   footprint_model.type: polygon
-    #   footprint_model.vertices: "[ [1.54, 0.405], [1.54, -0.405], [-0.2, -0.405], [-0.2, 0.405] ]"
-
-    #   min_turning_radius: 2.0
-    #   wheelbase: 1.35
-    #   cmd_angle_instead_rotvel: true # INVESTIGATE MORE!
-    #   min_obstacle_dist: 1.0
-    #   inflation_dist: 1.0
-    #   costmap_converter_plugin: "costmap_converter::CostmapToPolygonsDBSMCCH"
-    #   costmap_converter_spin_thread: True
-    #   costmap_converter_rate: 15
-    #   enable_homotopy_class_planning: True
-    #   enable_multithreading: True
-    #   optimization_verbose: False
-    #   teb_autoresize: True
-    #   min_samples: 3
-    #   max_samples: 20
-    #   max_global_plan_lookahead_dist: 5.0
-    #   visualize_hc_graph: True
-    #   max_vel_x: 0.75
-    #   max_vel_x_backwards: 0.2
-    #   max_vel_y: 0.0 # should be zero for non-holonomic robots
-    #   acc_lim_y: 0.05
-    #   max_vel_theta: 1.0
-    #   acc_lim_x: 0.5
-    #   acc_lim_theta: 0.1
-    #   yaw_goal_tolerance: 0.2
-    #   xy_goal_tolerance: 0.1
-    #   include_costmap_obstacles: True
 local_costmap:
   local_costmap:
     ros__parameters:
@@ -253,6 +231,7 @@ local_costmap:
       publish_frequency: 5.0
       global_frame: rover/odom
       robot_base_frame: rover/base_footprint
+      robot_radius: 0.4
       use_sim_time: True
       rolling_window: true
       width: 15
@@ -262,13 +241,18 @@ local_costmap:
       plugins: ["obstacle_layer", "inflation_layer1", "inflation_layer2"]
       # plugins: ["obstacle_layer", "inflation_layer1"]
       
+
       obstacle_layer:
         plugin: "nav2_costmap_2d::ObstacleLayer"
         enabled: True
         observation_sources: lidar camera
         lidar:
           topic: /lidar
-          max_obslocal_costmape: "PointCloud2"
+          max_obstacle_height: 2.0
+          min_obstacle_height: 0.0
+          clearing: True
+          marking: True
+          data_type: "PointCloud2"
           raytrace_max_range: 5.0
           raytrace_min_range: 0.0
           obstacle_max_range: 4.0
@@ -287,12 +271,12 @@ local_costmap:
           
       inflation_layer1:
         plugin: "nav2_costmap_2d::InflationLayer"
-        cost_scaling_factor: 0.25
-        inflation_radius: 0.8
+        cost_scaling_factor: 2.0
+        inflation_radius: 1.0
       inflation_layer2:
         plugin: "nav2_costmap_2d::InflationLayer"
-        cost_scaling_factor: 1.0
-        inflation_radius: 1.4
+        cost_scaling_factor: 0.8
+        inflation_radius: 1.5
 
 # global_costmap:
 #   global_costmap:
@@ -411,32 +395,64 @@ velocity_smoother:
 
 collision_monitor:
   ros__parameters:
-    base_frame_id: "rover/base_footprint"
+    base_frame_id: "rover/base_link"
     odom_frame_id: "rover/odom"
     cmd_vel_in_topic: "cmd_vel_smoothed"
     cmd_vel_out_topic: "cmd_vel"
     state_topic: "collision_monitor_state"
     transform_tolerance: 0.2
-    source_timeout: 1.0
+    source_timeout: 5.0
     base_shift_correction: True
     stop_pub_timeout: 2.0
     
-    polygons: ["FootprintApproach"]
+    polygons: ["PolygonStop", "PolygonSlow", "FootprintApproach"]
+    PolygonStop:
+      type: "circle"
+      radius: 0.45
+      action_type: "stop"
+      min_points: 4  # max_points: 3 for Humble
+      visualize: True
+      polygon_pub_topic: "polygon_stop"
+      enabled: True
+    PolygonSlow:
+      type: "polygon"
+      points: "[[1.0, 1.0], [1.0, -1.0], [-0.5, -1.0], [-0.5, 1.0]]"
+      action_type: "slowdown"
+      min_points: 4  # max_points: 3 for Humble
+      slowdown_ratio: 0.3
+      visualize: True
+      polygon_pub_topic: "polygon_slowdown"
+      enabled: True
+    PolygonLimit:
+      type: "polygon"
+      points: "[[0.5, 0.5], [0.5, -0.5], [-0.5, -0.5], [-0.5, 0.5]]"
+      action_type: "limit"
+      min_points: 4  # max_points: 3 for Humble
+      linear_limit: 0.4
+      angular_limit: 0.5
+      visualize: True
+      polygon_pub_topic: "polygon_limit"
+      enabled: True
     FootprintApproach:
       type: "polygon"
       action_type: "approach"
       footprint_topic: "/local_costmap/published_footprint"
-      time_before_collision: 1.2
-      simulation_time_step: 0.1
-      min_points: 6
-      visualize: True
-      enabled: True
-      
-    observation_sources: ["cloud"]
-    cloud:
-      type: "pointcloud"
+      time_before_collision: 2.0
+      simulation_time_step: 0.02
+      min_points: 6  # max_points: 5 for Humble
+      visualize: False
+
+    observation_sources: ["lidar", "camera"]
+    lidar:
       topic: /lidar
-      min_height: 0.05
+      type: "pointcloud"
       max_height: 2.0
+      min_height: 0.0
+      enabled: True
+    camera:
+      topic: /camera_points
+      type: "pointcloud"
+      max_height: 2.0
+      min__height: 0.0
       enabled: True
 
