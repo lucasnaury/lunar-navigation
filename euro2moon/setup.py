@@ -67,7 +67,8 @@ setup(
             'obstacle_avoider = euro2moon.obstacle_avoider:main',
             'fake_path = euro2moon.fake_path_publisher:main',
             'fake_path2 = euro2moon.fake_path_publisher2:main',
-            'fake_path3 = euro2moon.fake_path_publisher3:main'
+            'fake_path3 = euro2moon.fake_path_publisher3:main',
+            'plotter = euro2moon.trajectory_plotting:main'
         ],
     },
 )
