@@ -25,9 +25,6 @@ class TrajectoryPlot(Node):
         self.origin = (15, self.image_size // 2)
         self.map_image = np.ones((self.image_size, self.image_size, 3), dtype=np.uint8) * 255
 
-        # Display window
-        cv2.namedWindow("Trajectory Plot", cv2.WINDOW_AUTOSIZE)
-
     def odom_callback(self, msg):
         x = msg.pose.pose.position.x
         y = msg.pose.pose.position.y
