@@ -22,6 +22,11 @@ def main(unitsJsonfile, mapFolder, outputFolder):
     initialSize = map.shape[0]
     map = cv2.resize(map, (targetImgSize,targetImgSize))
 
+    
+    # Reduce opacity
+    map = np.floor(map * 0.8 + 255*0.2)
+    map = map.astype(np.uint8)
+
     # Check all paths
     for unit in units:
         for other_unit in unit.routes:

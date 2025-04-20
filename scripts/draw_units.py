@@ -56,8 +56,12 @@ def main(jsonFile:str, mapPath:str):
     # Load map image
     map = cv2.imread(mapPath)
 
+    # Reduce opacity
+    map = np.floor(map * 0.8 + 255*0.2)
+    map = map.astype(np.uint8)
+
     # Draw units
-    map = drawPoints(map, units, px2m, size=targetImgSize, showRange=True,showText=True)
+    map = drawPoints(map, units, px2m, size=targetImgSize, showRange=True, showText=False)
 
     # Draw routes
     # for unit in units:

@@ -67,10 +67,6 @@ def drawPath(map, path, color=(255,0,0)):
     # Compute thickness based on image size
     thickness = max(1,int(np.floor(1 * map.shape[0] / 150)))
 
-    # Reduce opacity
-    colormap = np.floor(colormap * 0.96 + 255*0.04)
-    colormap = colormap.astype(np.uint8)
-
     # Draw line
     for i in range(len(path) - 1):
         # if i%10 > 1:
