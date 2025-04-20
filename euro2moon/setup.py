@@ -65,9 +65,7 @@ setup(
             # 'obstacle_avoider = my_package.obstacle_avoider:main'
             'my_robot_driver = euro2moon.my_robot_driver:main',
             'obstacle_avoider = euro2moon.obstacle_avoider:main',
-            'fake_path = euro2moon.fake_path_publisher:main',
-            'fake_path2 = euro2moon.fake_path_publisher2:main',
-            'fake_path3 = euro2moon.fake_path_publisher3:main',
+            'fake_path = euro2moon.fake_path_publisher3:main',
             'plotter = euro2moon.trajectory_plotting:main'
         ],
     },
