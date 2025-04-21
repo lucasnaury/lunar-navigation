@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from geometry_msgs.msg import PoseStamped
+from geometry_msgs.msg import PoseStamped, Quaternion
 from nav2_simple_commander.robot_navigator import BasicNavigator, TaskResult
 import rclpy
 from nav_msgs.msg import Path
@@ -23,23 +23,35 @@ from time import sleep
 Basic navigation demo to follow a given path after smoothing
 """
 
-def createPath(node):
+def createQuat(x,y,z,w):
+    q = Quaternion()
+    q.x = float(x)
+    q.y = float(y)
+    q.z = float(z)
+    q.w = float(w)
+    return q
+
+def createPath(node:BasicNavigator):
     path_msg = Path()
     now = node.get_clock().now().to_msg()
 
     path_msg.header.stamp = now
     path_msg.header.frame_id = 'rover/map'
 
+    # Get target point
+    use_moon = node.get_parameter("use_moon").get_parameter_value().bool_value
+    targetPos = (15.0, -15.0) if use_moon else (60.0, 0.0)
+    targetRot = createQuat(0, 0, -0.3824995, 0.9239557) if use_moon else Quaternion()
+
     poses = []
-    steps = 120
+    steps = 200
     for i in range(steps + 1):
         pose = PoseStamped()
         pose.header.stamp = now
         pose.header.frame_id = 'rover/map'
-        pose.pose.position.x = (60.0 / steps) * i
-        # pose.pose.position.y = (1.0 / steps) * i
-        pose.pose.position.y =  0.0
-        pose.pose.orientation.w = 1.0
+        pose.pose.position.x = (targetPos[0] / steps) * i
+        pose.pose.position.y = (targetPos[1] / steps) * i
+        pose.pose.orientation = targetRot
         poses.append(pose)
 
     path_msg.poses = poses
@@ -64,6 +76,8 @@ def main() -> None:
     # Wait for navigation to fully activate, since autostarting nav2
     # navigator.waitUntilNav2Active()
     # navigator.lifecycleStartup()
+
+    navigator.declare_parameter("use_moon", False)
 
     while True:
 

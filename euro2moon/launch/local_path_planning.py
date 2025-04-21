@@ -1,12 +1,11 @@
 import os
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, RegisterEventHandler, TimerAction, LogInfo
+from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, RegisterEventHandler, TimerAction, LogInfo, GroupAction
 from launch.conditions import IfCondition, UnlessCondition
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from ament_index_python.packages import get_package_share_directory
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import LaunchConfiguration, PythonExpression
 from launch.event_handlers import OnProcessStart
 
 
@@ -17,9 +16,9 @@ def generate_launch_description():
     # Launch configuration variables
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
     autostart = LaunchConfiguration('autostart', default='true')
-    map_yaml_file = os.path.join(pkg_path, 'maps', 'map.yaml')
     params_file = os.path.join(pkg_path, 'config', 'navigation', 'nav2_params.yaml')
     use_rviz = LaunchConfiguration('use_rviz', default='true')
+    use_moon = LaunchConfiguration('use_moon', default='false')
     
     # Declare launch arguments
     declare_use_sim_time_arg = DeclareLaunchArgument(
@@ -33,37 +32,48 @@ def generate_launch_description():
         default_value='true',
         description='Launch RViz2 if true'
     )
+
+    declare_use_moon_arg = DeclareLaunchArgument(
+        'use_moon',
+        default_value='false',
+        description='Launch procedurally generated moon map if true'
+    )
     
     declare_autostart_arg = DeclareLaunchArgument(
         'autostart',
         default_value='true',
         description='Automatically start nav2 stack'
     )
-
+    
     # Define the launch components
-    plane_simulation_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(pkg_path, 'launch', 'simulation.launch.py')),
-        launch_arguments={
-            'x': '0.0',
-            'y': '0.0',
-            'z': '0.0',
-            'yaw': '0.0',
-            'world_file': os.path.join(pkg_path, 'worlds', 'plane.world')
-        }.items()
+    plane_simulation_launch = GroupAction(
+        condition=UnlessCondition(use_moon),
+        actions=[IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(os.path.join(pkg_path, 'launch', 'simulation.launch.py')),
+            launch_arguments={
+                'x': '0.0',
+                'y': '0.0',
+                'z': '0.0',
+                'yaw': '0.0',
+                'world_file': os.path.join(pkg_path, 'worlds', 'plane.world')
+            }.items()
+        )]
     )
 
-    moon_simulation_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(pkg_path, 'launch', 'simulation.launch.py')),
-        launch_arguments={
-            'x': '-16.0',
+    moon_simulation_launch = GroupAction(
+        condition=IfCondition(use_moon),
+        actions=[IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(os.path.join(pkg_path, 'launch', 'simulation.launch.py')),
+            launch_arguments={
+                'x': '-16.0',
                 'y': '16.0',
                 'z': '2.0',
                 'yaw': '-0.785',
 
                 'world_file': os.path.join(pkg_path, 'worlds', 'moon.world')
-        }.items()
+            }.items()
+        )]
     )
-
                 
 
     rviz_node = Node(
@@ -91,7 +101,6 @@ def generate_launch_description():
 
     # Static transform between map and odon
     static_tf = Node(
-        condition=IfCondition(use_rviz),
         package='tf2_ros',
         executable='static_transform_publisher',
         name='odom_map_pub',
@@ -101,8 +110,12 @@ def generate_launch_description():
     return LaunchDescription([
         declare_use_sim_time_arg,
         declare_use_rviz_arg,
+        declare_use_moon_arg,
         declare_autostart_arg,
+
         plane_simulation_launch,
+        moon_simulation_launch,
+
         rviz_node,
         static_tf,
 
