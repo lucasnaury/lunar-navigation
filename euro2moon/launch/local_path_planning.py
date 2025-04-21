@@ -41,7 +41,7 @@ def generate_launch_description():
     )
 
     # Define the launch components
-    simulation_launch = IncludeLaunchDescription(
+    plane_simulation_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(os.path.join(pkg_path, 'launch', 'simulation.launch.py')),
         launch_arguments={
             'x': '0.0',
@@ -51,6 +51,20 @@ def generate_launch_description():
             'world_file': os.path.join(pkg_path, 'worlds', 'plane.world')
         }.items()
     )
+
+    moon_simulation_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(os.path.join(pkg_path, 'launch', 'simulation.launch.py')),
+        launch_arguments={
+            'x': '-16.0',
+                'y': '16.0',
+                'z': '2.0',
+                'yaw': '-0.785',
+
+                'world_file': os.path.join(pkg_path, 'worlds', 'moon.world')
+        }.items()
+    )
+
+                
 
     rviz_node = Node(
         condition=IfCondition(use_rviz),
@@ -88,7 +102,7 @@ def generate_launch_description():
         declare_use_sim_time_arg,
         declare_use_rviz_arg,
         declare_autostart_arg,
-        simulation_launch,
+        plane_simulation_launch,
         rviz_node,
         static_tf,
 
