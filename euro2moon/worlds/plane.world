@@ -105,52 +105,53 @@
 
     <!-- Create a line with rocks -->
     <include>
-      <uri>package://euro2moon/worlds/models/qr_rock1</uri>
-      <name>qr_rock1</name>
-      <pose>10 1.5 0 0 0 0</pose>
-    </include>
-
-    <include>
       <uri>package://euro2moon/worlds/models/qr_rock2</uri>
       <name>qr_rock2</name>
       <pose>4 0 0.15 0 0 0</pose>
     </include>
 
     <include>
+      <uri>package://euro2moon/worlds/models/qr_rock1</uri>
+      <name>qr_rock1</name>
+      <pose>10 0.6 0 0 0 0</pose>
+    </include>
+
+    <include>
       <uri>package://euro2moon/worlds/models/qr_rock3</uri>
       <name>qr_rock3</name>
-      <pose>17 -1 0 0 0 3.14/2</pose>
+      <pose>17 -1.2 0 0 0 3.14/2</pose>
     </include>
 
     <include>
       <uri>package://euro2moon/worlds/models/qr_rock4</uri>
       <name>qr_rock4</name>
-      <pose>24 1 0.0065 -0.1654 0 0.8644</pose>
+      <pose>24 -0.5 0.0065 -0.1654 0 0.8644</pose>
     </include>
 
     <include>
       <uri>package://euro2moon/worlds/models/qr_rock1</uri>
       <name>qr_rock5</name>
-      <pose>35 0 0.15 0 0 1.57</pose>
+      <pose>35 1 0.15 0 0 0.8</pose>
     </include>
 
     <include>
       <uri>package://euro2moon/worlds/models/qr_rock2</uri>
       <name>qr_rock6</name>
-      <pose>45 1.5 0 0 0 1.57</pose>
-    </include>
-
-    <include>
-      <uri>package://euro2moon/worlds/models/qr_rock3</uri>
-      <name>qr_rock7</name>
-      <pose>59 -1 0 0 0 0</pose>
+      <pose>45 -1.2 0 0 0 1.57</pose>
     </include>
 
     <include>
       <uri>package://euro2moon/worlds/models/qr_rock4</uri>
       <name>qr_rock8</name>
-      <pose>50 1 0.0065 -0.1654 0 0</pose>
+      <pose>50 0 -1.26 -0.1654 0 1.57</pose>
     </include>
+
+    <include>
+      <uri>package://euro2moon/worlds/models/qr_rock3</uri>
+      <name>qr_rock7</name>
+      <pose>55 0 0 0 0 0</pose>
+    </include>
+
 
   </world>
 </sdf>
