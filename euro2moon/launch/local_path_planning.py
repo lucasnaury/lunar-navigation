@@ -19,6 +19,7 @@ def generate_launch_description():
     params_file = os.path.join(pkg_path, 'config', 'navigation', 'nav2_params.yaml')
     use_rviz = LaunchConfiguration('use_rviz', default='true')
     use_moon = LaunchConfiguration('use_moon', default='false')
+    use_o2_rover = LaunchConfiguration('use_o2_rover', default='false')
     
     # Declare launch arguments
     declare_use_sim_time_arg = DeclareLaunchArgument(
@@ -39,6 +40,12 @@ def generate_launch_description():
         description='Launch procedurally generated moon map if true'
     )
     
+    declare_use_o2_rover_arg = DeclareLaunchArgument(
+        'use_o2_rover',
+        default_value='false',
+        description='Launch simulation with final rover design'
+    )
+
     declare_autostart_arg = DeclareLaunchArgument(
         'autostart',
         default_value='true',
@@ -46,34 +53,79 @@ def generate_launch_description():
     )
     
     # Define the launch components
-    plane_simulation_launch = GroupAction(
-        condition=UnlessCondition(use_moon),
-        actions=[IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(os.path.join(pkg_path, 'launch', 'simulation.launch.py')),
-            launch_arguments={
-                'x': '0.0',
-                'y': '0.0',
-                'z': '0.0',
-                'yaw': '0.0',
-                'world_file': os.path.join(pkg_path, 'worlds', 'plane.world')
-            }.items()
-        )]
+    dummy_rover_launch = GroupAction(
+        condition=UnlessCondition(use_o2_rover),
+        actions=[
+            # Launch correct zorld
+            GroupAction(
+                condition=UnlessCondition(use_moon),
+                actions=[IncludeLaunchDescription(
+                    PythonLaunchDescriptionSource(os.path.join(pkg_path, 'launch', 'simulation.launch.py')),
+                    launch_arguments={
+                        'x': '0.0',
+                        'y': '0.0',
+                        'z': '0.0',
+                        'yaw': '0.0',
+                        'world_file': os.path.join(pkg_path, 'worlds', 'plane.world')
+                    }.items()
+                )]
+            ),
+
+            GroupAction(
+                condition=IfCondition(use_moon),
+                actions=[IncludeLaunchDescription(
+                    PythonLaunchDescriptionSource(os.path.join(pkg_path, 'launch', 'simulation.launch.py')),
+                    launch_arguments={
+                        'x': '-16.0',
+                        'y': '16.0',
+                        'z': '2.0',
+                        'yaw': '-0.785',
+
+                        'world_file': os.path.join(pkg_path, 'worlds', 'moon.world')
+                    }.items()
+                )]
+            )
+        ]
     )
 
-    moon_simulation_launch = GroupAction(
-        condition=IfCondition(use_moon),
-        actions=[IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(os.path.join(pkg_path, 'launch', 'simulation.launch.py')),
-            launch_arguments={
-                'x': '-16.0',
-                'y': '16.0',
-                'z': '2.0',
-                'yaw': '-0.785',
 
-                'world_file': os.path.join(pkg_path, 'worlds', 'moon.world')
-            }.items()
-        )]
+    o2_rover_launch = GroupAction(
+        condition=IfCondition(use_o2_rover),
+        actions=[
+            # Launch correct zorld
+            GroupAction(
+                condition=UnlessCondition(use_moon),
+                actions=[IncludeLaunchDescription(
+                    PythonLaunchDescriptionSource(os.path.join(pkg_path, 'launch', 'simulation.launch.py')),
+                    launch_arguments={
+                        'x': '-5.0',
+                        'y': '0.0',
+                        'z': '0.5',
+                        'yaw': '0.0',
+                        'world_file': os.path.join(pkg_path, 'worlds', 'plane.world'),
+                        'robot_folder': 'o2_rover'
+                    }.items()
+                )]
+            ),
+
+            GroupAction(
+                condition=IfCondition(use_moon),
+                actions=[IncludeLaunchDescription(
+                    PythonLaunchDescriptionSource(os.path.join(pkg_path, 'launch', 'simulation.launch.py')),
+                    launch_arguments={
+                        'x': '-16.0',
+                        'y': '16.0',
+                        'z': '2.0',
+                        'yaw': '-0.785',
+
+                        'world_file': os.path.join(pkg_path, 'worlds', 'moon.world'),
+                        'robot_folder': 'o2_rover'
+                    }.items()
+                )]
+            )
+        ]
     )
+
                 
 
     rviz_node = Node(
@@ -111,10 +163,11 @@ def generate_launch_description():
         declare_use_sim_time_arg,
         declare_use_rviz_arg,
         declare_use_moon_arg,
+        declare_use_o2_rover_arg,
         declare_autostart_arg,
 
-        plane_simulation_launch,
-        moon_simulation_launch,
+        dummy_rover_launch,
+        o2_rover_launch,
 
         rviz_node,
         static_tf,

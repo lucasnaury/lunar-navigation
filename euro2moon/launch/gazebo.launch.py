@@ -2,6 +2,7 @@ import os
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, GroupAction, SetEnvironmentVariable, IncludeLaunchDescription
 from launch_ros.actions import Node
+from launch.conditions import IfCondition, UnlessCondition
 from launch.substitutions import LaunchConfiguration
 from launch_ros.substitutions import FindPackageShare
 from launch.launch_description_sources import PythonLaunchDescriptionSource
@@ -9,7 +10,9 @@ from ament_index_python import get_package_prefix
 
 
 def generate_launch_description():
-    urdfPath = os.path.join(FindPackageShare('euro2moon').find('euro2moon'), 'urdf', 'rover', 'model.sdf')
+    use_o2_rover = LaunchConfiguration("use_o2_rover")
+    roverUrdfPath = os.path.join(FindPackageShare('euro2moon').find('euro2moon'), 'urdf', 'rover', 'model.sdf')
+    o2roverUrdfPath = os.path.join(FindPackageShare('euro2moon').find('euro2moon'), 'urdf', 'o2_rover', 'model.sdf')
 
     return LaunchDescription([
         # Declare launch arguments
@@ -28,7 +31,7 @@ def generate_launch_description():
         DeclareLaunchArgument('robot_name', default_value='rover', description='Robot name'),
         DeclareLaunchArgument('world_file', default_value=LaunchConfiguration('world_file', default=os.path.join(FindPackageShare('euro2moon').find('euro2moon'), 'worlds', 'moon.world')),
                                description='World file for the simulation'),
-        DeclareLaunchArgument('robot_description', default_value=os.path.join(FindPackageShare('euro2moon').find('euro2moon'), 'urdf', 'rover.sdf')),
+        DeclareLaunchArgument('use_o2_rover', default_value='false', description='Launch simulation with final rover design'),
  
 
         GroupAction([
@@ -57,30 +60,67 @@ def generate_launch_description():
             ]
         ),
 
-        # Spawn sdf
-        Node(
-            package='ros_gz_sim',
-            executable='create',
-            output='screen',
-            parameters=[{
-                'file': urdfPath,
-                'name': LaunchConfiguration('robot_name'),
-                'x': LaunchConfiguration('x'),
-                'y': LaunchConfiguration('y'),
-                'z': LaunchConfiguration('z'),
-                'Y': LaunchConfiguration('yaw')
-            }],
+        # Spawn rover sdf
+        GroupAction(
+            condition=UnlessCondition(use_o2_rover),
+            actions=[
+                Node(
+                    package='ros_gz_sim',
+                    executable='create',
+                    output='screen',
+                    parameters=[{
+                        'file': roverUrdfPath,
+                        'name': LaunchConfiguration('robot_name'),
+                        'x': LaunchConfiguration('x'),
+                        'y': LaunchConfiguration('y'),
+                        'z': LaunchConfiguration('z'),
+                        'Y': LaunchConfiguration('yaw')
+                    }],
+                ),
+
+
+                # Robot state publisher node
+                Node(package='robot_state_publisher', executable='robot_state_publisher',
+                    output='screen',
+                    parameters = [
+                        # {'ignore_timestamp': False},
+                        {'frame_prefix': 'rover/'},
+                        {'use_sim_time': True},
+                        {'robot_description': open(roverUrdfPath).read()}],
+                )
+            ]
         ),
 
 
-        # Robot state publisher node
-        Node(package='robot_state_publisher', executable='robot_state_publisher',
-            output='screen',
-            parameters = [
-                # {'ignore_timestamp': False},
-                {'frame_prefix': 'rover/'},
-                {'use_sim_time': True},
-                {'robot_description': open(urdfPath).read()}],
+        # Spawn O2 rover sdf
+        GroupAction(
+            condition=IfCondition(use_o2_rover),
+            actions=[
+                Node(
+                    package='ros_gz_sim',
+                    executable='create',
+                    output='screen',
+                    parameters=[{
+                        'file': o2roverUrdfPath,
+                        'name': LaunchConfiguration('robot_name'),
+                        'x': LaunchConfiguration('x'),
+                        'y': LaunchConfiguration('y'),
+                        'z': LaunchConfiguration('z'),
+                        'Y': LaunchConfiguration('yaw')
+                    }],
+                ),
+
+
+                # Robot state publisher node
+                Node(package='robot_state_publisher', executable='robot_state_publisher',
+                    output='screen',
+                    parameters = [
+                        # {'ignore_timestamp': False},
+                        {'frame_prefix': 'rover/'},
+                        {'use_sim_time': True},
+                        {'robot_description': open(o2roverUrdfPath).read()}],
+                )
+            ]
         )
 
 
