@@ -17,27 +17,70 @@
   direction: ROS_TO_GZ  # BIDIRECTIONAL or ROS_TO_GZ or GZ_TO_ROS
 
 - ros_topic_name: "odom"
-  gz_topic_name: "/odom"
+  gz_topic_name: "/model/rover/odometry_with_covariance"
   ros_type_name: "nav_msgs/msg/Odometry"
-  gz_type_name: "gz.msgs.Odometry"
-  direction: GZ_TO_ROS
+  gz_type_name: "gz.msgs.OdometryWithCovariance"
+  direction: GZ_TO_ROS  # BIDIRECTIONAL or ROS_TO_GZ or GZ_TO_ROS
 
-
+# ----------------------------- TF ----------------------------- #
 - ros_topic_name: "tf"
   gz_topic_name: "/model/rover/tf"
   ros_type_name: "tf2_msgs/msg/TFMessage"
   gz_type_name: "gz.msgs.Pose_V"
-  direction: BIDIRECTIONAL
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "tf"
+  gz_topic_name: "/tf"
+  ros_type_name: "tf2_msgs/msg/TFMessage"
+  gz_type_name: "gz.msgs.Pose_V"
+  direction: GZ_TO_ROS
+
+
+- ros_topic_name: "joint_states"
+  gz_topic_name: "/joint_states"
+  ros_type_name: "sensor_msgs/msg/JointState"
+  gz_type_name: "gz.msgs.Model"
+  direction: GZ_TO_ROS
 
 # ----------------------------- CAMERA ----------------------------- #
 - ros_topic_name: "camera_raw"
-  gz_topic_name: "/camera"
+  gz_topic_name: "/camera/image"
   ros_type_name: "sensor_msgs/msg/Image"
   gz_type_name: "gz.msgs.Image"
   direction: GZ_TO_ROS
 
+- ros_topic_name: "camera_depth"
+  gz_topic_name: "/camera/depth_image"
+  ros_type_name: "sensor_msgs/msg/Image"
+  gz_type_name: "gz.msgs.Image"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "camera_points"
+  gz_topic_name: "/camera/points"
+  ros_type_name: "sensor_msgs/msg/PointCloud2"
+  gz_type_name: "gz.msgs.PointCloudPacked"
+  direction: GZ_TO_ROS
+
 - ros_topic_name: "camera_info"
-  gz_topic_name: "/camera_info"
+  gz_topic_name: "/camera/camera_info"
   ros_type_name: "sensor_msgs/msg/CameraInfo"
   gz_type_name: "gz.msgs.CameraInfo"
+  direction: GZ_TO_ROS
+
+  # ----------------------------- LiDAR ----------------------------- #
+
+- ros_topic_name: "lidar"
+  gz_topic_name: "lidar/points"
+  ros_type_name: "sensor_msgs/msg/PointCloud2"
+  gz_type_name: "gz.msgs.PointCloudPacked"
+  direction: GZ_TO_ROS
+
+
+
+
+
+- ros_topic_name: "/tf"
+  gz_topic_name: "model/rover/pose"
+  ros_type_name: "tf2_msgs/msg/TFMessage"
+  gz_type_name: "gz.msgs.Pose_V"
   direction: GZ_TO_ROS

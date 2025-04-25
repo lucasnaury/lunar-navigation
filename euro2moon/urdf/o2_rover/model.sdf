@@ -1,0 +1,1339 @@
+<sdf version='1.11'>
+  <model name='rover'>
+    <link name="base_footprint">
+    </link>
+    <joint name="footprintJoint" type="fixed">
+      <parent>base_footprint</parent>
+      <child>base_link</child>
+    </joint>
+    
+    <link name='base_link'>
+      <pose relative_to="base_footprint">0 0.55 0 0 0 0</pose>
+      <inertial>
+        <pose>0.62089000000000005 0 0.51631000000000005 0 0 0</pose>
+        <mass>386.24000000000001</mass>
+        <inertia>
+          <ixx>27.335000000000001</ixx>
+          <ixy>-0.00037164000000000001</ixy>
+          <ixz>5.2198999999999998e-06</ixz>
+          <iyy>42.414999999999999</iyy>
+          <iyz>-3.4132000000000002e-06</iyz>
+          <izz>38.070999999999998</izz>
+        </inertia>
+      </inertial>
+      <collision name='base_link_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/base_link.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='base_link_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/base_link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.990199983 1 1 1</diffuse>
+          <ambient>0.990199983 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='111_joint' type='fixed'>
+      <pose relative_to='base_link'>-0.14591000000000001 -0.80230999999999997 0.14111000000000001 1.5708 0 0</pose>
+      <parent>base_link</parent>
+      <child>Empty_Link111</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Empty_Link111'>
+      <pose relative_to='111_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-0.034403000000000003 -3.6768999999999999e-06 -1.1834000000000001e-05 0 0 0</pose>
+        <mass>1.1716</mass>
+        <inertia>
+          <ixx>0.0036526000000000002</ixx>
+          <ixy>-4.6094000000000002e-08</ixy>
+          <ixz>-4.1157000000000003e-08</ixz>
+          <iyy>0.0019004</iyy>
+          <iyz>-6.4861000000000001e-08</iyz>
+          <izz>0.0019300000000000001</izz>
+        </inertia>
+      </inertial>
+      <collision name='Empty_Link111_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/Empty_Link111.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Empty_Link111_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/Empty_Link111.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.990199983 1 1 1</diffuse>
+          <ambient>0.990199983 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='222_joint' type='fixed'>
+      <pose relative_to='Empty_Link111'>-0.17999999999999999 0 0 -3.1415853071795872 2.1175823681357508e-22 2.8875000000000002</pose>
+      <parent>Empty_Link111</parent>
+      <child>Empty_Link222</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Empty_Link222'>
+      <pose relative_to='222_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-5.5786999999999996e-06 -7.1705999999999996e-06 -0.025704999999999999 0 0 0</pose>
+        <mass>1.5981000000000001</mass>
+        <inertia>
+          <ixx>0.0024298000000000002</ixx>
+          <ixy>1.3894e-07</ixy>
+          <ixz>-5.7636000000000001e-08</ixz>
+          <iyy>0.0024302999999999998</iyy>
+          <iyz>-2.2285000000000001e-08</iyz>
+          <izz>0.0039376999999999997</izz>
+        </inertia>
+      </inertial>
+      <collision name='Empty_Link222_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/Empty_Link222.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Empty_Link222_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/Empty_Link222.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.990199983 1 1 1</diffuse>
+          <ambient>0.990199983 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='333_joint' type='fixed'>
+      <pose relative_to='Empty_Link222'>0 0 -0.14166000000000001 0 0 -3.1398999999999999</pose>
+      <parent>Empty_Link222</parent>
+      <child>Empty_Link333</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Empty_Link333'>
+      <pose relative_to='333_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-0.147496398011046 0.015333655295901701 -0.0544016217249862 0 0 0</pose>
+        <mass>1.8460857164362601</mass>
+        <inertia>
+          <ixx>0.00367602966629228</ixx>
+          <ixy>0.0030263084269004799</ixy>
+          <ixz>-0.00049320191602559801</ixz>
+          <iyy>0.032458549390352601</iyy>
+          <iyz>5.1272737903049197e-05</iyz>
+          <izz>0.035003030791661699</izz>
+        </inertia>
+      </inertial>
+      <collision name='Empty_Link333_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/Empty_Link333.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Empty_Link333_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/Empty_Link333.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.990196109 1 1 1</diffuse>
+          <ambient>0.990196109 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='444_joint' type='fixed'>
+      <pose relative_to='Empty_Link333'>-0.84304999999999997 0.087677000000000005 -0.037499999999999999 0 0 -2.2044000000000001</pose>
+      <parent>Empty_Link333</parent>
+      <child>Empty_Link444</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Empty_Link444'>
+      <pose relative_to='444_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-0.22442999999999999 -0.36298000000000002 -0.056286999999999997 0 0 0</pose>
+        <mass>2.5929000000000002</mass>
+        <inertia>
+          <ixx>0.031737000000000001</ixx>
+          <ixy>-0.016618999999999998</ixy>
+          <ixz>-0.0002018</ixz>
+          <iyy>0.015127</iyy>
+          <iyz>-0.00032637999999999998</iyz>
+          <izz>0.040823999999999999</izz>
+        </inertia>
+      </inertial>
+      <collision name='Empty_Link444_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/Empty_Link444.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Empty_Link444_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/Empty_Link444.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.990199983 1 1 1</diffuse>
+          <ambient>0.990199983 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='back_right_wheel_joint' type='revolute'>
+      <pose relative_to='Empty_Link444'>-0.44017000000000001 -0.71191000000000004 -0.1135 0 0 0.29330000000000001</pose>
+      <parent>Empty_Link444</parent>
+      <child>back_right_wheel</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='back_right_wheel'>
+      <pose relative_to='back_right_wheel_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>1.0613850015550601e-06 6.9091247545394197e-07 -0.12582858857468199 0 0 0</pose>
+        <mass>4.6307642002264</mass>
+        <inertia>
+          <ixx>0.089845059623121698</ixx>
+          <ixy>1.3627447167929899e-07</ixy>
+          <ixz>3.43730840352643e-07</ixz>
+          <iyy>0.089841481595551206</iyy>
+          <iyz>2.0796611048235501e-07</iyz>
+          <izz>0.15308555871763099</izz>
+        </inertia>
+      </inertial>
+      <collision name='back_right_wheel_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/Empty_Link555.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='back_right_wheel_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/Empty_Link555.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.990196109 1 1 1</diffuse>
+          <ambient>0.990196109 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='11_joint' type='fixed'>
+      <pose relative_to='base_link'>-0.14591000000000001 -0.30231000000000002 0.14111000000000001 1.5188999999999999 0 0</pose>
+      <parent>base_link</parent>
+      <child>Empty_Link11</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Empty_Link11'>
+      <pose relative_to='11_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-0.034402618270103803 -3.6769266430203301e-06 -1.1834469649363299e-05 0 0 0</pose>
+        <mass>1.1715543095235801</mass>
+        <inertia>
+          <ixx>0.0036525933465218598</ixx>
+          <ixy>-4.6093566419577297e-08</ixy>
+          <ixz>-4.1156861484702198e-08</ixz>
+          <iyy>0.0019004339367929999</iyy>
+          <iyz>-6.4861285308729999e-08</iyz>
+          <izz>0.0019300227741980401</izz>
+        </inertia>
+      </inertial>
+      <collision name='Empty_Link11_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/Empty_Link11.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Empty_Link11_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/Empty_Link11.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.990196109 1 1 1</diffuse>
+          <ambient>0.990196109 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='22_joint' type='fixed'>
+      <pose relative_to='Empty_Link11'>-0.17999999999999999 0 0 0 0 0</pose>
+      <parent>Empty_Link11</parent>
+      <child>Empty_Link22</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Empty_Link22'>
+      <pose relative_to='22_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-5.5786999999999996e-06 -7.1705999999999996e-06 -0.025704999999999999 0 0 0</pose>
+        <mass>1.5981000000000001</mass>
+        <inertia>
+          <ixx>0.0024298000000000002</ixx>
+          <ixy>1.3894e-07</ixy>
+          <ixz>-5.7636000000000001e-08</ixz>
+          <iyy>0.0024302999999999998</iyy>
+          <iyz>-2.2285000000000001e-08</iyz>
+          <izz>0.0039376999999999997</izz>
+        </inertia>
+      </inertial>
+      <collision name='Empty_Link22_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/Empty_Link22.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Empty_Link22_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/Empty_Link22.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.990199983 1 1 1</diffuse>
+          <ambient>0.990199983 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='33_joint' type='fixed'>
+      <pose relative_to='Empty_Link22'>0 0 -0.12881000000000001 0 0 -0.010496000000000002</pose>
+      <parent>Empty_Link22</parent>
+      <child>Empty_Link33</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Empty_Link33'>
+      <pose relative_to='33_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-0.14749644439256401 0.015333606442363401 -0.067253856965134307 0 0 0</pose>
+        <mass>1.84608583561868</mass>
+        <inertia>
+          <ixx>0.0036760500746705598</ixx>
+          <ixy>0.0030263210964668399</ixy>
+          <ixz>-0.00049320445501594801</ixz>
+          <iyy>0.032458538820626603</iyy>
+          <iyz>5.1273785072158197e-05</iyz>
+          <izz>0.035003008235515297</izz>
+        </inertia>
+      </inertial>
+      <collision name='Empty_Link33_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/Empty_Link33.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Empty_Link33_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/Empty_Link33.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.990196109 1 1 1</diffuse>
+          <ambient>0.990196109 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='44_joint' type='fixed'>
+      <pose relative_to='Empty_Link33'>-0.84304999999999997 0.087677000000000005 0.0026118999999999999 0 0 -0.44108999999999998</pose>
+      <parent>Empty_Link33</parent>
+      <child>Empty_Link44</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Empty_Link44'>
+      <pose relative_to='44_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-0.22442539567540101 -0.36298210009157 -0.109251245806602 0 0 0</pose>
+        <mass>2.5929291700864399</mass>
+        <inertia>
+          <ixx>0.031737137027902797</ixx>
+          <ixy>-0.016619227339719898</ixy>
+          <ixz>-0.000201796782306346</ixz>
+          <iyy>0.015127062416916999</iyy>
+          <iyz>-0.00032637522559833201</iyz>
+          <izz>0.040823681324210603</izz>
+        </inertia>
+      </inertial>
+      <collision name='Empty_Link44_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/Empty_Link44.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Empty_Link44_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/Empty_Link44.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.990196109 1 1 1</diffuse>
+          <ambient>0.990196109 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='back_left_wheel_joint' type='revolute'>
+      <pose relative_to='Empty_Link44'>-0.44017000000000001 -0.71191000000000004 -0.13947000000000001 0 0 0.44889000000000012</pose>
+      <parent>Empty_Link44</parent>
+      <child>back_left_wheel</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='back_left_wheel'>
+      <pose relative_to='back_left_wheel_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>1.06093034624166e-06 6.9187570325701696e-07 -0.15282482516822499 0 0 0</pose>
+        <mass>4.6307642610975996</mass>
+        <inertia>
+          <ixx>0.089844941278167806</ixx>
+          <ixy>1.3583059951276701e-07</ixy>
+          <ixz>2.5405622043249797e-07</ixz>
+          <iyy>0.089841362047203804</iyy>
+          <iyz>2.0536963933528299e-07</iyz>
+          <izz>0.153085473845331</izz>
+        </inertia>
+      </inertial>
+      <collision name='back_left_wheel_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/Empty_Link55.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='back_left_wheel_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/Empty_Link55.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.990196109 1 1 1</diffuse>
+          <ambient>0.990196109 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='1_joint' type='fixed'>
+      <pose relative_to='base_link'>1.3591 -0.30231000000000002 0.14111000000000001 1.5456000000000001 8.4703294725430034e-22 -3.1415853071795872</pose>
+      <parent>base_link</parent>
+      <child>Empty_Link1</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Empty_Link1'>
+      <pose relative_to='1_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-0.034402618270103803 -3.67692664290931e-06 -1.1834469649363299e-05 0 0 0</pose>
+        <mass>1.1715543095235801</mass>
+        <inertia>
+          <ixx>0.0036525933465218702</ixx>
+          <ixy>-4.6093566419244201e-08</ixy>
+          <ixz>-4.1156861486539399e-08</ixz>
+          <iyy>0.0019004339367930099</iyy>
+          <iyz>-6.4861285309614301e-08</iyz>
+          <izz>0.0019300227741980501</izz>
+        </inertia>
+      </inertial>
+      <collision name='Empty_Link1_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/Empty_Link1.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Empty_Link1_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/Empty_Link1.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.990196109 1 1 1</diffuse>
+          <ambient>0.990196109 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='2_joint' type='fixed'>
+      <pose relative_to='Empty_Link1'>-0.17999999999999999 0 0 -3.1415853071795872 0 -3.1415853071795872</pose>
+      <parent>Empty_Link1</parent>
+      <child>Empty_Link2</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Empty_Link2'>
+      <pose relative_to='2_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-5.5786985646566504e-06 -7.1706054424192098e-06 -0.025885182965514099 0 0 0</pose>
+        <mass>1.5980527252004499</mass>
+        <inertia>
+          <ixx>0.0024297946468800598</ixx>
+          <ixy>1.38944924919397e-07</ixy>
+          <ixz>-5.76359378413726e-08</ixz>
+          <iyy>0.00243030832625978</iyy>
+          <iyz>-2.2284579042515001e-08</iyz>
+          <izz>0.0039376543929841804</izz>
+        </inertia>
+      </inertial>
+      <collision name='Empty_Link2_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/Empty_Link2.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Empty_Link2_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/Empty_Link2.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.990196109 1 1 1</diffuse>
+          <ambient>0.990196109 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='3_joint' type='fixed'>
+      <pose relative_to='Empty_Link2'>0 0 -0.14193 0 0 -2.5655000000000001</pose>
+      <parent>Empty_Link2</parent>
+      <child>Empty_Link3</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Empty_Link3'>
+      <pose relative_to='3_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-0.14749641019338799 0.015333639118157201 -0.054308430002196303 0 0 0</pose>
+        <mass>1.8460858047395099</mass>
+        <inertia>
+          <ixx>0.00367603577978081</ixx>
+          <ixy>0.00302631299474486</ixy>
+          <ixz>-0.00049320276698314798</ixz>
+          <iyy>0.032458547799449698</iyy>
+          <iyz>5.1272933631408098e-05</iyz>
+          <izz>0.035003025552566402</izz>
+        </inertia>
+      </inertial>
+      <collision name='Empty_Link3_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/Empty_Link3.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Empty_Link3_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/Empty_Link3.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.990196109 1 1 1</diffuse>
+          <ambient>0.990196109 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='4_joint' type='fixed'>
+      <pose relative_to='Empty_Link3'>-0.84304999999999997 0.087677000000000005 -0.037478999999999998 0 0 -2.5634999999999999</pose>
+      <parent>Empty_Link3</parent>
+      <child>Empty_Link4</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Empty_Link4'>
+      <pose relative_to='4_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-0.22442999999999999 -0.36298000000000002 -0.056215000000000001 0 0 0</pose>
+        <mass>2.5929000000000002</mass>
+        <inertia>
+          <ixx>0.031737000000000001</ixx>
+          <ixy>-0.016618999999999998</ixy>
+          <ixz>-0.0002018</ixz>
+          <iyy>0.015127</iyy>
+          <iyz>-0.00032637999999999998</iyz>
+          <izz>0.040823999999999999</izz>
+        </inertia>
+      </inertial>
+      <collision name='Empty_Link4_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/Empty_Link4.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Empty_Link4_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/Empty_Link4.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.990199983 1 1 1</diffuse>
+          <ambient>0.990199983 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='front_left_wheel_joint' type='revolute'>
+      <pose relative_to='Empty_Link4'>-0.44017000000000001 -0.71191000000000004 -0.11358 0 0 -1.1541999999999999</pose>
+      <parent>Empty_Link4</parent>
+      <child>front_left_wheel</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='front_left_wheel'>
+      <pose relative_to='front_left_wheel_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>1.0607999860745601e-06 6.9316384249118499e-07 -0.12567875526970201 0 0 0</pose>
+        <mass>4.6307642663382698</mass>
+        <inertia>
+          <ixx>0.089845060214098202</ixx>
+          <ixy>1.3553970280832599e-07</ixy>
+          <ixz>3.4430411468145402e-07</ixz>
+          <iyy>0.089841481078760402</iyy>
+          <iyz>2.0761724034532199e-07</iyz>
+          <izz>0.15308556067762299</izz>
+        </inertia>
+      </inertial>
+      <collision name='front_left_wheel_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/Empty_Link5.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='front_left_wheel_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/Empty_Link5.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.990196109 1 1 1</diffuse>
+          <ambient>0.990196109 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='hp1_joint' type='fixed'>
+      <pose relative_to='base_link'>1.3591 -0.80230999999999997 0.14111000000000001 1.7515000000000001 0 -3.1415853071795872</pose>
+      <parent>base_link</parent>
+      <child>hp1</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='hp1'>
+      <pose relative_to='hp1_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-0.034403000000000003 -3.6768999999999999e-06 -1.1834000000000001e-05 0 0 0</pose>
+        <mass>1.1716</mass>
+        <inertia>
+          <ixx>0.0036526000000000002</ixx>
+          <ixy>-4.6094000000000002e-08</ixy>
+          <ixz>-4.1157000000000003e-08</ixz>
+          <iyy>0.0019004</iyy>
+          <iyz>-6.4861000000000001e-08</iyz>
+          <izz>0.0019300000000000001</izz>
+        </inertia>
+      </inertial>
+      <collision name='hp1_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/hp1.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='hp1_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/hp1.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.990199983 1 1 1</diffuse>
+          <ambient>0.990199983 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='hp2_joint' type='fixed'>
+      <pose relative_to='hp1'>-0.17999999999999999 0 0 0 0 -0.19586999999999999</pose>
+      <parent>hp1</parent>
+      <child>hp2</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='hp2'>
+      <pose relative_to='hp2_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-5.5786999999999996e-06 -7.1705999999999996e-06 -0.025704999999999999 0 0 0</pose>
+        <mass>1.5981000000000001</mass>
+        <inertia>
+          <ixx>0.0024298000000000002</ixx>
+          <ixy>1.3894e-07</ixy>
+          <ixz>-5.7636000000000001e-08</ixz>
+          <iyy>0.0024302999999999998</iyy>
+          <iyz>-2.2285000000000001e-08</iyz>
+          <izz>0.0039376999999999997</izz>
+        </inertia>
+      </inertial>
+      <collision name='hp2_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/hp2.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='hp2_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/hp2.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.990199983 1 1 1</diffuse>
+          <ambient>0.990199983 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='l1_joint' type='fixed'>
+      <pose relative_to='hp2'>0 0.01 0 0 0 -0.41549000000000014</pose>
+      <parent>hp2</parent>
+      <child>l1</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='l1'>
+      <pose relative_to='l1_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-0.143460039116074 0.0061844391329891604 -0.19606161660706101 0 0 0</pose>
+        <mass>1.8460858425330999</mass>
+        <inertia>
+          <ixx>0.00367604155682221</ixx>
+          <ixy>0.0030263166777914599</ixy>
+          <ixz>-0.00049320350869468295</ixz>
+          <iyy>0.032458544968564103</iyy>
+          <iyz>5.1273195142478703e-05</iyz>
+          <izz>0.035003019324632297</izz>
+        </inertia>
+      </inertial>
+      <collision name='l1_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/l1.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='l1_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/l1.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.990196109 1 1 1</diffuse>
+          <ambient>0.990196109 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='l2_joint' type='fixed'>
+      <pose relative_to='l1'>-0.83901000000000003 0.078528000000000001 -0.010555999999999999 0 0 0.40810000000000013</pose>
+      <parent>l1</parent>
+      <child>l2</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='l2'>
+      <pose relative_to='l2_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-0.22442539567539699 -0.362982100091572 -0.22489137153611699 0 0 0</pose>
+        <mass>2.5929291700864399</mass>
+        <inertia>
+          <ixx>0.031737137027903498</ixx>
+          <ixy>-0.016619227339719898</ixy>
+          <ixz>-0.00020179678230630599</ixz>
+          <iyy>0.0151270624169168</iyy>
+          <iyz>-0.00032637522559827601</iyz>
+          <izz>0.040823681324211103</izz>
+        </inertia>
+      </inertial>
+      <collision name='l2_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/l2.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='l2_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/l2.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.990196109 1 1 1</diffuse>
+          <ambient>0.990196109 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='front_right_wheel_joint' type='revolute'>
+      <pose relative_to='l2'>-0.44017000000000001 -0.71191000000000004 -0.15933 0 0 -0.91531000000000007</pose>
+      <parent>l2</parent>
+      <child>front_right_wheel</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='front_right_wheel'>
+      <pose relative_to='front_right_wheel_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>1.0610538772049e-06 7.0461510270902697e-07 -0.248600822987221 0 0 0</pose>
+        <mass>4.6307643305383204</mass>
+        <inertia>
+          <ixx>0.089844763045979895</ixx>
+          <ixy>3.0910165016494298e-07</ixy>
+          <ixz>3.7903108062505698e-07</ixz>
+          <iyy>0.089841222290144906</iyy>
+          <iyz>2.1157035449796701e-07</iyz>
+          <izz>0.15308539253848299</izz>
+        </inertia>
+      </inertial>
+      <collision name='front_right_wheel_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/w.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='front_right_wheel_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://euro2moon/meshes/o2_rover/w.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.990196109 1 1 1</diffuse>
+          <ambient>0.990196109 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+
+
+<!-- RGBD camera Plugin -->
+
+    <!-- Sensor definition -->
+    <link name="camera_link">
+      <pose relative_to="base_footprint">1.45 0 0.7 0 0 0</pose> <!-- Camera position-->
+      <visual name="CameraVisual"> 
+        <pose>-0.025 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.05 0.05 0.05</size> <!-- Camera small box-->
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0 0 0 1</diffuse>
+        </material>
+      </visual>
+
+      
+      <sensor name="rs_front" type="rgbd_camera">
+        <always_on>1</always_on>
+        <update_rate>30</update_rate>
+        <topic>camera</topic>
+        <camera name="camera_front">
+          <optical_frame_id>rover/camera_link</optical_frame_id>
+          <horizontal_fov>0.785</horizontal_fov>
+          <lens>
+            <intrinsics>
+              <!-- fx = fy = width / ( 2 * tan (hfov / 2 ) ) -->
+              <fx>386</fx>
+              <fy>386</fy>
+                <!-- cx = ( width + 1 ) / 2 -->
+              <cx>160.5</cx>
+                <!-- cy = ( height + 1 ) / 2 -->
+              <cy>120.5</cy>
+              <s>0</s>
+            </intrinsics>
+          </lens>
+          <distortion>
+            <k1>0.0</k1>
+            <k2>0.0</k2>
+            <k3>0.0</k3>
+            <p1>0.0</p1>
+            <p2>0.0</p2>
+            <center>0.5 0.5</center>
+          </distortion>
+          <image>
+            <width>320</width>
+            <height>240</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.01</near>
+            <far>300</far>
+          </clip>
+          <depth_camera>
+            <clip>
+              <near>0.1</near>
+              <far>10</far>
+            </clip>
+          </depth_camera>
+          <noise>
+            <type>gaussian</type>
+            <mean>0</mean>
+            <stddev>0.007</stddev>
+          </noise>
+        </camera>
+      </sensor>
+    </link>
+
+    <joint name="BaseCameraJoint" type="fixed">
+      <parent>base_link</parent>
+      <child>camera_link</child>
+    </joint>
+
+
+
+
+    <!--Lidar Plugin -->
+    <link name="lidar_link">
+      <pose relative_to="base_footprint">1.45 0 0.7 0 0 0</pose>
+      <visual name="LidarVisual"> 
+        <pose>-0.025 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.05 0.05 0.05</size> <!-- Lidar small box-->
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0 0 0 1</diffuse>
+        </material>
+      </visual>
+
+      <sensor name="front_laser" type="gpu_lidar">
+        <always_on>1</always_on>
+        <visualize>true</visualize>
+        <update_rate>10</update_rate>
+        <topic>lidar</topic>
+        <lidar>
+          <scan>
+            <horizontal>
+              <samples>500</samples>
+              <resolution>1</resolution>
+              <!-- <min_angle>-3.14159</min_angle>
+              <max_angle>3.14159</max_angle> -->
+              <min_angle>-0.4</min_angle>
+              <max_angle>0.4</max_angle>
+            </horizontal>
+            <vertical>
+              <samples>16</samples>
+              <resolution>1</resolution>
+              <min_angle>-0.261799</min_angle>
+              <!-- <min_angle>0</min_angle> -->
+              <max_angle>0.261799</max_angle>
+            </vertical>
+          </scan>
+          <range>
+            <min>0.05</min>
+            <max>10</max>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </lidar>
+      </sensor>
+    </link>
+
+    <joint name="BaseLidarJoint" type="fixed">
+      <parent>base_link</parent>
+      <child>lidar_link</child>
+    </joint>
+
+
+    <!-- Dummy link between lidar_link frame and the frame that the lidar point cloud is published into -->
+    <link name="lidar_link/front_laser">
+      <pose relative_to="base_footprint">1.45 0 0.7 0 0 0</pose> <!-- Lidar position-->
+    </link>
+    <joint name="lidarJoint" type="fixed">
+      <parent>lidar_link</parent>
+      <child>lidar_link/front_laser</child>
+    </joint>
+
+
+
+    <!-- Differential drive -->
+    <plugin
+      filename="gz-sim-diff-drive-system"
+      name="gz::sim::systems::DiffDrive">
+      <right_joint>front_right_wheel_joint</right_joint>
+      <right_joint>back_left_wheel_joint</right_joint>
+      <left_joint>front_left_wheel_joint</left_joint>
+      <left_joint>back_right_wheel_joint</left_joint>
+      <wheel_separation>1.0</wheel_separation>
+      <wheel_radius>0.25</wheel_radius>
+      <max_linear_acceleration>3</max_linear_acceleration>
+      <min_linear_acceleration>-3</min_linear_acceleration>
+      <max_angular_acceleration>3</max_angular_acceleration>
+      <min_angular_acceleration>-3</min_angular_acceleration>
+      <max_linear_velocity>5</max_linear_velocity>
+      <min_linear_velocity>-5</min_linear_velocity>
+      <max_angular_velocity>4</max_angular_velocity>
+      <min_angular_velocity>-4</min_angular_velocity>
+
+
+      <!-- Input -->
+      <topic>cmd_vel</topic>
+
+      <!-- Do not use this output -->
+      <tf_topic>wrong_tf</tf_topic>
+      <odom_publish_frequency>0</odom_publish_frequency>
+
+    </plugin>
+
+
+    <plugin
+      filename="gz-sim-odometry-publisher-system"
+      name="gz::sim::systems::OdometryPublisher">
+      <odom_frame>rover/odom</odom_frame>
+      <odom_publish_frequency>20</odom_publish_frequency>
+      <robot_base_frame>rover/base_footprint</robot_base_frame>
+      <tf_topic>/tf</tf_topic>
+    </plugin>
+
+    <!-- Joint publisher -->
+    <!-- <plugin filename="libgz-sim-joint-state-publisher-system.so" name="gz::sim::systems::JointStatePublisher">
+      <topic>joint_states</topic>
+    </plugin> -->
+
+  </model>
+</sdf>

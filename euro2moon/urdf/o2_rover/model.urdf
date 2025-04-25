@@ -1,0 +1,1207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot name="rover">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0.62089 0.44892 0.51631"
+        rpy="0 0 0" />
+      <mass
+        value="386.24" />
+      <inertia
+        ixx="27.335"
+        ixy="-0.00037164"
+        ixz="5.2199E-06"
+        iyy="42.415"
+        iyz="-3.4132E-06"
+        izz="38.071" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="hp1">
+    <inertial>
+      <origin
+        xyz="-0.034403 -3.6769E-06 -1.1834E-05"
+        rpy="0 0 0" />
+      <mass
+        value="1.1716" />
+      <inertia
+        ixx="0.0036526"
+        ixy="-4.6094E-08"
+        ixz="-4.1157E-08"
+        iyy="0.0019004"
+        iyz="-6.4861E-08"
+        izz="0.00193" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/hp1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/hp1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="hp1_joint"
+    type="revolute">
+    <origin
+      xyz="1.3591 -0.80231 0.14111"
+      rpy="1.7515 0 3.1416" />
+    <parent
+      link="base_link" />
+    <child
+      link="hp1" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="hp2">
+    <inertial>
+      <origin
+        xyz="-5.5787E-06 -7.1706E-06 -0.025705"
+        rpy="0 0 0" />
+      <mass
+        value="1.5981" />
+      <inertia
+        ixx="0.0024298"
+        ixy="1.3894E-07"
+        ixz="-5.7636E-08"
+        iyy="0.0024303"
+        iyz="-2.2285E-08"
+        izz="0.0039377" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/hp2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/hp2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="hp2_joint"
+    type="revolute">
+    <origin
+      xyz="-0.18 0 0"
+      rpy="0 0 -0.19587" />
+    <parent
+      link="hp1" />
+    <child
+      link="hp2" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="l1">
+    <inertial>
+      <origin
+        xyz="-0.143460039116074 0.00618443913298916 -0.196061616607061"
+        rpy="0 0 0" />
+      <mass
+        value="1.8460858425331" />
+      <inertia
+        ixx="0.00367604155682221"
+        ixy="0.00302631667779146"
+        ixz="-0.000493203508694683"
+        iyy="0.0324585449685641"
+        iyz="5.12731951424787E-05"
+        izz="0.0350030193246323" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/l1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/l1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="l1_joint"
+    type="revolute">
+    <origin
+      xyz="0 0.01 0"
+      rpy="0 0 -0.41549" />
+    <parent
+      link="hp2" />
+    <child
+      link="l1" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="l2">
+    <inertial>
+      <origin
+        xyz="-0.224425395675397 -0.362982100091572 -0.224891371536117"
+        rpy="0 0 0" />
+      <mass
+        value="2.59292917008644" />
+      <inertia
+        ixx="0.0317371370279035"
+        ixy="-0.0166192273397199"
+        ixz="-0.000201796782306306"
+        iyy="0.0151270624169168"
+        iyz="-0.000326375225598276"
+        izz="0.0408236813242111" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/l2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/l2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="l2_joint"
+    type="revolute">
+    <origin
+      xyz="-0.83901 0.078528 -0.010556"
+      rpy="0 0 0.4081" />
+    <parent
+      link="l1" />
+    <child
+      link="l2" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="front_right_wheel">
+    <inertial>
+      <origin
+        xyz="1.0610538772049E-06 7.04615102709027E-07 -0.248600822987221"
+        rpy="0 0 0" />
+      <mass
+        value="4.63076433053832" />
+      <inertia
+        ixx="0.0898447630459799"
+        ixy="3.09101650164943E-07"
+        ixz="3.79031080625057E-07"
+        iyy="0.0898412222901449"
+        iyz="2.11570354497967E-07"
+        izz="0.153085392538483" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/w.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/w.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="front_right_wheel_joint"
+    type="revolute">
+    <origin
+      xyz="-0.44017 -0.71191 -0.15933"
+      rpy="0 0 -0.91531" />
+    <parent
+      link="l2" />
+    <child
+      link="front_right_wheel" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Empty_Link1">
+    <inertial>
+      <origin
+        xyz="-0.0344026182701038 -3.67692664290931E-06 -1.18344696493633E-05"
+        rpy="0 0 0" />
+      <mass
+        value="1.17155430952358" />
+      <inertia
+        ixx="0.00365259334652187"
+        ixy="-4.60935664192442E-08"
+        ixz="-4.11568614865394E-08"
+        iyy="0.00190043393679301"
+        iyz="-6.48612853096143E-08"
+        izz="0.00193002277419805" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/Empty_Link1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/Empty_Link1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="1_joint"
+    type="revolute">
+    <origin
+      xyz="1.3591 -0.30231 0.14111"
+      rpy="1.5456 0 3.1416" />
+    <parent
+      link="base_link" />
+    <child
+      link="Empty_Link1" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Empty_Link2">
+    <inertial>
+      <origin
+        xyz="-5.57869856465665E-06 -7.17060544241921E-06 -0.0258851829655141"
+        rpy="0 0 0" />
+      <mass
+        value="1.59805272520045" />
+      <inertia
+        ixx="0.00242979464688006"
+        ixy="1.38944924919397E-07"
+        ixz="-5.76359378413726E-08"
+        iyy="0.00243030832625978"
+        iyz="-2.2284579042515E-08"
+        izz="0.00393765439298418" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/Empty_Link2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/Empty_Link2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="2_joint"
+    type="revolute">
+    <origin
+      xyz="-0.18 0 0"
+      rpy="3.1416 0 3.1416" />
+    <parent
+      link="Empty_Link1" />
+    <child
+      link="Empty_Link2" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Empty_Link3">
+    <inertial>
+      <origin
+        xyz="-0.147496410193388 0.0153336391181572 -0.0543084300021963"
+        rpy="0 0 0" />
+      <mass
+        value="1.84608580473951" />
+      <inertia
+        ixx="0.00367603577978081"
+        ixy="0.00302631299474486"
+        ixz="-0.000493202766983148"
+        iyy="0.0324585477994497"
+        iyz="5.12729336314081E-05"
+        izz="0.0350030255525664" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/Empty_Link3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/Empty_Link3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="3_joint"
+    type="revolute">
+    <origin
+      xyz="0 0 -0.14193"
+      rpy="0 0 -2.5655" />
+    <parent
+      link="Empty_Link2" />
+    <child
+      link="Empty_Link3" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Empty_Link4">
+    <inertial>
+      <origin
+        xyz="-0.22443 -0.36298 -0.056215"
+        rpy="0 0 0" />
+      <mass
+        value="2.5929" />
+      <inertia
+        ixx="0.031737"
+        ixy="-0.016619"
+        ixz="-0.0002018"
+        iyy="0.015127"
+        iyz="-0.00032638"
+        izz="0.040824" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/Empty_Link4.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/Empty_Link4.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="4_joint"
+    type="revolute">
+    <origin
+      xyz="-0.84305 0.087677 -0.037479"
+      rpy="0 0 -2.5635" />
+    <parent
+      link="Empty_Link3" />
+    <child
+      link="Empty_Link4" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="front_left_wheel">
+    <inertial>
+      <origin
+        xyz="1.06079998607456E-06 6.93163842491185E-07 -0.125678755269702"
+        rpy="0 0 0" />
+      <mass
+        value="4.63076426633827" />
+      <inertia
+        ixx="0.0898450602140982"
+        ixy="1.35539702808326E-07"
+        ixz="3.44304114681454E-07"
+        iyy="0.0898414810787604"
+        iyz="2.07617240345322E-07"
+        izz="0.153085560677623" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/Empty_Link5.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/Empty_Link5.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="front_left_wheel_joint"
+    type="revolute">
+    <origin
+      xyz="-0.44017 -0.71191 -0.11358"
+      rpy="0 0 -1.1542" />
+    <parent
+      link="Empty_Link4" />
+    <child
+      link="front_left_wheel" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Empty_Link11">
+    <inertial>
+      <origin
+        xyz="-0.0344026182701038 -3.67692664302033E-06 -1.18344696493633E-05"
+        rpy="0 0 0" />
+      <mass
+        value="1.17155430952358" />
+      <inertia
+        ixx="0.00365259334652186"
+        ixy="-4.60935664195773E-08"
+        ixz="-4.11568614847022E-08"
+        iyy="0.001900433936793"
+        iyz="-6.486128530873E-08"
+        izz="0.00193002277419804" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/Empty_Link11.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/Empty_Link11.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="11_joint"
+    type="revolute">
+    <origin
+      xyz="-0.14591 -0.30231 0.14111"
+      rpy="1.5189 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="Empty_Link11" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Empty_Link22">
+    <inertial>
+      <origin
+        xyz="-5.5787E-06 -7.1706E-06 -0.025705"
+        rpy="0 0 0" />
+      <mass
+        value="1.5981" />
+      <inertia
+        ixx="0.0024298"
+        ixy="1.3894E-07"
+        ixz="-5.7636E-08"
+        iyy="0.0024303"
+        iyz="-2.2285E-08"
+        izz="0.0039377" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/Empty_Link22.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/Empty_Link22.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="22_joint"
+    type="revolute">
+    <origin
+      xyz="-0.18 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="Empty_Link11" />
+    <child
+      link="Empty_Link22" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Empty_Link33">
+    <inertial>
+      <origin
+        xyz="-0.147496444392564 0.0153336064423634 -0.0672538569651343"
+        rpy="0 0 0" />
+      <mass
+        value="1.84608583561868" />
+      <inertia
+        ixx="0.00367605007467056"
+        ixy="0.00302632109646684"
+        ixz="-0.000493204455015948"
+        iyy="0.0324585388206266"
+        iyz="5.12737850721582E-05"
+        izz="0.0350030082355153" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/Empty_Link33.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/Empty_Link33.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="33_joint"
+    type="revolute">
+    <origin
+      xyz="0 0 -0.12881"
+      rpy="0 0 -0.010496" />
+    <parent
+      link="Empty_Link22" />
+    <child
+      link="Empty_Link33" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Empty_Link44">
+    <inertial>
+      <origin
+        xyz="-0.224425395675401 -0.36298210009157 -0.109251245806602"
+        rpy="0 0 0" />
+      <mass
+        value="2.59292917008644" />
+      <inertia
+        ixx="0.0317371370279028"
+        ixy="-0.0166192273397199"
+        ixz="-0.000201796782306346"
+        iyy="0.015127062416917"
+        iyz="-0.000326375225598332"
+        izz="0.0408236813242106" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/Empty_Link44.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/Empty_Link44.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="44_joint"
+    type="revolute">
+    <origin
+      xyz="-0.84305 0.087677 0.0026119"
+      rpy="0 0 -0.44109" />
+    <parent
+      link="Empty_Link33" />
+    <child
+      link="Empty_Link44" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="back_left_wheel">
+    <inertial>
+      <origin
+        xyz="1.06093034624166E-06 6.91875703257017E-07 -0.152824825168225"
+        rpy="0 0 0" />
+      <mass
+        value="4.6307642610976" />
+      <inertia
+        ixx="0.0898449412781678"
+        ixy="1.35830599512767E-07"
+        ixz="2.54056220432498E-07"
+        iyy="0.0898413620472038"
+        iyz="2.05369639335283E-07"
+        izz="0.153085473845331" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/Empty_Link55.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/Empty_Link55.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="back_left_wheel_joint"
+    type="revolute">
+    <origin
+      xyz="-0.44017 -0.71191 -0.13947"
+      rpy="0 0 0.44889" />
+    <parent
+      link="Empty_Link44" />
+    <child
+      link="back_left_wheel" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Empty_Link111">
+    <inertial>
+      <origin
+        xyz="-0.034403 -3.6769E-06 -1.1834E-05"
+        rpy="0 0 0" />
+      <mass
+        value="1.1716" />
+      <inertia
+        ixx="0.0036526"
+        ixy="-4.6094E-08"
+        ixz="-4.1157E-08"
+        iyy="0.0019004"
+        iyz="-6.4861E-08"
+        izz="0.00193" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/Empty_Link111.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/Empty_Link111.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="111_joint"
+    type="revolute">
+    <origin
+      xyz="-0.14591 -0.80231 0.14111"
+      rpy="1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="Empty_Link111" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Empty_Link222">
+    <inertial>
+      <origin
+        xyz="-5.5787E-06 -7.1706E-06 -0.025705"
+        rpy="0 0 0" />
+      <mass
+        value="1.5981" />
+      <inertia
+        ixx="0.0024298"
+        ixy="1.3894E-07"
+        ixz="-5.7636E-08"
+        iyy="0.0024303"
+        iyz="-2.2285E-08"
+        izz="0.0039377" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/Empty_Link222.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/Empty_Link222.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="222_joint"
+    type="revolute">
+    <origin
+      xyz="-0.18 0 0"
+      rpy="3.1416 0 2.8875" />
+    <parent
+      link="Empty_Link111" />
+    <child
+      link="Empty_Link222" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Empty_Link333">
+    <inertial>
+      <origin
+        xyz="-0.147496398011046 0.0153336552959017 -0.0544016217249862"
+        rpy="0 0 0" />
+      <mass
+        value="1.84608571643626" />
+      <inertia
+        ixx="0.00367602966629228"
+        ixy="0.00302630842690048"
+        ixz="-0.000493201916025598"
+        iyy="0.0324585493903526"
+        iyz="5.12727379030492E-05"
+        izz="0.0350030307916617" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/Empty_Link333.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/Empty_Link333.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="333_joint"
+    type="revolute">
+    <origin
+      xyz="0 0 -0.14166"
+      rpy="0 0 -3.1399" />
+    <parent
+      link="Empty_Link222" />
+    <child
+      link="Empty_Link333" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Empty_Link444">
+    <inertial>
+      <origin
+        xyz="-0.22443 -0.36298 -0.056287"
+        rpy="0 0 0" />
+      <mass
+        value="2.5929" />
+      <inertia
+        ixx="0.031737"
+        ixy="-0.016619"
+        ixz="-0.0002018"
+        iyy="0.015127"
+        iyz="-0.00032638"
+        izz="0.040824" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/Empty_Link444.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/Empty_Link444.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="444_joint"
+    type="revolute">
+    <origin
+      xyz="-0.84305 0.087677 -0.0375"
+      rpy="0 0 -2.2044" />
+    <parent
+      link="Empty_Link333" />
+    <child
+      link="Empty_Link444" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="back_right_wheel">
+    <inertial>
+      <origin
+        xyz="1.06138500155506E-06 6.90912475453942E-07 -0.125828588574682"
+        rpy="0 0 0" />
+      <mass
+        value="4.6307642002264" />
+      <inertia
+        ixx="0.0898450596231217"
+        ixy="1.36274471679299E-07"
+        ixz="3.43730840352643E-07"
+        iyy="0.0898414815955512"
+        iyz="2.07966110482355E-07"
+        izz="0.153085558717631" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/Empty_Link555.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://euro2moon/meshes/o2_rover/Empty_Link555.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="back_right_wheel_joint"
+    type="revolute">
+    <origin
+      xyz="-0.44017 -0.71191 -0.1135"
+      rpy="0 0 0.2933" />
+    <parent
+      link="Empty_Link444" />
+    <child
+      link="back_right_wheel" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  
+</robot>

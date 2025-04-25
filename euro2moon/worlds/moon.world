@@ -1,159 +1,199 @@
-<sdf version='1.9'>
-  <world name='moon_surface'>
-    
-    <physics name="1ms" type="ignored">
-      <max_step_size>0.001</max_step_size>
-      <real_time_factor>1.0</real_time_factor>
-    </physics>
+<?xml version="1.0"?>
+<sdf version="1.9">
+  <world name="moon">
+
     <plugin
-      filename="ignition-gazebo-physics-system"
+      filename="gz-sim-physics-system"
       name="gz::sim::systems::Physics">
     </plugin>
     <plugin
-      filename="ignition-gazebo-user-commands-system"
+      filename="gz-sim-user-commands-system"
       name="gz::sim::systems::UserCommands">
     </plugin>
     <plugin
-      filename="ignition-gazebo-scene-broadcaster-system"
+      filename="gz-sim-scene-broadcaster-system"
       name="gz::sim::systems::SceneBroadcaster">
     </plugin>
     <plugin
-      filename="ignition-gazebo-contact-system"
+      filename="gz-sim-contact-system"
       name="gz::sim::systems::Contact">
     </plugin>
     <plugin
-      filename="ignition-gazebo-sensors-system"
+      filename="gz-sim-sensors-system"
       name="gz::sim::systems::Sensors">
       <render_engine>ogre</render_engine>
     </plugin>
     <plugin
-      filename="ignition-gazebo-imu-system"
+      filename="gz-sim-imu-system"
       name="gz::sim::systems::Imu">
     </plugin>
+    
+    <!-- Moon gravity -->
+    <gravity>0.0 0.0 -1.622</gravity>
+    <physics default="true" type="dart">
+      <max_step_size>0.025</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+      <max_contacts>200</max_contacts>
+      <dart>
+        <collision_detector>bullet</collision_detector>
+      </dart>
+    </physics>
 
-
+    <!-- Scene -->
     <scene>
-      <ambient>0.30 0.30 0.30 1.0</ambient>
-      <background>0.0 0.0 0.0 1</background>
+      <ambient>0 0 0</ambient>
+      <background>0 0 0</background>
       <origin_visual>0</origin_visual>
       <grid>false</grid>
       <shadows>true</shadows>
     </scene>
 
-    
 
-    <gravity>0 0 -1.62</gravity>
-    <!-- <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
-    <atmosphere type='adiabatic'/>
-    <scene>
-      <ambient>0.4 0.4 0.4 0.7851</ambient>
-      <background>0.7 0.7 0.7 1</background>
-      <shadows>true</shadows>
-    </scene> -->
-
-    <!-- Load the light -->
-    <light type="point" name="sun">
+    <!--              -->
+    <!-- Illumination -->
+    <!--              -->
+    <light type="directional" name="sun">
       <cast_shadows>true</cast_shadows>
-      <pose>0 0 10 0 0 0</pose>
-      <intensity>3</intensity>
-      <diffuse>0.8 0.8 0.8 1</diffuse>
-      <specular>0.8 0.8 0.8 1</specular>
-      
+      <pose>0 0 100.0 0 0 0</pose>
+      <diffuse>1.0 1.0 1.0 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <intensity>5</intensity>
       <attenuation>
         <range>1000</range>
         <constant>0.9</constant>
         <linear>0.01</linear>
         <quadratic>0.001</quadratic>
       </attenuation>
-      <direction>-0.5 0.1 -0.9</direction>
+      <direction>0.25 -0.5 -0.1</direction>
     </light>
 
-      
-    <!-- Load the moon surface model -->
-   <include>
-      <uri>model://models/moon_surface</uri>
-      <name>moon_surface</name>
-      <pose>0 0 -131 0 0 0</pose>
+
+    <!--        -->
+    <!-- Models -->
+    <!--        -->
+
+    <!-- Terrain -->
+    <include>
+      <uri>
+        package://euro2moon/worlds/models/lunar_surface/lunar_surface0
+      </uri>
+      <pose>0 0 0 0 0 0</pose>
+      <static>true</static>
     </include>
 
-    <!-- <model name='ground_plane'>
+    <!-- Objects -->
+    <include>
+      <uri>
+        package://euro2moon/worlds/models/lunar_surface/lunar_rock0
+      </uri>
+      <pose>-14.5 14 0.25 0 0 0</pose>
       <static>true</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <plane>
-              <normal>0 0 1</normal>
-              <size>100 100</size>
-            </plane>
-          </geometry>
-          <surface>
-            <friction>
-              <ode/>
-            </friction>
-            <bounce/>
-            <contact/>
-          </surface>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <plane>
-              <normal>0 0 1</normal>
-              <size>100 100</size>
-            </plane>
-          </geometry>
-          <material>
-            <ambient>0.8 0.8 0.8 1</ambient>
-            <diffuse>0.8 0.8 0.8 1</diffuse>
-            <specular>0.8 0.8 0.8 1</specular>
-          </material>
-        </visual>
-        <pose>0 0 0 0 -0 0</pose>
-        <inertial>
-          <pose>0 0 0 0 -0 0</pose>
-          <mass>1</mass>
-          <inertia>
-            <ixx>1</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>1</iyy>
-            <iyz>0</iyz>
-            <izz>1</izz>
-          </inertia>
-        </inertial>
-        <enable_wind>false</enable_wind>
-      </link>
-      <pose>0 0 0 0 -0 0</pose>
-      <self_collide>false</self_collide>
-    </model> -->
-
-    <!-- Load the Rock with QR1 image -->
-    <!-- <include>
-      <uri>model://models/qr_rock1</uri>
-      <name>qr_rock1</name>
-      <pose>-5.0548 -0.6328 0.3244 0 0 0</pose>
-    </include> -->
-
-    <!-- Load the Rock with QR2 image -->
-    <!-- <include>
-      <uri>model://models/qr_rock2</uri>
-      <name>qr_rock2</name>
-      <pose>5.9577 1.9415 0.2521 0 0 0</pose>
-    </include> -->
-
-    <!-- Load the Rock with QR3 image -->
-    <!-- <include>
-      <uri>model://models/qr_rock3</uri>
-      <name>qr_rock3</name>
-      <pose>-1.4255 4.2801 0.2592 0 0 3.14/2</pose>
-    </include> -->
-
-    <!-- Load the Rock with QR4 image -->
-    <!-- <include>
-      <uri>model://models/qr_rock4</uri>
-      <name>qr_rock4</name>
-      <pose>5.7556 -3.1071 0.0065 -0.1654 0 0.8644</pose>
-    </include> -->
-
+    </include>
+    <include>
+      <uri>
+        package://euro2moon/worlds/models/lunar_surface/lunar_rock1
+      </uri>
+      <pose>-12 12.5 0.43 0 0 0</pose>
+      <static>true</static>
+    </include>
+    <include>
+      <uri>
+        package://euro2moon/worlds/models/lunar_surface/lunar_rock2
+      </uri>
+      <pose>-10 10.5 0.27 0 0 0</pose>
+      <static>true</static>
+    </include>
+    <include>
+      <uri>
+        package://euro2moon/worlds/models/lunar_surface/lunar_rock3
+      </uri>
+      <pose>-8 8.2 0.24 0 0 0</pose>
+      <static>true</static>
+    </include>
+    <include>
+      <uri>
+        package://euro2moon/worlds/models/lunar_surface/lunar_rock4
+      </uri>
+      <pose>-6 6 0.41 0 0 0</pose>
+      <static>true</static>
+    </include>
+    <include>
+      <uri>
+        package://euro2moon/worlds/models/lunar_surface/lunar_rock5
+      </uri>
+      <pose>-4.4 4 0.36 0 0 0</pose>
+      <static>true</static>
+    </include>
+    <include>
+      <uri>
+        package://euro2moon/worlds/models/lunar_surface/lunar_rock6
+      </uri>
+      <pose>-2.8 1.8 0.05 0 0 0</pose>
+      <static>true</static>
+    </include>
+    <include>
+      <uri>
+        package://euro2moon/worlds/models/lunar_surface/lunar_rock7
+      </uri>
+      <pose>0 0 0.07 0 0 0</pose>
+      <static>true</static>
+    </include>
+    <include>
+      <uri>
+        package://euro2moon/worlds/models/lunar_surface/lunar_rock8
+      </uri>
+      <pose>2.2 -2 0.11 0 0 0</pose>
+      <static>true</static>
+    </include>
+    <include>
+      <uri>
+        package://euro2moon/worlds/models/lunar_surface/lunar_rock9
+      </uri>
+      <pose>4.1 -4.5 -0.2 0 0 0</pose>
+      <static>true</static>
+    </include>
+    <include>
+      <uri>
+        package://euro2moon/worlds/models/lunar_surface/lunar_rock10
+      </uri>
+      <pose>6.2 -6 -0.34 0 0 0</pose>
+      <static>true</static>
+    </include>
+    <include>
+      <uri>
+        package://euro2moon/worlds/models/lunar_surface/lunar_rock11
+      </uri>
+      <pose>8.1 -7.9 -0.66 0 0 0</pose>
+      <static>true</static>
+    </include>
+    <include>
+      <uri>
+        package://euro2moon/worlds/models/lunar_surface/lunar_rock12
+      </uri>
+      <pose>10.2 -10 -0.94 0 0 0</pose>
+      <static>true</static>
+    </include>
+    <include>
+      <uri>
+        package://euro2moon/worlds/models/lunar_surface/lunar_rock13
+      </uri>
+      <pose>12.4 -12 -1.04 0 0 0</pose>
+      <static>true</static>
+    </include>
+    <include>
+      <uri>
+        package://euro2moon/worlds/models/lunar_surface/lunar_rock14
+      </uri>
+      <pose>13.7 -13.5 -1.05 0 0 0</pose>
+      <static>true</static>
+    </include>
+    <include>
+      <uri>
+        package://euro2moon/worlds/models/lunar_surface/lunar_rock15
+      </uri>
+      <pose>14.5 -14.7 -1.06 0 0 0</pose>
+      <static>true</static>
+    </include>
 
   </world>
 </sdf>

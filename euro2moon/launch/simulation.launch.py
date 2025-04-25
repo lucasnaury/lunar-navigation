@@ -21,30 +21,12 @@ def generate_launch_description():
         Node(
             package='teleop_twist_keyboard',
             executable='teleop_twist_keyboard',
+            # remappings=[('cmd_vel', 'cmd_vel_teleop')],
             name='teleop',
             output='screen',
             prefix = 'xterm -e',
         ),
 
-        # Launch RViz with the simulation config
-        # Node(
-        #     package='rviz2',
-        #     executable='rviz2',
-        #     name='rviz',
-        #     output='screen',
-        #     arguments=['-d', os.path.join(FindPackageShare('euro2moon').find('euro2moon'), 'config', 'simulation.rviz')],
-        #     respawn=False
-        # )
-
-        # Launch camera visualisation
-        # Launch rqt_image_view to show the output
-        # Node(
-        #     package='rqt_image_view',
-        #     executable='rqt_image_view',
-        #     name='camera_view',
-        #     output='screen',
-        #     arguments=['/camera_raw']
-        # )
     ])
      
 
