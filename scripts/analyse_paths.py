@@ -3,34 +3,77 @@ import numpy as np
 from pathlib import Path
 import sys
 from include.units import Unit
-from include.a_star import astar
 from path_planning import loadMaps
 
 
-def scorePath(path, slopeMap, illuminationMap, px2m):
+def scorePath(path, weights, slopeMap, illuminationMap, px2m):
     
-    # Compute path dist
-    # -> Calculate distances between consecutive points
-    diffs = path[1:] - path[:-1]
-    distances = np.sqrt(np.sum(diffs**2, axis=1))
-    
-    # -> Sum up all distances
-    dist_cost = np.sum(distances)
+    # Calculate differences between consecutive points
+    diffs = np.diff(path, axis=0)
+    dist_costs = np.linalg.norm(diffs, axis=1)
+    total_dist = np.sum(dist_costs)
 
-    # Compute path other costs from maps
-    slope_cost = np.sum(slopeMap[path])
-    illumination_cost = np.sum(1.0 - illuminationMap[path])
+    # Slope and illumination costs for each point
+    rows, cols = path[:, 0].astype(int), path[:, 1].astype(int)
+    slope_costs = slopeMap[rows, cols]
+    illumination_costs = 1.0 - illuminationMap[rows, cols]
 
-    # Compute path other costs from heading
-    headings = np.arctan2(diffs[:,1], diffs[:,0])
-    headings_diffs = headings[1:] - headings[:-1]
-    steering_cost = np.sum(np.abs(headings_diffs) / np.pi)
+    # Steering costs (change in heading)
+    headings = np.arctan2(diffs[:, 0], diffs[:, 1])
+    steering_diffs = np.diff(headings)
+    steering_costs = np.abs(steering_diffs) / np.pi
 
-    total_cost = dist_cost + slope_cost + illumination_cost + steering_cost
+    # Pad steering_costs and dist_costs to align with path length
+    steering_costs = np.insert(steering_costs, 0, 0.0)
+    dist_costs = np.insert(dist_costs, 0, 0.0)
 
-    return dist_cost * px2m, total_cost
+    # Weights
+    w_dist, w_steering, w_slope, w_light = weights
+
+    # Total cost (normalized by sum of weights)
+    g_cost = (
+        np.sum(w_dist * dist_costs + w_slope * slope_costs + w_light * illumination_costs) +
+        np.sum(w_steering * steering_costs)
+        ) / (w_dist + w_slope + w_light + w_steering)
 
 
+    return total_dist * px2m, g_cost
+
+def bresenham_line(start, end):
+    """
+    Returns a list of (y, x) coordinates on a grid between start and end using Bresenham's algorithm.
+    start, end: tuples/lists of (y, x)
+    """
+    y0, x0 = start
+    y1, x1 = end
+    points = []
+
+    dx = abs(x1 - x0)
+    dy = abs(y1 - y0)
+    x, y = x0, y0
+    sx = 1 if x0 < x1 else -1
+    sy = 1 if y0 < y1 else -1
+
+    if dx > dy:
+        err = dx / 2.0
+        while x != x1:
+            points.append((y, x))
+            err -= dy
+            if err < 0:
+                y += sy
+                err += dx
+            x += sx
+    else:
+        err = dy / 2.0
+        while y != y1:
+            points.append((y, x))
+            err -= dx
+            if err < 0:
+                x += sx
+                err += dy
+            y += sy
+    points.append((y1, x1))
+    return points
 
 def main(unitsJsonfile, mapFolder, pathsFolder):
     # Paths
@@ -45,11 +88,8 @@ def main(unitsJsonfile, mapFolder, pathsFolder):
     units, px2m, _ = Unit.loadUnits(jsonPath, len(slopeMap))
 
     
+    weights = [2.0, 1.0, 5.0, 5.0]
 
-
-    # ------------------------------
-    # NAIVE STRAIGHT PATH COSTS
-    # ------------------------------
     print("Computing naive costs...")
     totalNaiveDistCost = 0.0
     totalNaiveGridDistCost = 0.0
@@ -61,9 +101,11 @@ def main(unitsJsonfile, mapFolder, pathsFolder):
             totalNaiveDistCost += naiveDistCost
 
             # Generate straight path
-            straight_path, _ = astar(slopeMap, illuminationMap, unit.YXpos(), otherUnit.YXpos(), [1.0, 0.0, 0.0, 0.0, 0.0, 1.0], isDebug=False, gui=False)
+            # straight_path, _ = astar(slopeMap, illuminationMap, unit.YXpos(), otherUnit.YXpos(), [1.0, 0.0, 0.0, 0.0, 0.0, 1.0], isDebug=False, gui=False)
+            straight_path = bresenham_line(unit.YXpos(), otherUnit.YXpos())
+
             # Compute other costs
-            distCost, cost = scorePath(np.array(straight_path), slopeMap, illuminationMap, px2m)
+            distCost, cost = scorePath(np.array(straight_path), weights, slopeMap, illuminationMap, px2m)
             totalNaiveGridDistCost += distCost
             totalNaiveCost += cost
 
@@ -83,7 +125,7 @@ def main(unitsJsonfile, mapFolder, pathsFolder):
     totalDistCost = 0.0
     totalCost = 0.0
     for path in global_paths:
-        distCost, cost = scorePath(path, slopeMap, illuminationMap, px2m)
+        distCost, cost = scorePath(path, weights, slopeMap, illuminationMap, px2m)
         totalDistCost += distCost
         totalCost += cost
 
