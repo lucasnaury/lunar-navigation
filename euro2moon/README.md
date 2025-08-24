@@ -21,7 +21,7 @@ Clone into your ROS2 workspace and build:
 
 ```bash
 cd ~/ros2_ws/src
-git clone https:https://github.com/lucasnaury/euro2moon.git
+git clone https:https://github.com/lucasnaury/lunar-navigation.git
 cd ..
 colcon build --packages-select euro2moon
 ros2 launch euro2moon local_path_planning.py use_moon:=True use_o2_rover:=True
@@ -31,5 +31,3 @@ ros2 run euro2moon fake_path --ros-args -p use_moon:=True
 ## Explanation
 - `use_o2_rover:=True` : is used to import the URDF file of our rover from its CAD files. If set to false, it uses the simple rover.
 - `use_moon:=True` : is used to run the simulation on the procedurally generated map. If set to false, it runs the simulations on the basic map with simple obstacles.
-
-# Local path planning
