@@ -64,6 +64,7 @@ def astar(slopeMap, illuminationMap, start, end, weights, isDebug=False, gui=Fal
     open_list = []
     closed_list = []
 
+    explored = None
     if isDebug:
         cropped = [(0,slopeMap.shape[0]), (0,slopeMap.shape[1])]
         # cropped = [(4100, 5300), (4300, 6100)]

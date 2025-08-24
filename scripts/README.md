@@ -87,3 +87,17 @@ python merge_paths.py config3.json cropped all_resized_conf3
 > - The first argument corresponds to the unit configuration filename in the `units` folder
 > - The second argument corresponds to the map folder path (relative to the `maps` folder), on which to display the path
 > - The last argument corresponds to the output folder path from the previous command
+
+
+## 7. Optional output: path analysis
+
+This last script is optional, and allows to get the following informations
+- Path cost and total distance travelled in metres
+- Comparison with a simple straight path between the units
+
+To run it:
+```bash
+python analyse_paths.py config1.json cropped all_resized_conf1
+python analyse_paths.py config2.json cropped all_resized_conf2
+python analyse_paths.py config3.json cropped all_resized_conf3
+```
