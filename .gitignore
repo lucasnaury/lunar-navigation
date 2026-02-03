@@ -1,7 +1,5 @@
-**/__pycache__/
-**/*.gif
+**/**/__pycache__/
 
-scripts/maps/**/*.png
-scripts/test_maps
-
-scripts/output
+lunar_global_planning/maps/**/*.png
+lunar_global_planning/test_maps
+lunar_global_planning/output
